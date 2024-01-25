@@ -1,5 +1,4 @@
 package com.example.demo.entity;
-
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -22,20 +22,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tipologia_pagamento")
-public class TipologiaPagamento {
+@Table(name = "categorie_prezzo_listini")
+public class CategoriePrezzoListini {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idtipologia_pagamento", nullable = false)
+    @Column(name = "idlistino", nullable = false)
     private int id;
 
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
+
+    @Column(name = "prezzo", nullable = false)
+    private float prezzo;
 }

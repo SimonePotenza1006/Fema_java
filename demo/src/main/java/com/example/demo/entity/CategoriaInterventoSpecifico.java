@@ -1,5 +1,4 @@
 package com.example.demo.entity;
-
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -22,20 +22,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tipologia_pagamento")
-public class TipologiaPagamento {
+@Table(name = "categorie_intervento_specifiche")
+public class CategoriaInterventoSpecifico {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idtipologia_pagamento", nullable = false)
+    @Column(name = "idcategorie_intervento_specifiche", nullable = false)
     private int id;
 
-    @Column(name = "descrizione", nullable = false)
+    @Column(name = "descrizione")
     private String descrizione;
+
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "idtipologia")
+    private TipologiaIntervento tipologiaIntervento;
+
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "idlistino")
+    private CategoriePrezzoListini prezzoListino;
+
 }
