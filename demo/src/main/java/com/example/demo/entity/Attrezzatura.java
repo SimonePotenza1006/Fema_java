@@ -32,6 +32,7 @@ public class Attrezzatura {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idattrezzatura", nullable = false)
     private int id;
 
     @Column(name = "descrizione", nullable = false)

@@ -1,4 +1,5 @@
 package com.example.demo.entity;
+
 import java.util.List;
 import java.util.Set;
 
@@ -21,20 +22,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "attivita")
-public class Attivita {
-
+@Table(name = "tipologia_riparazione_merce")
+public class TipologiaRiparazioneMerce {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idattivita", nullable = false)
+    @Column(name = "idtipologia_riparazione_merce", nullable = false)
     private int id;
 
-    @Column(name="descrizione", nullable = false)
+    @Column(name = "descrizione", nullable = false)
     private String descrizione;
-
 }

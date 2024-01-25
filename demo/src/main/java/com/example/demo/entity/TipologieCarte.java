@@ -21,20 +21,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "attivita")
-public class Attivita {
-
+public class TipologieCarte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idattivita", nullable = false)
+    @Column(name = "idtipologie_carte", nullable = false)
     private int id;
 
-    @Column(name="descrizione", nullable = false)
+    @Column(name = "descrizione", nullable = false)
     private String descrizione;
-
 }
