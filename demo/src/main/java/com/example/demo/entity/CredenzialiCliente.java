@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.Date;
 
 import org.hibernate.annotations.OnDelete;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,35 +34,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "spesa")
-public class Spese {
+@Table(name = "credenziali_cliente")
+public class CredenzialiCliente {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idspesa", nullable = false)
+    @Column(name = "idrelazione_credenziali_clienti")
     private int id;
 
-    @Column(name = "data_spesa", nullable = false)
-    private Date data;
-
-    @Column(name = "fattura", nullable = false)
-    private boolean fattura;
-
-    @Column(name = "importo", nullable = false)
-    private float importo;
-
-    @Column(name = "luogo", nullable = false)
-    private String luogo;
+    @Column(name = "descrizione")
+    private String descrizione;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idtipologia_pagamento")
-    private TipologiaPagamento tipologiaPagamento;
+    @JoinColumn(referencedColumnName = "idclienti")
+    private Cliente cliente;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idtipologia_spesa")
-    private TipologiaSpesa tipologiaSpesa;
-
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idviaggio")
-    private Viaggio viaggio;
+    @JoinColumn(referencedColumnName = "iduser")
+    private User user;
 }

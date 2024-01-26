@@ -30,42 +30,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cantieri")
-public class Cantieri {
-
+@Table(name = "carta_di_credito")
+public class CartaDiCredito {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idcantieri", nullable = false)
+    @Column(name = "idcarte_di_credito", nullable = false)
     private int id;
 
-    @Column(name = "denominazione")
-    private String denominazione;
-
-    @Column(name = "indirizzo")
-    private String indirizzo;
-
-    @Column(name = "cap")
-    private String cap;
-
-    @Column(name = "citta")
-    private String citta;
-
-    @Column(name = "provincia")
-    private String provincia;
-
-    @Column(name = "codice_fiscale")
-    private String codice_fiscale;
-
-    @Column(name = "partita_iva")
-    private String partita_iva;
-
-    @Column(name = "telefono")
-    private String telefono;
-
-    @Column(name = "cellulare")
-    private String cellulare;
+    @Column(name = "descrizione")
+    private String descrizione;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idclienti")
-    private Clienti clienti;
+    @JoinColumn(referencedColumnName = "idtipologie_carte")
+    private TipologiaCarta tipologia_carta;
 }

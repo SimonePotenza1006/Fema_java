@@ -30,8 +30,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "prodotti")
-public class Prodotti {
+@Table(name = "prodotto")
+public class Prodotto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,9 +64,9 @@ public class Prodotti {
 
     @ManyToOne (cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idcategoria_prodotto")
-    private CategorieProdotti categoriaProdotto;
+    private CategoriaProdotto categoriaProdotto;
 
     @ManyToOne (cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idfornitori")
-    private Fornitori fornitore;
+    private Fornitore fornitore;
 }
