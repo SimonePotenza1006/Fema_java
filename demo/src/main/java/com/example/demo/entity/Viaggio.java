@@ -35,7 +35,7 @@ public class Viaggio {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "idviaggio", nullable = false)
     private int id;
 
     @Column(name = "destinazione", nullable = false)

@@ -39,7 +39,7 @@ public class CategoriaInterventoSpecifico {
     private String descrizione;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idtipologia")
+    @JoinColumn(referencedColumnName = "idtipologia_intervento")
     private TipologiaIntervento tipologiaIntervento;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)

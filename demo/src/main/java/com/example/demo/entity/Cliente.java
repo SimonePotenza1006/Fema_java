@@ -88,5 +88,4 @@ public class Cliente {
 
     @Column(name = "note")
     private String nome;
-
 }

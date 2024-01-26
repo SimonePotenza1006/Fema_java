@@ -54,7 +54,7 @@ public class Sopralluogo {
     private byte[] foto;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idcliente", nullable = false)
+    @JoinColumn(referencedColumnName = "idclienti", nullable = false)
     private Cliente cliente;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)

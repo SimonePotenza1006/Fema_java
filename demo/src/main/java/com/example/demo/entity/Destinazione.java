@@ -33,7 +33,7 @@ public class Destinazione {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idrelazione_clienti_destinazioni")
+    @Column(name = "iddestinazione")
     private int id;
 
     @Column(name = "denominazione", nullable = false)

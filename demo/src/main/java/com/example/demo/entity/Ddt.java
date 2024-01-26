@@ -64,7 +64,7 @@ public class Ddt {
     private byte[] imageData;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idcliente")
+    @JoinColumn(referencedColumnName = "idclienti")
     private Cliente cliente;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)

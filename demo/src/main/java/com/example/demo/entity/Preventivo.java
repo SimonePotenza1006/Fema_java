@@ -53,7 +53,7 @@ public class Preventivo {
     private float importo;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idcliente", nullable = false) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
+    @JoinColumn(referencedColumnName = "idclienti", nullable = false) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
     private Cliente cliente;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)

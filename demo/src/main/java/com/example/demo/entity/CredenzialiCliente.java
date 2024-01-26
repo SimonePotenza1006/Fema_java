@@ -51,5 +51,5 @@ public class CredenzialiCliente {
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser")
-    private User user;
+    private Utente utente;
 }
