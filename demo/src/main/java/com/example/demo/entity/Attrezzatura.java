@@ -14,6 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -37,4 +39,13 @@ public class Attrezzatura {
 
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_viaggio_attrezzatura", joinColumns = { 
+        @JoinColumn(name = "FK_idattrezzatura")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idviaggio")
+    })
+    private List<Viaggio> viaggi;
 }

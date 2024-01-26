@@ -20,7 +20,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -76,4 +78,13 @@ public class Ddt {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
+        @JoinColumn(name = "FK_idddt")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idprodotto")
+    })
+    private List<Prodotto> prodotti;
 } 

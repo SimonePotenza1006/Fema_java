@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -44,4 +45,13 @@ public class CartaDiCredito {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idtipologie_carte")
     private TipologiaCarta tipologia_carta;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_viaggi_carte", joinColumns = { 
+        @JoinColumn(name = "FK_IDCarta")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_IDViaggio")
+    })
+    private List<Viaggio> viaggi;
 }

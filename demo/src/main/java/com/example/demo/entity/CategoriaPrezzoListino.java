@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -40,4 +42,13 @@ public class CategoriaPrezzoListino {
 
     @Column(name = "prezzo", nullable = false)
     private float prezzo;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_preventivi_listini", joinColumns = { 
+        @JoinColumn(name = "FK_idlistino")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idpreventivo")
+    })
+    private List<Preventivo> preventivi;
 }

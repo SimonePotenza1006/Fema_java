@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -69,4 +70,31 @@ public class Prodotto {
     @ManyToOne (cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idfornitori")
     private Fornitore fornitore;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
+        @JoinColumn(name = "FK_idprodotto")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idddt")
+    })
+    private List<Utente> utenti;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_preventivo_prodotti", joinColumns = { 
+        @JoinColumn(name = "FK_idprodotto")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idpreventivo")
+    })
+    private List<Preventivo> preventivi;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_prodotto_sopralluogo", joinColumns = { 
+        @JoinColumn(name = "FK_idprodotto")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idsopralluogo")
+    })
+    private List<Sopralluogo> sopralluoghi;
 }

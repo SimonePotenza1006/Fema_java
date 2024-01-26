@@ -17,7 +17,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -57,4 +59,22 @@ public class Preventivo {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser", nullable = false) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
     private Utente utente;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_preventivi_listini", joinColumns = { 
+        @JoinColumn(name = "FK_idpreventivo")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idlistino")
+    })
+    private List<CategoriaPrezzoListino> listini;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_preventivo_prodotti", joinColumns = { 
+        @JoinColumn(name = "FK_idpreventivo")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idprodotto")
+    })
+    private List<Prodotto> prodotti;
 }
