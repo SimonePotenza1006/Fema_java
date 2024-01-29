@@ -6,6 +6,15 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-public class ViaggioRepository {
-    
+import com.example.demo.entity.Attivita;
+import com.example.demo.entity.Attrezzatura;
+import com.example.demo.entity.Utente;
+import com.example.demo.entity.Viaggio;
+import com.example.demo.entity.CartaDiCredito;
+
+@Repository
+public interface ViaggioRepository extends JpaRepository<Viaggio, Integer> {
+    Optional<Viaggio> findById(int id);
+    List<Optional<Viaggio>> findByUtenti(Utente utente);
+    List<Viaggio> findAllByOrderByIdDesc();
 }

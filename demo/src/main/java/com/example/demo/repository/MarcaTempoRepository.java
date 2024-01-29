@@ -24,13 +24,14 @@ public interface MarcaTempoRepository extends JpaRepository<MarcaTempo, Integer>
 
     List<MarcaTempo> findAll();
 
-    Optional<MarcaTempo> findDataAndUtente(Date data, Utente utente);
+    Optional<MarcaTempo> findByDataAndUtente(Date data, Utente utente);
 
     List<MarcaTempo> findByViaggioOrderByData(Viaggio viaggio);
 
-    List<MarcaTempo> findViaggioOrderByUtenteAsc(Viaggio viaggio);
+    List<MarcaTempo> findByViaggioOrderByUtenteAsc(Viaggio viaggio);
 
     List<Optional<MarcaTempo>> findByViaggioAndDataBetweenOrderByUtenteAscDataAsc(Viaggio viaggio, Date datetoday, Date datetomorrow);
+
     List<Optional<MarcaTempo>> findByViaggioAndUtenteAndDataBetween(Viaggio viaggio, Utente utente, Date datetoday, Date datetomorrow);
 
 }
