@@ -35,7 +35,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "imagedata")
-public class Imagedata {
+public class ImageData {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
