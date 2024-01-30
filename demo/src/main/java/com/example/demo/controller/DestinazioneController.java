@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import com.example.demo.entity.Destinazione;
 import com.example.demo.entity.Spesa;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/destinazione")
 public class DestinazioneController {
     

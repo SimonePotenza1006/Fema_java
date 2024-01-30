@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,12 +14,10 @@ import java.io.IOException;
 import java.util.List;
 
 import com.example.demo.entity.Cliente;
-import com.example.demo.entity.Ruolo;
 import com.example.demo.service.ClienteService;
 
-
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/cliente")
 public class ClienteController {
     
