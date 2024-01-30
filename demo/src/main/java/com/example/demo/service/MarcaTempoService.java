@@ -47,7 +47,7 @@ public class MarcaTempoService {
 	public MarcaTempoRepository marcaTempoRepository;
 	
 	public String uploadPdf(MultipartFile file, int viaggioId, int utenteId, Integer ing, String gps, int idmt) throws IOException, ParseException {
-		System.out.print("ghghghh");
+		System.out.print("PROVA");
 		System.out.print(idmt+" "+ing);
 		Optional<Viaggio> optionalViaggio = viaggioRepository.findById(viaggioId);
 		Optional<Utente> optionalUtente = utenteRepository.findById(utenteId);

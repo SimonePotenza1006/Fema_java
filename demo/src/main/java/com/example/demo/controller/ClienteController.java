@@ -1,0 +1,56 @@
+package com.example.demo.controller;
+
+import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.example.demo.entity.Cliente;
+import com.example.demo.entity.Ruolo;
+import com.example.demo.service.ClienteService;
+
+
+@RestController
+@AllArgsConstructor
+@RequestMapping(value = "/api/cliente")
+public class ClienteController {
+    
+    private ClienteService clienteService;
+
+    @PostMapping
+    public ResponseEntity<Cliente> createCliente(@RequestBody Cliente cliente){
+    	Cliente savedCliente = clienteService.createCliente(cliente);
+        return new ResponseEntity<>(savedCliente, HttpStatus.CREATED);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Cliente> getClienteById(@PathVariable("id") int clienteId){
+    	Cliente cliente = clienteService.getClienteById(clienteId);
+        return new ResponseEntity<>(cliente, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> getAllClienti(){
+        List<Cliente> clienti = clienteService.getAllClienti();
+        return new ResponseEntity<>(clienti, HttpStatus.OK);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Cliente> updateRuolo(@RequestBody Cliente cliente) throws IOException{
+    	Cliente updatedCliente = clienteService.updateCliente(cliente);
+        return new ResponseEntity<>(updatedCliente, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteCliente(@PathVariable("id") int clienteId){
+    	clienteService.deleteCliente(clienteId);
+        return new ResponseEntity<>("Cliente successfully deleted!", HttpStatus.OK);
+    }
+}
