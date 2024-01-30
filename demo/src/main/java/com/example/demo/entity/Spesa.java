@@ -52,15 +52,15 @@ public class Spesa {
     @Column(name = "luogo", nullable = false)
     private String luogo;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idtipologia_pagamento")
     private TipologiaPagamento tipologiaPagamento;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idtipologia_spesa")
     private TipologiaSpesa tipologiaSpesa;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idviaggio")
     private Viaggio viaggio;
 }

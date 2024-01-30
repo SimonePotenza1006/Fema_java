@@ -63,7 +63,7 @@ public class Utente {
     @Column(name = "iban", nullable = false)
     private String iban;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser_role")
     private Ruolo ruolo;
 

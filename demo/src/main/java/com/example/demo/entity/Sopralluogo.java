@@ -52,15 +52,15 @@ public class Sopralluogo {
     @Column(name = "foto", length = 16777213)//columnDefinition = "MEDIUMBLOB")
     private byte[] foto;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idclienti", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idtipologia_intervento", nullable = false)
     private TipologiaIntervento tipologia_Intervento;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idcategorie_intervento_specifiche", nullable = false)
     private CategoriaInterventoSpecifico categoria_intervento_specifica;
 

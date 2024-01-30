@@ -68,11 +68,11 @@ public class MarcaTempo {
     @Column(name = "imagedata", length = 16777213)//columnDefinition = "MEDIUMBLOB")
     private byte[] imageData;
     
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)//, optional = true)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)//, optional = true)
     @JoinColumn(name = "idviaggio", nullable = false)
     private Viaggio viaggio;
     
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser", nullable = false) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
     private Utente utente;
 }

@@ -42,7 +42,7 @@ public class CartaDiCredito {
     @Column(name = "descrizione")
     private String descrizione;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idtipologie_carte")
     private TipologiaCarta tipologia_carta;
 

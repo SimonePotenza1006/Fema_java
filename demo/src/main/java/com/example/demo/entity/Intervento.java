@@ -69,31 +69,31 @@ public class Intervento {
     @Column(name = "firma_cliente", length = 16777213)
     private byte[] firma_cliente;
 
-    @ManyToOne//(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idUser", nullable = false)
     private Utente utente;
 
-    @ManyToOne//(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idCliente", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne//(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idVeicolo", nullable = false)
     private Veicolo veicolo;
 
-    @ManyToOne//(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idFK_idTipologia_intervento", nullable = false)
     private TipologiaIntervento tipologia_intervento;
 
-    @ManyToOne//(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idCategoria_specifica", nullable = false)
     private CategoriaInterventoSpecifico categoria_InterventoSpecifico;
 
-    @ManyToOne//(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idtipologia_pagamento", nullable = false)
     private TipologiaPagamento tipologia_pagamento;
 
-    @ManyToOne//(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_iddestinazione", nullable = false)
     private Destinazione destinazione;
 

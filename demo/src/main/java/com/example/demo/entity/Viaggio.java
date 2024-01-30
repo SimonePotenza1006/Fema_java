@@ -47,7 +47,7 @@ public class Viaggio {
     @Column(name = "data_partenza", nullable = false)
     private Date data_partenza;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idattivita")
     private Attivita attivita;
 

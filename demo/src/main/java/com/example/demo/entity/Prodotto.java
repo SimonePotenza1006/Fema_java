@@ -63,11 +63,11 @@ public class Prodotto {
     @Column(name = "ultimo_costo")
     private float ultimo_costo;
 
-    @ManyToOne (cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne (cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idcategoria_prodotto")
     private CategoriaProdotto categoriaProdotto;
 
-    @ManyToOne (cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne (cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idfornitori")
     private Fornitore fornitore;
 

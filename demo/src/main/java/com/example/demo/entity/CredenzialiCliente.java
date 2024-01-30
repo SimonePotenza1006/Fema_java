@@ -44,11 +44,11 @@ public class CredenzialiCliente {
     @Column(name = "descrizione")
     private String descrizione;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idclienti")
     private Cliente cliente;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
 }
