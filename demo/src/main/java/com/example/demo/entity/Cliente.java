@@ -97,5 +97,6 @@ public class Cliente {
     inverseJoinColumns = {
         @JoinColumn(name = "FK_IDTipologia_intervento")
     })
-    private List<Prodotto> prodotti;
+    private List<TipologiaIntervento> tipologie_interventi;
+
 }

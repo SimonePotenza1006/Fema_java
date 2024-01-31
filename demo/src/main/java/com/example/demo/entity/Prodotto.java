@@ -78,7 +78,7 @@ public class Prodotto {
     inverseJoinColumns = {
         @JoinColumn(name = "FK_idddt")
     })
-    private List<Utente> utenti;
+    private List<Ddt> lista_ddt;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_preventivo_prodotti", joinColumns = { 

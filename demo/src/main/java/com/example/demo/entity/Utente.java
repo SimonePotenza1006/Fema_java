@@ -85,6 +85,21 @@ public class Utente {
     })
     private List<Viaggio> viaggi;
 
-
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "relazione_intervento_utenti", joinColumns = {
+        @JoinColumn(name = "FK_idutente")
+    },
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idintervento")
+    })
+    private List<Intervento> interventi;
     
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "relazione_user_tipologia_intervento", joinColumns = {
+        @JoinColumn(name = "FK_idutente")
+    },
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_idTipologia")
+    })
+    private List<TipologiaIntervento> tipologie;
 }

@@ -47,4 +47,13 @@ public class Attrezzatura {
         @JoinColumn(name = "FK_idviaggio")
     })
     private List<Viaggio> viaggi;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_attrezzatura_utenti", joinColumns = {
+        @JoinColumn(name = "FK_IDAttrezzatura")
+    },
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_IDUtente")
+    })
+    private List<Utente> utenti;
 }
