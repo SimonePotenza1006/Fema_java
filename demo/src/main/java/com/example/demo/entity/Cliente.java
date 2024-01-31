@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -88,4 +89,13 @@ public class Cliente {
 
     @Column(name = "note")
     private String nome;
+
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "relazione_clienti_tipologia_intervento", joinColumns = { 
+        @JoinColumn(name = "FK_IDCliente")
+    }, 
+    inverseJoinColumns = {
+        @JoinColumn(name = "FK_IDTipologia_intervento")
+    })
+    private List<Prodotto> prodotti;
 }

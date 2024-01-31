@@ -65,6 +65,9 @@ public class Intervento {
     @Column(name = "importo_intervento")
     private float importo_intervento;
 
+    @Column(name = "concluso")
+    private boolean concluso;
+
     @Lob
     @Column(name = "firma_cliente", length = 16777213)
     private byte[] firma_cliente;
