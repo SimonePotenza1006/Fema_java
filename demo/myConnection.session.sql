@@ -1,0 +1,1 @@
+SELECT * FROM carta_di_credito
