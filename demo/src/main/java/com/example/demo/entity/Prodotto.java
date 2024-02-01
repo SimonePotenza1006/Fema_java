@@ -46,7 +46,7 @@ public class Prodotto {
     private String descrizione;
 
     @Column(name = "giacenza")
-    private String giacenza;
+    private int giacenza;
 
     @Column(name = "unita_misura", nullable = false)
     private String unita_misura;
