@@ -16,6 +16,6 @@ import com.example.demo.entity.Utente;
 @Repository
 public interface OrdinePerInterventoRepository extends JpaRepository<OrdinePerIntervento, Integer>{
     Optional<OrdinePerIntervento> findById(int id);
-    List<Optional<Utente>> findByUtente(Utente utente);
-    List<Optional<Intervento>> findByIntervento(Intervento intervento);
+    List<Optional<OrdinePerIntervento>> findByUtente(Utente utente);
+    List<Optional<OrdinePerIntervento>> findByIntervento(Intervento intervento);
 }

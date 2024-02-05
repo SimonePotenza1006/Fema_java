@@ -67,7 +67,7 @@ public class ProdottoController {
         return new ResponseEntity<>(prodotti, HttpStatus.OK);
     }
 
-    @PutMapping//("{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Prodotto> updateProdotto(@RequestBody Prodotto prodotto) throws IOException{
     	Prodotto updatedProdotto = prodottoService.updateProdotto(prodotto);
         return new ResponseEntity<>(updatedProdotto, HttpStatus.OK);

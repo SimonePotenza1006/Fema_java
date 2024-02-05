@@ -45,12 +45,14 @@ public class ProdottoServiceImpl implements ProdottoService{
 
     @Override
     public List<Optional<Prodotto>> getProdottoByFornitore(Fornitore fornitore){
-        return prodottoRepository.findByFornitore(fornitore);
+        List<Optional<Prodotto>> optionalProdottoList = prodottoRepository.findByFornitore(fornitore);
+        return optionalProdottoList;
     }
 
     @Override
     public List<Optional<Prodotto>> getProdottoByCategoria(CategoriaProdotto categoria){
-        return prodottoRepository.findByCategoriaProdotto(categoria);
+        List<Optional<Prodotto>> prodotti = prodottoRepository.findByCategoriaProdotto(categoria);
+        return prodotti;
     }
 
     @Override 

@@ -10,5 +10,5 @@ import com.example.demo.entity.Ruolo;
 
 @Repository
 public interface FornitoreRepository extends JpaRepository<Fornitore, Integer>{
-    Optional<Fornitore> findById(int id);
+    Optional<Fornitore> findById(int fornitoreId);
 }
