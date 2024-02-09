@@ -20,13 +20,17 @@ import com.example.demo.service.TipologiaInterventoService;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/categorieIntervento")
 public class CategoriaInterventoSpecificoController {
     
+    @Autowired
     private CategoriaInterventoSpecificoService categoriaService;
+
+    @Autowired
     private TipologiaInterventoService tipologiaInterventoService;
 
     @PostMapping
@@ -48,11 +52,16 @@ public class CategoriaInterventoSpecificoController {
     }
 
     @GetMapping("/tipologia/{id}")
-    public ResponseEntity<List<Optional<CategoriaInterventoSpecifico>>> getCategoriaSpecificaByTipologia(@PathVariable("id") int tipologiaId){
-    	TipologiaIntervento tipologia = tipologiaInterventoService.getTipologiaInterventoById(tipologiaId);
-        List<Optional<CategoriaInterventoSpecifico>> categorie = categoriaService.getCategoriaSpecificaByTipologia(tipologia);
-        return new ResponseEntity<>(categorie, HttpStatus.OK);
-    }
+    public ResponseEntity<List<CategoriaInterventoSpecifico>> getCategoriaSpecificaByTipologia(@PathVariable("id") int tipologiaId){
+    TipologiaIntervento tipologia = tipologiaInterventoService.getTipologiaInterventoById(tipologiaId);
+    List<CategoriaInterventoSpecifico> categorie = categoriaService.getCategoriaSpecificaByTipologia(tipologia)
+                                    .stream()
+                                    .filter(Optional::isPresent)
+                                    .map(Optional::get)
+                                    .collect(Collectors.toList());
+    return new ResponseEntity<>(categorie, HttpStatus.OK);
+}
+
 
     @PutMapping//("{id}")
     public ResponseEntity<CategoriaInterventoSpecifico> updateCategoriaInterventoSpecifico(@RequestBody CategoriaInterventoSpecifico categoria) throws IOException{

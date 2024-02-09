@@ -41,8 +41,4 @@ public class CategoriaInterventoSpecifico {
     @JoinColumn(referencedColumnName = "idtipologia_intervento")
     private TipologiaIntervento tipologiaIntervento;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idlistino")
-    private CategoriaPrezzoListino prezzoListino;
-
 }

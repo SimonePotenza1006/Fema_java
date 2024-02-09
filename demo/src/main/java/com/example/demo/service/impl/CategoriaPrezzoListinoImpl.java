@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import lombok.AllArgsConstructor;
 
 import com.example.demo.entity.Attivita;
+import com.example.demo.entity.CategoriaInterventoSpecifico;
 import com.example.demo.entity.CategoriaPrezzoListino;
 import com.example.demo.repository.CategoriaPrezzoListinoRepository;
 import com.example.demo.service.CategoriaPrezzoListinoService;
@@ -40,6 +41,11 @@ public class CategoriaPrezzoListinoImpl implements CategoriaPrezzoListinoService
     @Override
     public List<CategoriaPrezzoListino> getAllCategoriePrezzoListini() {
         return categoriePrezzoListinoRepository.findAll();
+    }
+
+    @Override
+    public List<Optional<CategoriaPrezzoListino>> getPrezzoListinoByCategoria(CategoriaInterventoSpecifico categoriaInterventoSpecifico){
+        return categoriePrezzoListinoRepository.findByCategoriaInterventoSpecifico(categoriaInterventoSpecifico);
     }
 
     @Override

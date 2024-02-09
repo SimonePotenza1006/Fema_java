@@ -67,6 +67,10 @@ public class Utente {
     @JoinColumn(referencedColumnName = "iduser_role")
     private Ruolo ruolo;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "idtipologia_intervento")
+    private TipologiaIntervento tipologiaIntervento;
+
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_cantiere_utente", joinColumns = { 
         @JoinColumn(name = "FK_idutente")
@@ -94,12 +98,12 @@ public class Utente {
     })
     private List<Intervento> interventi;
     
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(name = "relazione_user_tipologia_intervento", joinColumns = {
-        @JoinColumn(name = "FK_idutente")
-    },
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idTipologia")
-    })
-    private List<TipologiaIntervento> tipologie;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    // @JoinTable(name = "relazione_user_tipologia_intervento", joinColumns = {
+    //     @JoinColumn(name = "FK_idutente")
+    // },
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_idTipologia")
+    // })
+    // private List<TipologiaIntervento> tipologie;
 }

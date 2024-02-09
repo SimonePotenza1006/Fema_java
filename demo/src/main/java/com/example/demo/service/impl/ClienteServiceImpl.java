@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
+@AllArgsConstructor
 public class ClienteServiceImpl implements ClienteService{
     
     private ClienteRepository clienteRepository;

@@ -88,7 +88,7 @@ public class Cliente {
     private String pec;
 
     @Column(name = "note")
-    private String nome;
+    private String note;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_clienti_tipologia_intervento", joinColumns = { 

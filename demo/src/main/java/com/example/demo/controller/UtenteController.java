@@ -26,11 +26,13 @@ public class UtenteController {
 
     @PostMapping("/login")
     public ApiResponse login(@RequestBody Utente loginDto){
+        System.out.println("PROVA Login!");
         return utenteService.login(loginDto);
     }
 
     @PostMapping("/ulogin")
     public Utente ulogin(@RequestBody Utente loginDto){
+        System.out.println("PROVA ulogin!");
         return utenteService.ulogin(loginDto);
     }
 
@@ -43,7 +45,7 @@ public class UtenteController {
     @GetMapping("{id}")
     public ResponseEntity<Utente> getUtenteById(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);
-        System.out.println("Helloooo");
+        System.out.println("hlhh");
         return new ResponseEntity<>(utente, HttpStatus.OK);
     }
 

@@ -39,14 +39,14 @@ public class TipologiaIntervento {
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_clienti_tipologia_intervento", joinColumns = { 
-        @JoinColumn(name = "FK_IDTipologia_intervento")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_IDCliente")
-    })
-    private List<Cliente> clienti;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    // @JoinTable(name = "relazione_clienti_tipologia_intervento", joinColumns = { 
+    //     @JoinColumn(name = "FK_IDTipologia_intervento")
+    // }, 
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_IDCliente")
+    // })
+    // private List<Cliente> clienti;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "relazione_user_tipologia_intervento", joinColumns = {
@@ -55,7 +55,7 @@ public class TipologiaIntervento {
     inverseJoinColumns = {
         @JoinColumn(name = "FK_idutente")
     })
-    private List<Utente> utenti_competenti;
+    private List<Utente> tecnici;
 
     
 }

@@ -21,6 +21,7 @@ import com.example.demo.service.ClienteService;
 @RequestMapping(value = "/api/cliente")
 public class ClienteController {
     
+    @Autowired
     private ClienteService clienteService;
 
     @PostMapping
@@ -31,6 +32,7 @@ public class ClienteController {
 
     @GetMapping("{id}")
     public ResponseEntity<Cliente> getClienteById(@PathVariable("id") int clienteId){
+        System.out.println("Prova");
     	Cliente cliente = clienteService.getClienteById(clienteId);
         return new ResponseEntity<>(cliente, HttpStatus.OK);
     }
@@ -42,7 +44,8 @@ public class ClienteController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Cliente> updateRuolo(@RequestBody Cliente cliente) throws IOException{
+    public ResponseEntity<Cliente> updateCliente(@RequestBody Cliente cliente) throws IOException{
+        System.out.println("AOOOOOOOOOOOOO");
     	Cliente updatedCliente = clienteService.updateCliente(cliente);
         return new ResponseEntity<>(updatedCliente, HttpStatus.OK);
     }

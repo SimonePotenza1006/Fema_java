@@ -14,12 +14,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.service.CategoriaInterventoSpecificoService;
 
-public class CategoriaInterventoSpecificoImpl implements CategoriaInterventoSpecificoService {
+
+@Service
+public class CategoriaInterventoSpecificoServiceImpl implements CategoriaInterventoSpecificoService {
     
+    @Autowired
     private CategoriaInterventoSpecificoRepository categoriaRepository;
+
+    @Autowired
     private TipologiaInterventoRepository tipologiaRepository;
 
     @Override
@@ -39,8 +48,11 @@ public class CategoriaInterventoSpecificoImpl implements CategoriaInterventoSpec
     }
 
     @Override
-    public List<Optional<CategoriaInterventoSpecifico>> getCategoriaSpecificaByTipologia(TipologiaIntervento tipologiaIntervento) {
-        return categoriaRepository.findByTipologiaIntervento(tipologiaIntervento);
+   public List<Optional<CategoriaInterventoSpecifico>> getCategoriaSpecificaByTipologia(TipologiaIntervento tipologiaIntervento) {
+    return categoriaRepository.findByTipologiaIntervento(tipologiaIntervento)
+                               .stream()
+                               .filter(Objects::nonNull) // Rimuovi eventuali elementi null
+                               .collect(Collectors.toList());
     }
 
     @Override

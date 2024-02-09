@@ -42,6 +42,10 @@ public class CategoriaPrezzoListino {
     @Column(name = "prezzo", nullable = false)
     private float prezzo;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "idcategorie_intervento_specifiche", nullable = false)
+    private CategoriaInterventoSpecifico categoriaInterventoSpecifico;
+
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_preventivi_listini", joinColumns = { 
         @JoinColumn(name = "FK_idlistino")

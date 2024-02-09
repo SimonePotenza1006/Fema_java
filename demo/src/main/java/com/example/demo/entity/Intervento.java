@@ -87,8 +87,8 @@ public class Intervento {
     private Veicolo veicolo;
 
     @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_idFK_idTipologia_intervento", nullable = false)
-    private TipologiaIntervento tipologia_intervento;
+    @JoinColumn(name = "FK_idTipologia_intervento", nullable = false)
+    private TipologiaIntervento tipologia;
 
     @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idCategoria_specifica", nullable = false)
