@@ -46,12 +46,12 @@ public class CategoriaPrezzoListino {
     @JoinColumn(referencedColumnName = "idcategorie_intervento_specifiche", nullable = false)
     private CategoriaInterventoSpecifico categoriaInterventoSpecifico;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_preventivi_listini", joinColumns = { 
-        @JoinColumn(name = "FK_idlistino")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idpreventivo")
-    })
-    private List<Preventivo> preventivi;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    // @JoinTable(name = "relazione_preventivi_listini", joinColumns = { 
+    //     @JoinColumn(name = "FK_idlistino")
+    // }, 
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_idpreventivo")
+    // })
+    // private List<Preventivo> preventivi;
 }

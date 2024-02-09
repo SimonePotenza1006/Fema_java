@@ -9,7 +9,7 @@ import com.example.demo.repository.CategoriaPrezzoListinoRepository;
 import com.example.demo.service.CategoriaPrezzoListinoService;
 
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -45,7 +47,10 @@ public class CategoriaPrezzoListinoImpl implements CategoriaPrezzoListinoService
 
     @Override
     public List<Optional<CategoriaPrezzoListino>> getPrezzoListinoByCategoria(CategoriaInterventoSpecifico categoriaInterventoSpecifico){
-        return categoriePrezzoListinoRepository.findByCategoriaInterventoSpecifico(categoriaInterventoSpecifico);
+        return categoriePrezzoListinoRepository.findByCategoriaInterventoSpecifico(categoriaInterventoSpecifico)
+                                                .stream()
+                                                .filter(Objects:: nonNull)
+                                                .collect(Collectors.toList());
     }
 
     @Override
