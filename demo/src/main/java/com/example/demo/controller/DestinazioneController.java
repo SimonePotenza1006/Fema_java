@@ -20,14 +20,17 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/destinazione")
 public class DestinazioneController {
     
-    private DestinazioneService destinazioneService;
-    private ClienteService clienteService;
+    private final DestinazioneService destinazioneService;
+
+    @Autowired
+    private final ClienteService clienteService;
 
     @PostMapping
     public ResponseEntity<Destinazione> createDestinazione(@RequestBody Destinazione destinazione){
@@ -48,14 +51,19 @@ public class DestinazioneController {
     }
 
     @GetMapping("/cliente/{id}")
-    public ResponseEntity<List<Optional<Destinazione>>> getDestinazioneByCliente(@PathVariable("id") int clienteId){
-    	Cliente cliente = clienteService.getClienteById(clienteId);
-        List<Optional<Destinazione>> destinazioni = destinazioneService.getDestinazioneByCliente(cliente);
-        return new ResponseEntity<>(destinazioni, HttpStatus.OK);
+    public ResponseEntity<List<Optional<Destinazione>>> getDestinazioneByCliente(@PathVariable("id") int clienteId) {
+        Cliente cliente = clienteService.getClienteById(clienteId);
+        if (cliente != null) {
+            List<Optional<Destinazione>> destinazioni = destinazioneService.getDestinazioneByCliente(cliente);
+            return new ResponseEntity<>(destinazioni, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PutMapping("{id}")
+    @PutMapping()
     public ResponseEntity<Destinazione> updateDestinazione(@RequestBody Destinazione destinazione) throws IOException{
+        System.out.println("Prova DESTINAZIONE");
         Destinazione updatedDestinazione = destinazioneService.updateDestinazione(destinazione);
         return new ResponseEntity<>(updatedDestinazione, HttpStatus.OK);
     }

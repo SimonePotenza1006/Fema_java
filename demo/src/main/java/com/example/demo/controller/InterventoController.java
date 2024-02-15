@@ -7,6 +7,7 @@ import com.example.demo.entity.Cliente;
 import com.example.demo.service.InterventoService;
 import com.example.demo.service.TipologiaInterventoService;
 import com.example.demo.service.UtenteService;
+import com.example.demo.service.impl.InterventoServiceImpl;
 import com.example.demo.service.ClienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,20 @@ import lombok.RequiredArgsConstructor;
 
 
 @RestController
-@RequiredArgsConstructor
-@RequestMapping(value = "/api/intevento")
+@AllArgsConstructor
+@RequestMapping(value = "/api/intervento")
 public class InterventoController {
 
-    private InterventoService interventoService;
+    @Autowired
+    private InterventoServiceImpl interventoService;
+
+    @Autowired
     private ClienteService clienteService;
+
+    @Autowired
     private UtenteService utenteService;
+
+    @Autowired
     private TipologiaInterventoService tipologiaInterventoService;
 
     @PostMapping
@@ -41,8 +49,15 @@ public class InterventoController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Intervento> getInterventoById(@PathVariable("id") int interventoId){
-        Intervento intervento = interventoService.getInterventoById(interventoId);
+    public ResponseEntity<Intervento> getInterventoById(@PathVariable("id") int interventoId) {
+        int idvariable = interventoId;
+        System.out.println("Prova getInterventoById per ID: " + interventoId);
+        Intervento intervento = interventoService.getInterventoById(idvariable);
+        if (intervento == null) {
+            System.out.println("Intervento non trovato con ID: " + interventoId);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        System.out.println("Intervento non trovato con ID: " + interventoId);
         return new ResponseEntity<>(intervento, HttpStatus.OK);
     }
 

@@ -44,10 +44,11 @@ public class DestinazioneServiceImpl implements DestinazioneService{
     }
 
     @Override
-    public List<Optional<Destinazione>> getDestinazioneByCliente(Cliente cliente){
-        return destinazioneRepository.findByCliente(cliente);
+    public List<Optional<Destinazione>> getDestinazioneByCliente(Cliente cliente) {
+        return destinazioneRepository.findDestinazioneByCliente(cliente);
     }
 
+    @SuppressWarnings("null")
     @Override
     public Destinazione updateDestinazione(Destinazione destinazione) {
         return destinazioneRepository.save(destinazione);

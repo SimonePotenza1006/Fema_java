@@ -57,5 +57,8 @@ public class TipologiaIntervento {
     })
     private List<Utente> tecnici;
 
+    public TipologiaIntervento(int idTipologiaIntervento) {
+        this.id = idTipologiaIntervento;
+    }
     
 }

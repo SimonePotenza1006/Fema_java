@@ -1,25 +1,22 @@
 package com.example.demo.service.impl;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Cliente;
-import com.example.demo.entity.Ruolo;
-import com.example.demo.service.ClienteService;
 import com.example.demo.repository.ClienteRepository;
+import com.example.demo.service.ClienteService;
 
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ClienteServiceImpl implements ClienteService{
+public class ClienteServiceImpl implements ClienteService {
     
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
 
     @Override
     public Cliente createCliente(Cliente cliente) {
@@ -29,7 +26,7 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public Cliente getClienteById(int clienteId) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(clienteId);
-        return optionalCliente.get();
+        return optionalCliente.orElse(null); // Gestione dell'opzionale vuoto
     }
 
     @Override
@@ -44,6 +41,6 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public void deleteCliente(int clienteId) {
-    	clienteRepository.deleteById(clienteId);
+        clienteRepository.deleteById(clienteId);
     }
 }

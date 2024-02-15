@@ -64,8 +64,8 @@ public class Intervento {
     @Column(name = "foto", length = 16777213)
     private byte[] foto;
 
-    @Column(name = "importo_intervento")
-    private float importo_intervento;
+    @Column(name = "importo_intervento", nullable = true)
+    private Double importo_intervento;
 
     @Column(name = "concluso")
     private boolean concluso;
@@ -75,7 +75,7 @@ public class Intervento {
     private byte[] firma_cliente;
 
     @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_idUser", nullable = false)
+    @JoinColumn(name = "FK_idUser") //, nullable = false)
     private Utente utente;
 
     @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
@@ -94,7 +94,7 @@ public class Intervento {
     @JoinColumn(name = "FK_idCategoria_specifica", nullable = false)
     private CategoriaInterventoSpecifico categoria_InterventoSpecifico;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
+    @ManyToOne //(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_idtipologia_pagamento", nullable = false)
     private TipologiaPagamento tipologia_pagamento;
 

@@ -12,5 +12,5 @@ import com.example.demo.entity.Cliente;
 @Repository
 public interface DestinazioneRepository extends JpaRepository<Destinazione, Integer> {
     Optional<Destinazione> findById(int id);
-    List<Optional<Destinazione>> findByCliente(Cliente cliente);
+    List<Optional<Destinazione>> findDestinazioneByCliente(Cliente cliente);
 }

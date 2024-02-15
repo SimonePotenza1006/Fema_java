@@ -37,4 +37,9 @@ public class TipologiaPagamento {
 
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
+
+
+    public TipologiaPagamento(int id) {
+        this.id = id;
+    }
 }

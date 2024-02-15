@@ -14,7 +14,7 @@ import com.example.demo.entity.Cliente;
 
 @Repository
 public interface InterventoRepository extends JpaRepository<Intervento, Integer>{
-    Optional<Intervento> findById(int id);
+  
     List<Optional<Intervento>> findByUtente(Utente utente);
     List<Optional<Intervento>> findByCliente(Cliente cliente);
     List<Optional<Intervento>> findByTipologia(TipologiaIntervento tipologiaIntervento);

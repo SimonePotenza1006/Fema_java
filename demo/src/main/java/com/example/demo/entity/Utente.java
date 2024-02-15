@@ -1,16 +1,13 @@
 package com.example.demo.entity;
 
-import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,8 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,11 +24,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "utente")
 public class Utente {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "iduser", nullable = false)
@@ -63,7 +57,7 @@ public class Utente {
     @Column(name = "iban", nullable = false)
     private String iban;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(referencedColumnName = "iduser_role")
     private Ruolo ruolo;
 
@@ -97,13 +91,39 @@ public class Utente {
         @JoinColumn(name = "FK_idintervento")
     })
     private List<Intervento> interventi;
-    
-    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
-    // @JoinTable(name = "relazione_user_tipologia_intervento", joinColumns = {
-    //     @JoinColumn(name = "FK_idutente")
-    // },
-    // inverseJoinColumns = {
-    //     @JoinColumn(name = "FK_idTipologia")
-    // })
-    // private List<TipologiaIntervento> tipologie;
+
+    // Costruttore con parametri annotato con @JsonCreator
+    @JsonCreator
+public Utente(
+        @JsonProperty("id") int id,
+        @JsonProperty("attivo") Boolean attivo,
+        @JsonProperty("nome") String nome,
+        @JsonProperty("cognome") String cognome,
+        @JsonProperty("email") String email,
+        @JsonProperty("password") String password,
+        @JsonProperty("cellulare") String cellulare,
+        @JsonProperty("codice_fiscale") String codice_fiscale,
+        @JsonProperty("iban") String iban,
+        @JsonProperty("ruolo") int idRuolo, // Accetta solo l'ID del ruolo
+        @JsonProperty("tipologiaIntervento") int idTipologiaIntervento, // Accetta solo l'ID della tipologia di intervento
+        @JsonProperty("cantieri") List<Cantiere> cantieri,
+        @JsonProperty("viaggi") List<Viaggio> viaggi,
+        @JsonProperty("interventi") List<Intervento> interventi
+) {
+    this.id = id;
+    this.attivo = attivo;
+    this.nome = nome;
+    this.cognome = cognome;
+    this.email = email;
+    this.password = password;
+    this.cellulare = cellulare;
+    this.codice_fiscale = codice_fiscale;
+    this.iban = iban;
+    this.ruolo = new Ruolo(idRuolo); // Carica il ruolo dal database utilizzando l'ID
+    this.tipologiaIntervento = new TipologiaIntervento(idTipologiaIntervento); // Carica la tipologia di intervento dal database utilizzando l'ID
+    this.cantieri = cantieri;
+    this.viaggi = viaggi;
+    this.interventi = interventi;
+}
+
 }

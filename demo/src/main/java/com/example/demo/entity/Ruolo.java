@@ -37,4 +37,8 @@ public class Ruolo {
 
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
+
+    public Ruolo(int id) {
+        this.id = id;
+    }
 }
