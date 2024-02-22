@@ -63,67 +63,69 @@ public class Utente {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(referencedColumnName = "idtipologia_intervento")
-    private TipologiaIntervento tipologiaIntervento;
+    private TipologiaIntervento tipologia_intervento;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_cantiere_utente", joinColumns = { 
-        @JoinColumn(name = "FK_idutente")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idcantiere")
-    })
-    private List<Cantiere> cantieri;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    // @JoinTable(name = "relazione_cantiere_utente", joinColumns = { 
+    //     @JoinColumn(name = "FK_idutente")
+    // }, 
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_idcantiere")
+    // })
+    // private List<Cantiere> cantieri;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_viaggio_user", joinColumns = { 
-        @JoinColumn(name = "FK_IdUser")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_IdViaggio")
-    })
-    private List<Viaggio> viaggi;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    // @JoinTable(name = "relazione_viaggio_user", joinColumns = { 
+    //     @JoinColumn(name = "FK_IdUser")
+    // }, 
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_IdViaggio")
+    // })
+    // private List<Viaggio> viaggi;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(name = "relazione_intervento_utenti", joinColumns = {
-        @JoinColumn(name = "FK_idutente")
-    },
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idintervento")
-    })
-    private List<Intervento> interventi;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    // @JoinTable(name = "relazione_intervento_utenti", joinColumns = {
+    //     @JoinColumn(name = "FK_idutente")
+    // },
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_idintervento")
+    // })
+    // private List<Intervento> interventi;
 
-    // Costruttore con parametri annotato con @JsonCreator
-    @JsonCreator
-public Utente(
-        @JsonProperty("id") int id,
-        @JsonProperty("attivo") Boolean attivo,
-        @JsonProperty("nome") String nome,
-        @JsonProperty("cognome") String cognome,
-        @JsonProperty("email") String email,
-        @JsonProperty("password") String password,
-        @JsonProperty("cellulare") String cellulare,
-        @JsonProperty("codice_fiscale") String codice_fiscale,
-        @JsonProperty("iban") String iban,
-        @JsonProperty("ruolo") int idRuolo, // Accetta solo l'ID del ruolo
-        @JsonProperty("tipologiaIntervento") int idTipologiaIntervento, // Accetta solo l'ID della tipologia di intervento
-        @JsonProperty("cantieri") List<Cantiere> cantieri,
-        @JsonProperty("viaggi") List<Viaggio> viaggi,
-        @JsonProperty("interventi") List<Intervento> interventi
-) {
-    this.id = id;
-    this.attivo = attivo;
-    this.nome = nome;
-    this.cognome = cognome;
-    this.email = email;
-    this.password = password;
-    this.cellulare = cellulare;
-    this.codice_fiscale = codice_fiscale;
-    this.iban = iban;
-    this.ruolo = new Ruolo(idRuolo); // Carica il ruolo dal database utilizzando l'ID
-    this.tipologiaIntervento = new TipologiaIntervento(idTipologiaIntervento); // Carica la tipologia di intervento dal database utilizzando l'ID
-    this.cantieri = cantieri;
-    this.viaggi = viaggi;
-    this.interventi = interventi;
-}
+    // Costruttore con parametro int per l'ID dell'utente
+//     @JsonCreator
+//     public Utente(
+//         @JsonProperty("id") String id,
+//         @JsonProperty("attivo") Boolean attivo,
+//         @JsonProperty("nome") String nome,
+//         @JsonProperty("cognome") String cognome,
+//         @JsonProperty("email") String email,
+//         @JsonProperty("password") String password,
+//         @JsonProperty("cellulare") String cellulare,
+//         @JsonProperty("codice_fiscale") String codice_fiscale,
+//         @JsonProperty("iban") String iban,
+//         @JsonProperty("ruolo") int idRuolo, // Accetta solo l'ID del ruolo
+//         @JsonProperty("tipologiaIntervento") int idTipologiaIntervento, // Accetta solo l'ID della tipologia di intervento
+//         @JsonProperty("cantieri") List<Cantiere> cantieri,
+//         @JsonProperty("viaggi") List<Viaggio> viaggi
+//         //@JsonProperty("interventi") List<Intervento> interventi
+//     ) {
+//     this.id = Integer.parseInt(id);
+//     this.attivo = attivo;
+//     this.nome = nome;
+//     this.cognome = cognome;
+//     this.email = email;
+//     this.password = password;
+//     this.cellulare = cellulare;
+//     this.codice_fiscale = codice_fiscale;
+//     this.iban = iban;
+//     this.ruolo = new Ruolo(idRuolo); // Carica il ruolo dal database utilizzando l'ID
+//     this.tipologiaIntervento = new TipologiaIntervento(idTipologiaIntervento); // Carica la tipologia di intervento dal database utilizzando l'ID
+//     this.cantieri = cantieri;
+//     this.viaggi = viaggi;
+//     //this.interventi = interventi;
+// }
+
+    
 
 }

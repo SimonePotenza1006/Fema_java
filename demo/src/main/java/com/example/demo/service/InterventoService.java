@@ -22,6 +22,8 @@ public interface InterventoService {
 
     List<Optional<Intervento>> getInterventoByTipologia(TipologiaIntervento tipologiaIntervento);
 
+    List<Intervento> getAllInterventiOrderdByDesc();
+
     Intervento updateIntervento(Intervento intervento);
 
     void deleteIntervento(int interventoId);

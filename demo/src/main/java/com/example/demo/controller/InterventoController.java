@@ -44,6 +44,7 @@ public class InterventoController {
 
     @PostMapping
     public ResponseEntity<Intervento> createIntervento(@RequestBody Intervento intervento){
+        System.out.println("PROVA");
         Intervento savedIntervento = interventoService.createIntervento(intervento);
         return new ResponseEntity<>(savedIntervento, HttpStatus.CREATED);
     }
@@ -67,8 +68,15 @@ public class InterventoController {
         return new ResponseEntity<>(interventi, HttpStatus.OK);
     }
 
+    @GetMapping("ordered")
+    public ResponseEntity<List<Intervento>> getAllInterventiOrderByDesc(){
+        List<Intervento> interventi = interventoService.getAllInterventiOrderdByDesc();
+        return new ResponseEntity<>(interventi, HttpStatus.OK);
+    }
+
     @GetMapping("/cliente/{id}")
     public ResponseEntity<List<Optional<Intervento>>> getInterventiByCliente(@PathVariable("id") int clienteId){
+    
         Cliente cliente = clienteService.getClienteById(clienteId);
         List<Optional<Intervento>> interventi = interventoService.getInterventoByCliente(cliente);
         return new ResponseEntity<>(interventi, HttpStatus.OK);
@@ -83,6 +91,7 @@ public class InterventoController {
 
     @GetMapping("/utente/{id}")
     public ResponseEntity<List<Optional<Intervento>>> getInterventoByUtente(@PathVariable("id") int utenteId){
+        System.out.println("PROVAAAAAAAAAAAAAAAA GET INTERVENTI BY UTENTE");
         Utente utente = utenteService.getUtenteById(utenteId);
         List<Optional<Intervento>> interventi = interventoService.getInterventoByUtente(utente);
         return new ResponseEntity<>(interventi, HttpStatus.OK);
@@ -90,6 +99,7 @@ public class InterventoController {
 
     @PutMapping("{id}")
     public ResponseEntity<Intervento> updateIntervento(@RequestBody Intervento intervento) throws IOException{
+        System.out.println("PROVAAAAAAAAAAAAAAAA");
         Intervento updatedIntervento = interventoService.updateIntervento(intervento);
         return new ResponseEntity<>(updatedIntervento, HttpStatus.OK);
     }
@@ -99,7 +109,4 @@ public class InterventoController {
         interventoService.deleteIntervento(interventoId);
         return new ResponseEntity<>("Intervento successfully deleted!", HttpStatus.OK);
     }
-
-
-
 }

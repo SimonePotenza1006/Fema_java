@@ -78,12 +78,15 @@ public class Ddt {
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
-        @JoinColumn(name = "FK_idddt")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idprodotto")
-    })
-    private List<Prodotto> prodotti;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    // @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
+    //     @JoinColumn(name = "FK_idddt")
+    // }, 
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_idprodotto")
+    // })
+    // private List<Prodotto> prodotti;
+
+    @OneToMany(mappedBy = "ddt")
+    private List<RelazioneDdtProdotto> relazioniProdotti;
 } 

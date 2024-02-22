@@ -71,14 +71,14 @@ public class Prodotto {
     @JoinColumn(referencedColumnName = "idfornitori")
     private Fornitore fornitore;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
-        @JoinColumn(name = "FK_idprodotto")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idddt")
-    })
-    private List<Ddt> lista_ddt;
+    // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    // @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
+    //     @JoinColumn(name = "FK_idprodotto")
+    // }, 
+    // inverseJoinColumns = {
+    //     @JoinColumn(name = "FK_idddt")
+    // })
+    // private List<Ddt> lista_ddt;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_preventivo_prodotti", joinColumns = { 
@@ -97,4 +97,7 @@ public class Prodotto {
         @JoinColumn(name = "FK_idsopralluogo")
     })
     private List<Sopralluogo> sopralluoghi;
+
+    @OneToMany(mappedBy = "prodotto")
+    private List<RelazioneDdtProdotto> relazioniDdt;
 }

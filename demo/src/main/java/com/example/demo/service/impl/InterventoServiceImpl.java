@@ -52,6 +52,12 @@ public class InterventoServiceImpl implements InterventoService{
     // }
 
     @Override
+    public List<Intervento> getAllInterventiOrderdByDesc(){
+        List<Intervento> optionalInterventi = interventoRepository.findAllByOrderByIdDesc();
+        return optionalInterventi;
+    }
+
+    @Override
     public Intervento getInterventoById(int interventoId) {
         Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId);
         return optionalIntervento.get();
