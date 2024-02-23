@@ -31,8 +31,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/api/prodotto")
 public class ProdottoController {
     
+    @Autowired
     private ProdottoService prodottoService;
+
+    @Autowired
     private FornitoreService fornitoreService;
+
+    @Autowired
     private CategoriaProdottoService categoriaProdottoService;
 
     @PostMapping

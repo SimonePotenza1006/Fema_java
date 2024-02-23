@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -100,4 +101,8 @@ public class Prodotto {
 
     @OneToMany(mappedBy = "prodotto")
     private List<RelazioneDdtProdotto> relazioniDdt;
+
+    @Lob
+    @Column(name = "qr_code", length = 16777213)
+    private byte[] qr_code;
 }
