@@ -7,6 +7,7 @@ import com.example.demo.entity.CategoriaDDT;
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Ddt;
 import com.example.demo.entity.Destinazione;
+import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Utente;
 
 public interface DdtService {
@@ -22,6 +23,8 @@ public interface DdtService {
     List<Optional<Ddt>> getDdtByCliente(Cliente cliente);
 
     List<Optional<Ddt>> getDdtByDestinazione(Destinazione destinazione);
+
+    Optional<Ddt> getDdtByIntervento(Intervento intervento);
 
     List<Optional<Ddt>> getDdtByUtente(Utente utente);
 

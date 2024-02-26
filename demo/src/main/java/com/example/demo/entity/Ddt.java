@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.hibernate.annotations.OnDelete;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -54,6 +55,9 @@ public class Ddt {
     @Column(name = "orario", nullable = false )
     private LocalDateTime orario;
 
+    @Column(name = "concluso", nullable = false, columnDefinition = "boolean default false")
+    private boolean concluso;
+
     @Lob
     @Column(name = "firma_user", length = 16777213)//columnDefinition = "MEDIUMBLOB")
     private byte[] firma_user;
@@ -78,6 +82,10 @@ public class Ddt {
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "idinterventi")
+    private Intervento intervento;
+
     // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     // @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
     //     @JoinColumn(name = "FK_idddt")
@@ -88,5 +96,5 @@ public class Ddt {
     // private List<Prodotto> prodotti;
 
     @OneToMany(mappedBy = "ddt")
-    private List<RelazioneDdtProdotto> relazioniProdotti;
+    private List<RelazioneDdtProdotto> relazioni_prodotti;
 } 

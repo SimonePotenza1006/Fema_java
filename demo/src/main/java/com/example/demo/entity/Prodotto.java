@@ -64,6 +64,9 @@ public class Prodotto {
     @Column(name = "ultimo_costo")
     private float ultimo_costo;
 
+    @Column(name = "iva")
+    private float iva;
+
     @ManyToOne (cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idcategoria_prodotto")
     private CategoriaProdotto categoriaProdotto;

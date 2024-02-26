@@ -3,12 +3,14 @@ package com.example.demo.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.CategoriaDDT;
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Ddt;
 import com.example.demo.entity.Destinazione;
+import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Utente;
 import com.example.demo.repository.DdtRepository;
 import com.example.demo.service.DdtService;
@@ -58,6 +60,12 @@ public class DdtServiceImpl implements DdtService{
     @Override
     public List<Optional<Ddt>> getDdtByUtente(Utente utente){
         List<Optional<Ddt>> optionalDdt = ddtRepository.findByUtente(utente);
+        return optionalDdt;
+    }
+
+    @Override
+    public Optional<Ddt> getDdtByIntervento(Intervento intervento) {
+        Optional<Ddt> optionalDdt = ddtRepository.findByIntervento(intervento);
         return optionalDdt;
     }
 

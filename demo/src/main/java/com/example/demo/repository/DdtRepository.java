@@ -7,6 +7,7 @@ import com.example.demo.entity.CategoriaDDT;
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Ddt;
 import com.example.demo.entity.Destinazione;
+import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Utente;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface DdtRepository extends JpaRepository<Ddt, Integer>{
     List<Optional<Ddt>> findByCliente(Cliente cliente);
     List<Optional<Ddt>> findByDestinazione(Destinazione destinazione);
     List<Optional<Ddt>> findByUtente(Utente utente);
+    Optional<Ddt> findByIntervento(Intervento intervento);
 }

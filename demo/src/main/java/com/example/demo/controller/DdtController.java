@@ -22,11 +22,13 @@ import com.example.demo.entity.CategoriaDDT;
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Ddt;
 import com.example.demo.entity.Destinazione;
+import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Utente;
 import com.example.demo.service.CategoriaDDTService;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.DdtService;
 import com.example.demo.service.DestinazioneService;
+import com.example.demo.service.InterventoService;
 import com.example.demo.service.UtenteService;
 import java.io.IOException;
 import lombok.AllArgsConstructor;
@@ -49,10 +51,14 @@ public class DdtController {
     private UtenteService utenteService;
 
     @Autowired
+    private InterventoService interventoService;
+
+    @Autowired
     private CategoriaDDTService categoriaDDTService;
 
     @PostMapping
     public ResponseEntity<Ddt> createDdt(@RequestBody Ddt ddt){
+        System.out.println("Prova createDDT");
         Ddt savedDdt = ddtService.createDdt(ddt);
         return new ResponseEntity<>(savedDdt, HttpStatus.CREATED);
     }
@@ -94,6 +100,13 @@ public class DdtController {
     public ResponseEntity<List<Optional<Ddt>>> getDdtByUtente(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);
         List<Optional<Ddt>> ddt = ddtService.getDdtByUtente(utente);
+        return new ResponseEntity<>(ddt, HttpStatus.OK);
+    }
+
+    @GetMapping("/intervento/{id}")
+    public ResponseEntity<Optional<Ddt>> getDdtByIntervento(@PathVariable("id") int interventoId){
+        Intervento intervento = interventoService.getInterventoById(interventoId);
+        Optional<Ddt> ddt = ddtService.getDdtByIntervento(intervento);
         return new ResponseEntity<>(ddt, HttpStatus.OK);
     }
 
