@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entity.Movimenti;
 import com.example.demo.service.MovimentiService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/movimenti")
 public class MovimentiController {
     
@@ -44,9 +47,10 @@ public class MovimentiController {
 
     // Endpoint per salvare un nuovo movimento
     @PostMapping
-    public ResponseEntity<Movimenti> saveMovimenti(@RequestBody Movimenti movimenti) {
-        Movimenti savedMovimenti = movimentiService.saveMovimenti(movimenti);
-        return new ResponseEntity<>(savedMovimenti, HttpStatus.CREATED);
+    public ResponseEntity<Movimenti> saveMovimenti(@RequestBody Movimenti movimento) {
+        System.out.println("PROVAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ");
+        Movimenti savedMovimento = movimentiService.saveMovimenti(movimento);
+        return new ResponseEntity<>(savedMovimento, HttpStatus.CREATED);
     }
 
     // Endpoint per eliminare un movimento per ID

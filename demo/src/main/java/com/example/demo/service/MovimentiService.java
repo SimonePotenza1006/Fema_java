@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Movimenti;
 import com.example.demo.repository.MovimentiRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class MovimentiService {
     
     @Autowired
