@@ -14,6 +14,4 @@ import com.example.demo.entity.CategoriaProdotto;
 @Repository
 public interface ProdottoRepository extends JpaRepository<Prodotto, Integer>{
     Optional<Prodotto> findById(int id);
-    List<Optional<Prodotto>> findByFornitore(Fornitore fornitore);
-    List<Optional<Prodotto>> findByCategoriaProdotto(CategoriaProdotto categoriaProdotto);
 }

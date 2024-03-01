@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import java.util.Date;
 import java.util.List;
 
+import org.w3c.dom.Text;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -32,48 +34,73 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "prodotto")
+@Table(name = "prodotto_final")
 public class Prodotto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idprodotti", nullable = false)
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "codice_barre")
-    private String codice_barre;
+    @Column(name = "cod")
+    private String codice_danea;
 
     @Column(name = "descrizione")
     private String descrizione;
 
-    @Column(name = "giacenza")
-    private int giacenza;
+    @Column(name = "tipologia")
+    private String tipologia;
 
-    @Column(name = "unita_misura", nullable = false)
+    @Column(name = "categoria")
+    private String categoria;
+
+    @Column(name = "sottocategoria")
+    private String sottocategoria;
+
+    @Column(name = "cod_udm")
     private String unita_misura;
 
-    @Column(name = "prezzo_fornitore")
-    private float prezzo_fornitore;
-
-    @Column(name = "codice_per_fornitore")
-    private String codice_per_fornitore;
-
-    @Column(name = "costo_medio")
-    private float costo_medio;
-
-    @Column(name = "ultimo_costo")
-    private float ultimo_costo;
-
     @Column(name = "iva")
-    private float iva;
+    private String iva;
 
-    @ManyToOne (cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idcategoria_prodotto")
-    private CategoriaProdotto categoriaProdotto;
+    @Column(name = "note")
+    private String note;
 
-    @ManyToOne (cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idfornitori")
-    private Fornitore fornitore;
+    @Column(name = "cod_barre")
+    private String cod_barre_danea;
+
+    @Column(name = "produttore")
+    private String produttore;
+
+    @Column(name = "cod_fornitore")
+    private String cod_fornitore;
+
+    @Column(name = "fornitore")
+    private String fornitore;
+
+    @Column(name = "cod_prod_forn")
+    private String cod_prod_forn;
+
+    @Column(name = "prezzo_forn")
+    private Double prezzo_fornitore;
+
+    @Column(name = "note_fornitura")
+    private String note_fornitura;
+
+    @Column(name = "qta_giacenza")
+    private Double qta_giacenza;
+
+    @Column(name = "qta_impegnata")
+    private Double qta_impegnata;
+
+    @Column(name = "ultimo_costo_acq")
+    private Double ultimo_costo_acquisto;
+
+    @Column(name = "prezzo_medio_vend")
+    private Double prezzo_medio_vendita;
+
+    @Column(name = "lotto_seriale")
+    private String lotto_seriale;
 
     // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     // @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
@@ -104,8 +131,4 @@ public class Prodotto {
 
     @OneToMany(mappedBy = "prodotto")
     private List<RelazioneDdtProdotto> relazioniDdt;
-
-    @Lob
-    @Column(name = "qr_code", length = 16777213)
-    private byte[] qr_code;
 }

@@ -17,10 +17,6 @@ public interface ProdottoService {
 
     List<Prodotto> getAllProdotti();
 
-    List<Optional<Prodotto>> getProdottoByFornitore(Fornitore fornitore);
-
-    List<Optional<Prodotto>> getProdottoByCategoria(CategoriaProdotto categoria);
-
     Prodotto updateProdotto(Prodotto prodotto);
 
     void deleteProdotto(int prodottoId);

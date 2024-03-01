@@ -58,20 +58,6 @@ public class ProdottoController {
         return new ResponseEntity<>(prodotti, HttpStatus.OK);
     }
 
-    @GetMapping("/categoriaProdotto/{id}")
-    public ResponseEntity<List<Optional<Prodotto>>> getProdottiByCategoria(@PathVariable("id") int categoriaId){
-    	CategoriaProdotto categoria = categoriaProdottoService.getCategoriaProdottoById(categoriaId);
-        List<Optional<Prodotto>> prodotti = prodottoService.getProdottoByCategoria(categoria);
-        return new ResponseEntity<>(prodotti, HttpStatus.OK);
-    }
-
-    @GetMapping("/fornitore/{id}")
-    public ResponseEntity<List<Optional<Prodotto>>> getProdottiByFornitore(@PathVariable("id") int fornitoreId){
-    	Fornitore fornitore = fornitoreService.getFornitoreById(fornitoreId);
-        List<Optional<Prodotto>> prodotti = prodottoService.getProdottoByFornitore(fornitore);
-        return new ResponseEntity<>(prodotti, HttpStatus.OK);
-    }
-
     @PutMapping("{id}")
     public ResponseEntity<Prodotto> updateProdotto(@RequestBody Prodotto prodotto) throws IOException{
     	Prodotto updatedProdotto = prodottoService.updateProdotto(prodotto);

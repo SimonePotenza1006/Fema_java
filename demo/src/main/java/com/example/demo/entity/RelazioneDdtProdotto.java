@@ -28,7 +28,7 @@ public class RelazioneDdtProdotto {
     private int id;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(referencedColumnName = "idprodotti")
+    @JoinColumn(referencedColumnName = "id")
     private Prodotto prodotto;
 
     @ManyToOne(cascade = CascadeType.MERGE)
