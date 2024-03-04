@@ -59,10 +59,23 @@ public class Preventivo {
     @JoinColumn(referencedColumnName = "idclienti", nullable = true) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
     private Cliente cliente;
 
-    
+    @Column(name = "accettato", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean accettato;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "iduser", nullable = false) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
+    @Column(name = "rifiutato", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean rifiutato;
+
+    @Column(name = "attesa", columnDefinition = "BOOLEAN DEFAULT true")
+    private Boolean attesa;
+
+    @Column(name = "consegnato", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean consegnato;
+
+    @Column(name = "provvigioni")
+    private Double provvigioni;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "iduser", nullable = false)
     private Utente utente;
 
     @ManyToOne(cascade = CascadeType.MERGE)
