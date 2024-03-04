@@ -47,7 +47,7 @@ public class ImageData {
     private String type;
 	
     @Lob
-    @Column(name = "imagedata", length = 16777213)//columnDefinition = "MEDIUMBLOB")
+    @Column(name = "imagedata", length = 16777213)
     private byte[] imageData;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = true)

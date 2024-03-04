@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 
+import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Spesa;
+import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.ImmagineRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.service.ImmagineService;
@@ -42,8 +44,11 @@ public class ImmagineController {
     @Autowired
     public InterventoRepository interventoRepository;
 
+	@Autowired
+	public AziendaRepository aziendaRepository;
+
     @PostMapping("/{id}") // Definisci l'ID come parametro di percorso
-	public ResponseEntity<?> uploadImage(@RequestParam("intervento") MultipartFile file, 
+	public ResponseEntity<?> uploadImageIntervento(@RequestParam("intervento") MultipartFile file, 
                                      @PathVariable("id") int interventoId) throws IOException {
 	    	
 	    	Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId);
@@ -52,6 +57,26 @@ public class ImmagineController {
 	        try {
 				System.out.println("Prova upload Immagine");
 	        	Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Interventi\\Intervento_"+optionalIntervento.get().getId()+"\\Foto"));
+    		    Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+    		    System.out.println("File is created!");
+    		  } catch (IOException e) {
+    		    System.err.println("Failed to create directory!" + e.getMessage());
+    		  }
+	        System.out.print(response);
+	        return ResponseEntity.status(HttpStatus.OK)
+	                .body(response);
+	    }
+
+		@PostMapping("/azienda/{id}") // Definisci l'ID come parametro di percorso
+		public ResponseEntity<?> uploadImageLogo(@RequestParam("azienda") MultipartFile file, 
+                                     @PathVariable("id") int aziendaId) throws IOException {
+	    	
+	    	Optional<Azienda> optionalAzienda = aziendaRepository.findById(aziendaId);
+	        String response = immagineService.uploadImage(file, aziendaId);
+	        
+	        try {
+				System.out.println("Prova upload Immagine");
+	        	Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Aziende\\Azienda_"+optionalAzienda.get().getId()+"\\Foto"));
     		    Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
     		    System.out.println("File is created!");
     		  } catch (IOException e) {

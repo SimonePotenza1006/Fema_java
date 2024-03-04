@@ -1,36 +1,34 @@
 package com.example.demo.entity;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "utente")
-public class Utente {
-
+@Builder
+@Table(name = "agente")
+public class Agente {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "iduser", nullable = false)
+    @Column(name = "id", nullable = false)
     private int id;
 
     @Column(name = "attivo", nullable = false)
@@ -57,12 +55,7 @@ public class Utente {
     @Column(name = "iban", nullable = false)
     private String iban;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(referencedColumnName = "iduser_role")
-    private Ruolo ruolo;
-
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(referencedColumnName = "idtipologia_intervento")
-    private TipologiaIntervento tipologia_intervento;
+    @Column(name = "categoria_provvigione", nullable = false)
+    private int categoria_provvigione;
 
 }
