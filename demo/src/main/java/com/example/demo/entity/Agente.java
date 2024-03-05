@@ -31,9 +31,6 @@ public class Agente {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "attivo", nullable = false)
-    private Boolean attivo;
-
     @Column(name = "nome", nullable = false)
     private String nome;
 
@@ -43,14 +40,14 @@ public class Agente {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "riferimento_aziendale", nullable = false)
+    private String riferimento_aziendale;
 
     @Column(name = "cellulare", nullable = false)
     private String cellulare;
 
-    @Column(name = "codice_fiscale", nullable = false)
-    private String codice_fiscale;
+    @Column(name = "luogo_di_lavoro", nullable = false)
+    private String luogo_di_lavoro;
 
     @Column(name = "iban", nullable = false)
     private String iban;

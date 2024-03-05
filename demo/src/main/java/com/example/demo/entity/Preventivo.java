@@ -45,12 +45,12 @@ public class Preventivo {
     @Column(name = "idpreventivi", nullable = false)
     private int id;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private Azienda azienda;
+
     @Column(name = "descrizione")
     private String descrizione;
-
-    @Lob
-    @Column(name = "foto", length = 16777213)//columnDefinition = "MEDIUMBLOB")
-    private byte[] foto;
 
     @Column(name = "importo")
     private float importo;
