@@ -42,7 +42,7 @@ public class Prodotto {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "cod")
+    @Column(name = "cod_danea")
     private String codice_danea;
 
     @Column(name = "descrizione")
@@ -57,7 +57,7 @@ public class Prodotto {
     @Column(name = "sottocategoria")
     private String sottocategoria;
 
-    @Column(name = "cod_udm")
+    @Column(name = "unita_misura")
     private String unita_misura;
 
     @Column(name = "iva")
@@ -93,11 +93,17 @@ public class Prodotto {
     @Column(name = "qta_impegnata")
     private Double qta_impegnata;
 
+    @Column(name = "costo_medio_acq")
+    private Double costo_medio_acquisto;
+
     @Column(name = "ultimo_costo_acq")
     private Double ultimo_costo_acquisto;
 
     @Column(name = "prezzo_medio_vend")
     private Double prezzo_medio_vendita;
+
+    @Column(name = "stato_magazzino")
+    private String stato_magazzino;
 
     @Column(name = "lotto_seriale")
     private String lotto_seriale;

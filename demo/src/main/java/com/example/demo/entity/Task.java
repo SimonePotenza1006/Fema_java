@@ -47,7 +47,7 @@ public class Task {
     private LocalDateTime data_creazione;
 
     @Column(name = "data_accordata")
-    private Date data_accordata;
+    private LocalDateTime data_accordata;
 
     @Column(name = "orario_inizio")
     private LocalDateTime orario_inizio;

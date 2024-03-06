@@ -44,7 +44,6 @@ public class InterventoController {
 
     @PostMapping
     public ResponseEntity<Intervento> createIntervento(@RequestBody Intervento intervento){
-        System.out.println("PROVA");
         Intervento savedIntervento = interventoService.createIntervento(intervento);
         return new ResponseEntity<>(savedIntervento, HttpStatus.CREATED);
     }
@@ -52,7 +51,6 @@ public class InterventoController {
     @GetMapping("{id}")
     public ResponseEntity<Intervento> getInterventoById(@PathVariable("id") int interventoId) {
         int idvariable = interventoId;
-        System.out.println("Prova getInterventoById per ID: " + interventoId);
         Intervento intervento = interventoService.getInterventoById(idvariable);
         if (intervento == null) {
             System.out.println("Intervento non trovato con ID: " + interventoId);
@@ -99,7 +97,6 @@ public class InterventoController {
 
     @PutMapping("{id}")
     public ResponseEntity<Intervento> updateIntervento(@RequestBody Intervento intervento) throws IOException{
-        System.out.println("PROVAAAAAAAAAAAAAAAA");
         Intervento updatedIntervento = interventoService.updateIntervento(intervento);
         return new ResponseEntity<>(updatedIntervento, HttpStatus.OK);
     }

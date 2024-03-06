@@ -83,15 +83,6 @@ public class Preventivo {
     private Agente agente;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_preventivi_listini", joinColumns = { 
-        @JoinColumn(name = "FK_idpreventivo")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idlistino")
-    })
-    private List<CategoriaPrezzoListino> listini;
-
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_preventivo_prodotti", joinColumns = { 
         @JoinColumn(name = "FK_idpreventivo")
     }, 
