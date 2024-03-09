@@ -117,14 +117,6 @@ public class Prodotto {
     // })
     // private List<Ddt> lista_ddt;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_preventivo_prodotti", joinColumns = { 
-        @JoinColumn(name = "FK_idprodotto")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idpreventivo")
-    })
-    private List<Preventivo> preventivi;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_prodotto_sopralluogo", joinColumns = { 

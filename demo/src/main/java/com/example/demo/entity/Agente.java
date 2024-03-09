@@ -31,28 +31,28 @@ public class Agente {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome")
     private String nome;
 
-    @Column(name = "cognome", nullable = false)
+    @Column(name = "cognome")
     private String cognome;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "riferimento_aziendale", nullable = false)
+    @Column(name = "riferimento_aziendale")
     private String riferimento_aziendale;
 
-    @Column(name = "cellulare", nullable = false)
+    @Column(name = "cellulare")
     private String cellulare;
 
-    @Column(name = "luogo_di_lavoro", nullable = false)
+    @Column(name = "luogo_di_lavoro")
     private String luogo_di_lavoro;
 
-    @Column(name = "iban", nullable = false)
+    @Column(name = "iban")
     private String iban;
 
-    @Column(name = "categoria_provvigione", nullable = false)
+    @Column(name = "categoria_provvigione")
     private int categoria_provvigione;
 
 }

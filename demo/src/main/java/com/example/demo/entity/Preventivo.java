@@ -97,15 +97,10 @@ public class Preventivo {
     @JoinColumn(referencedColumnName = "id")
     private Agente agente;
 
+    @Column(name = "data_accettazione")
+    private LocalDateTime data_accettazione;
+
     @Column(name = "data_consegna")
     private LocalDateTime data_consegna;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_preventivo_prodotti", joinColumns = { 
-        @JoinColumn(name = "FK_idpreventivo")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idprodotto")
-    })
-    private List<Prodotto> prodotti;
 }
