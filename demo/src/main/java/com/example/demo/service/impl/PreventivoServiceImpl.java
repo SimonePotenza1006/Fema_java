@@ -31,6 +31,12 @@ public class PreventivoServiceImpl implements PreventivoService{
     }
 
     @Override
+    public List<Optional<Preventivo>> getAllPreventiviOrderedByAgente(){
+        List<Optional<Preventivo>> optionalPreventivi = preventivoRepository.findAllByOrderByAgente();
+        return optionalPreventivi;
+    }
+
+    @Override
     public Preventivo getPreventivoById(int preventivoId) {
         Optional<Preventivo> optionalPreventivo = preventivoRepository.findById(preventivoId);
         return optionalPreventivo.get();

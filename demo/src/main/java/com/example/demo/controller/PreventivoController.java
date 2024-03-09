@@ -70,6 +70,12 @@ public class PreventivoController {
         return new ResponseEntity<>(preventivo, HttpStatus.OK);
     }
 
+    @GetMapping("orderedByAgente")
+    public ResponseEntity<List<Optional<Preventivo>>> getAllPreventiviOrderedByAgente(){
+        List<Optional<Preventivo>> preventivi = preventivoService.getAllPreventiviOrderedByAgente();
+        return new ResponseEntity<>(preventivi, HttpStatus.OK);
+    }
+
     @GetMapping("/utente/{id}")
     public ResponseEntity<List<Optional<Preventivo>>> getPreventivoByUtente(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);

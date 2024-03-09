@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PreventivoRepository extends JpaRepository<Preventivo, Integer> {
     List<Preventivo> findAllByOrderByIdDesc();
+    List<Optional<Preventivo>> findAllByOrderByAgente();
     List<Optional<Preventivo>> findByUtente(Utente utente);
     List<Optional<Preventivo>> findByAgente(Agente agente);
     List<Optional<Preventivo>>findByAzienda(Azienda azienda);

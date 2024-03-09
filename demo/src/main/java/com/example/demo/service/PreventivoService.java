@@ -22,6 +22,8 @@ public interface PreventivoService {
 
     List<Optional<Preventivo>> getPreventivoByAzienda (Azienda azienda);
 
+    List<Optional<Preventivo>> getAllPreventiviOrderedByAgente();
+
     List<Preventivo> getAllPreventiviOrderByDesc();
 
     Preventivo updatePreventivo(Preventivo preventivo);
