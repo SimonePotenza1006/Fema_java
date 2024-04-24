@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import com.example.demo.entity.RelazioneDdtProdotto;
 import com.example.demo.service.DdtService;
 import com.example.demo.service.ProdottoService;
 import com.example.demo.service.impl.RelazioneDdtProdottoServiceImpl;
+import com.fasterxml.jackson.core.StreamReadConstraints;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,10 +21,17 @@ import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 
+
 @RestController
 @RequestMapping(value = "/api/relazioneDDTProdotto")
 public class RelazioneDdtProdottoController {
     
+    @Bean
+    Jackson2ObjectMapperBuilderCustomizer customStreamReadConstraints() {
+	return (builder) -> builder.postConfigurer((objectMapper) -> objectMapper.getFactory()
+		.setStreamReadConstraints(StreamReadConstraints.builder().maxNestingDepth(2000).build()));
+    }
+
     @Autowired
     private RelazioneDdtProdottoServiceImpl relazioneService;
 
@@ -41,6 +51,12 @@ public class RelazioneDdtProdottoController {
     public ResponseEntity<RelazioneDdtProdotto> getRelazioneDdtProdottoById(@PathVariable("id") int relazioneId){
         RelazioneDdtProdotto relazione = relazioneService.getRelazioneDdtProdottoById(relazioneId);
         return new ResponseEntity<>(relazione, HttpStatus.OK);
+    }
+
+    @GetMapping("scaricato")
+    public ResponseEntity<List<RelazioneDdtProdotto>> findAllNonScaricati(){
+        List<RelazioneDdtProdotto> relazioni = relazioneService.findByStatus(false);
+        return new ResponseEntity<>(relazioni, HttpStatus.OK);
     }
 
     @GetMapping

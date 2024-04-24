@@ -13,7 +13,7 @@ public interface ViaggioService {
 
 	Viaggio getViaggioById(int viaggioId);
 	
-	List<Optional<Viaggio>> getViaggioByUtente(Utente utente);
+	//List<Optional<Viaggio>> getViaggioByUtente(Utente utente);
 
     List<Viaggio> getAllViaggi();
 

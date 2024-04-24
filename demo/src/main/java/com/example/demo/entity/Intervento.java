@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.hibernate.annotations.OnDelete;
+import org.w3c.dom.Text;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -49,6 +50,9 @@ public class Intervento {
     @Column(name = "idinterventi", nullable = false)
     private int id;
 
+    @Column(name = "data_apertura_intervento")
+    private Date data_apertura_intervento;
+
     @Column(name = "data_intervento")
     private Date data;
 
@@ -67,51 +71,55 @@ public class Intervento {
     @Column(name = "assegnato")
     private boolean assegnato;
 
+    @Column(name = "conclusione_parziale", nullable = true)
+    private boolean conclusione_parziale;
+
     @Column(name = "concluso")
     private boolean concluso;
 
+    @Column(name = "saldato")
+    private boolean saldato;
+
     @Column(name = "note")
     private String note;
+
+    @Column(name = "relazione_tecnico")
+    private String relazione_tecnico;
 
     @Lob
     @Column(name = "firma_cliente", length = 16777213)
     private byte[] firma_cliente;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_idUser") //, nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "FK_idUser") 
     private Utente utente;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "FK_idCliente", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_idVeicolo", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "FK_idVeicolo")
     private Veicolo veicolo;
 
-    @ManyToOne //(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "FK_id_merceRiparazione")
+    private MerceInRiparazione merce;
+
+    @ManyToOne 
     @JoinColumn(name = "FK_idTipologia_intervento", nullable = false)
     private TipologiaIntervento tipologia;
 
-    @ManyToOne (cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
+    @ManyToOne (cascade = CascadeType.MERGE)
     @JoinColumn(name = "FK_idCategoria_specifica", nullable = true)
     private CategoriaInterventoSpecifico categoria_intervento_specifico;
 
-    @ManyToOne //(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
+    @ManyToOne 
     @JoinColumn(name = "FK_idtipologia_pagamento", nullable = true)
     private TipologiaPagamento tipologia_pagamento;
 
     @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_iddestinazione", nullable = false)
     private Destinazione destinazione;
-
-        // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
-        // @JoinTable(name = "relazione_intervento_utenti", joinColumns = {
-        //     @JoinColumn(name = "FK_idintervento")
-        // },
-        // inverseJoinColumns = {
-        //     @JoinColumn(name = "FK_idutente")
-        // })
-        // private List<Utente> utenti;
 
 }

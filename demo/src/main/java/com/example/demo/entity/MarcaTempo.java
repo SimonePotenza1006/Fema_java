@@ -43,10 +43,10 @@ public class MarcaTempo {
     @Column(name = "idmarcatempo", nullable = false)
     private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     private String type;
 	
     @Column(name = "gps")
@@ -55,7 +55,7 @@ public class MarcaTempo {
     @Column(name = "gpsu")
     private String gpsu;
     
-    @Column(name = "data", nullable = false)
+    @Column(name = "data")
     private Date data;
     
     @Column(name = "datau")

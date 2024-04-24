@@ -15,6 +15,8 @@ public interface ProdottoService {
 
     Prodotto getProdottoById(int prodottoId);
 
+    Optional<Prodotto> getProdottoForDDT(String codice_danea, String lotto_seriale);
+
     List<Prodotto> getAllProdotti();
 
     Prodotto updateProdotto(Prodotto prodotto);

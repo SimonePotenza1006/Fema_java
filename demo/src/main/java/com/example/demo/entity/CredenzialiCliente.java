@@ -44,6 +44,9 @@ public class CredenzialiCliente {
     @Column(name = "descrizione")
     private String descrizione;
 
+    @Column(name = "credenziali")
+    private String credenziali; 
+
     @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idclienti")
     private Cliente cliente;

@@ -14,4 +14,5 @@ import com.example.demo.entity.CategoriaProdotto;
 @Repository
 public interface ProdottoRepository extends JpaRepository<Prodotto, Integer>{
     Optional<Prodotto> findById(int id);
+    Optional<Prodotto> findByCodiceDaneaAndLottoSeriale(String codice_danea, String lotto_seriale);
 }

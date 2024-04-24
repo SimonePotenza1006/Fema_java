@@ -94,7 +94,4 @@ public class Ddt {
     //     @JoinColumn(name = "FK_idprodotto")
     // })
     // private List<Prodotto> prodotti;
-
-    @OneToMany(mappedBy = "ddt")
-    private List<RelazioneDdtProdotto> relazioni_prodotti;
 } 

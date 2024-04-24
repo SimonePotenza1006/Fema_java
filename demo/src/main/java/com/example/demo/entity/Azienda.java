@@ -45,6 +45,9 @@ public class Azienda {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "telefono")
+    private String telefono;
+
     @Column(name = "sito")
     private String sito;
 }

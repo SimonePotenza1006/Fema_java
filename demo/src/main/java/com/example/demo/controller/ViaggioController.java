@@ -34,40 +34,40 @@ public class ViaggioController {
 
     private ViaggioService viaggioService;
 
-    @PostMapping
-    public ResponseEntity<Viaggio> createViaggio(@RequestBody Viaggio viaggio) throws ParseException{
-    	SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd hh:mm:ss Z yyyy", Locale.ENGLISH);
-    	SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
-    	Date d = sdf.parse(viaggio.getData_arrivo().toString());
-    	viaggio.setData_arrivo(d);
+    // @PostMapping
+    // public ResponseEntity<Viaggio> createViaggio(@RequestBody Viaggio viaggio) throws ParseException{
+    // 	SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd hh:mm:ss Z yyyy", Locale.ENGLISH);
+    // 	SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+    // 	Date d = sdf.parse(viaggio.getData_arrivo().toString());
+    // 	viaggio.setData_arrivo(d);
     	
-    	//Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(ruolo.getDatap().toString()); 
-    	//ruolo.setDatap(date1);
+    // 	//Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(ruolo.getDatap().toString()); 
+    // 	//ruolo.setDatap(date1);
     	
-    	Viaggio savedViaggio = viaggioService.createViaggio(viaggio);
-    	savedViaggio.setUtenti(viaggio.getUtenti());
+    // 	Viaggio savedViaggio = viaggioService.createViaggio(viaggio);
+    // 	savedViaggio.setUtenti(viaggio.getUtenti());
     	
-    	  try {
+    // 	  try {
 
-    		    Path path = Paths.get("C:\\APP_FEMA\\Viaggi\\Viaggio_"+viaggio.getId()+"\\Ddt");
-    		    Path pathS = Paths.get("C:\\APP_FEMA\\Viaggi\\Viaggio_"+viaggio.getId()+"\\Spese");
-    		    Path pathR = Paths.get("C:\\APP_FEMA\\Viaggi\\Viaggio_"+viaggio.getId()+"\\Report");
+    // 		    Path path = Paths.get("C:\\APP_FEMA\\Viaggi\\Viaggio_"+viaggio.getId()+"\\Ddt");
+    // 		    Path pathS = Paths.get("C:\\APP_FEMA\\Viaggi\\Viaggio_"+viaggio.getId()+"\\Spese");
+    // 		    Path pathR = Paths.get("C:\\APP_FEMA\\Viaggi\\Viaggio_"+viaggio.getId()+"\\Report");
 
-    		    //java.nio.file.Files;
-    		    Files.createDirectories(path);
-    		    Files.createDirectories(pathS);
-    		    Files.createDirectories(pathR);
+    // 		    //java.nio.file.Files;
+    // 		    Files.createDirectories(path);
+    // 		    Files.createDirectories(pathS);
+    // 		    Files.createDirectories(pathR);
 
-    		    System.out.println("Directory is created!");
+    // 		    System.out.println("Directory is created!");
 
-    		  } catch (IOException e) {
+    // 		  } catch (IOException e) {
 
-    		    System.err.println("Failed to create directory!" + e.getMessage());
+    // 		    System.err.println("Failed to create directory!" + e.getMessage());
 
-    		  }
+    // 		  }
     	
-        return new ResponseEntity<>(savedViaggio, HttpStatus.CREATED);
-    }
+    //     return new ResponseEntity<>(savedViaggio, HttpStatus.CREATED);
+    // }
 
     @GetMapping("{id}")
     public ResponseEntity<Viaggio> getViaggioById(@PathVariable("id") int viaggioId){
@@ -75,12 +75,12 @@ public class ViaggioController {
         return new ResponseEntity<>(viaggio, HttpStatus.OK);
     }
 
-    @GetMapping("/tecnico/{utente}")
-    public ResponseEntity<List<Optional<Viaggio>>> getViaggioByTecnico(@PathVariable Utente utente){
+    // @GetMapping("/tecnico/{utente}")
+    // public ResponseEntity<List<Optional<Viaggio>>> getViaggioByTecnico(@PathVariable Utente utente){
     	
-    	List<Optional<Viaggio>> viaggi = viaggioService.getViaggioByUtente(utente);
-        return new ResponseEntity<>(viaggi, HttpStatus.OK);
-    }
+    // 	List<Optional<Viaggio>> viaggi = viaggioService.getViaggioByUtente(utente);
+    //     return new ResponseEntity<>(viaggi, HttpStatus.OK);
+    // }
     
     @GetMapping
     public ResponseEntity<List<Viaggio>> getAllViaggi(){

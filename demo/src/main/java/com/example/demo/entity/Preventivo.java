@@ -67,9 +67,13 @@ public class Preventivo {
     @Column(name = "importo")
     private float importo;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idclienti", nullable = true) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "idclienti", nullable = true)
     private Cliente cliente;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "iddestinazione", nullable = true) 
+    private Destinazione destinazione;
 
     @Column(name = "accettato", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean accettato;

@@ -27,7 +27,6 @@ public class MovimentiController {
     @Autowired
     private MovimentiService movimentiService;
 
-    // Endpoint per recuperare tutti i movimenti
     @GetMapping
     public ResponseEntity<List<Movimenti>> getAllMovimenti() {
         List<Movimenti> movimentiList = movimentiService.getAllMovimenti();

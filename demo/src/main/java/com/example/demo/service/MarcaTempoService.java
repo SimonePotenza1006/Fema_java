@@ -45,6 +45,14 @@ public class MarcaTempoService {
 	
 	@Autowired
 	public MarcaTempoRepository marcaTempoRepository;
+
+	public MarcaTempo saveMarcatempo(MarcaTempo marcatempo){
+		return marcaTempoRepository.save(marcatempo);
+	}
+
+	public List<MarcaTempo> getAll(){
+		return marcaTempoRepository.findAll();
+	}
 	
 	public String uploadPdf(MultipartFile file, int viaggioId, int utenteId, Integer ing, String gps, int idmt) throws IOException, ParseException {
 		System.out.print("PROVA");
@@ -137,6 +145,7 @@ public class MarcaTempoService {
 	
 	@Transactional
 	public List<Optional<MarcaTempo>> findByViaggioAndUtenteToday(int viaggioId, int utenteId) {
+		System.out.print("PROVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Optional<Viaggio> optionalViaggio = viaggioRepository.findById(viaggioId);
 		Optional<Utente> optionalUtente = utenteRepository.findById(utenteId);
 		LocalDate today = LocalDate.now();

@@ -40,7 +40,7 @@ public class AttivitaController {
         return new ResponseEntity<>(attivita, HttpStatus.OK);
     }
 
-    @PutMapping//("{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Attivita> updateAttivita(@RequestBody Attivita attivita) throws IOException{
     	Attivita updatedAttivita = attivitaService.updateAttivita(attivita);
         return new ResponseEntity<>(updatedAttivita, HttpStatus.OK);

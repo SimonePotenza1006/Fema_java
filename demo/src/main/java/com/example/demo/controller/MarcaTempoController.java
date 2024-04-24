@@ -19,8 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
@@ -54,6 +56,22 @@ public class MarcaTempoController {
 	@Autowired
 	private MarcaTempoRepository marcatempoRepository;
 
+	@Autowired
+	private MarcaTempoService marcatemposervice;
+
+
+	@PostMapping
+	public ResponseEntity<MarcaTempo> createMarcaTempo(@RequestBody MarcaTempo marcatempo){
+		MarcaTempo savedMarcatempo = marcatemposervice.saveMarcatempo(marcatempo);
+		return new ResponseEntity<>(savedMarcatempo, HttpStatus.CREATED);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<MarcaTempo>> getAllMarcatempos(){
+		List<MarcaTempo> marcatempoList = marcatemposervice.getAll();
+		return new ResponseEntity<>(marcatempoList, HttpStatus.OK);
+	}
+
     @PostMapping("/{idu}/{idviaggio}/{ing}/{gps}/{idmt}")
 	public ResponseEntity<?> uploadImage(@RequestParam("pdf") MultipartFile file, 
 	    @PathVariable("idu") int idutente, @PathVariable int idviaggio, @PathVariable Integer ing, @PathVariable String gps,  @PathVariable int idmt) throws IOException, ParseException {
@@ -78,6 +96,7 @@ public class MarcaTempoController {
 
         @GetMapping("/oggi/{idu}/{idviaggio}")
 	    public ResponseEntity<List<Optional<MarcaTempo>>> getMarcaTempoToday(@PathVariable int idu, @PathVariable int idviaggio){
+			System.out.println("today");
 	    	//ResponseEntity<List<MarcaTempo>>
 	    	List<Optional<MarcaTempo>> marche = imageDataService.findByViaggioAndUtenteToday(idviaggio, idu);
 	    	//byte[] maa = ImageUtil.decompressImage(marche.get(0).getImageData());
@@ -142,7 +161,6 @@ public class MarcaTempoController {
 			Date giornoFD= Date.from(giornoF.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	    	Optional<Viaggio> optionalViaggio = viaggioRepository.findById(idviaggio);
 	    	List<Optional<MarcaTempo>> viaggi = marcatempoRepository.findByViaggioAndDataBetweenOrderByUtenteAscDataAsc(optionalViaggio.get(), giorno1D, giornoFD);
-	    	
 	    	//List<MarcaTempo> viaggi = imageDataService.findByViaggioAndUtente(idviaggio, idu);
 	        return new ResponseEntity<>(viaggi, HttpStatus.OK);
 	    } 
@@ -152,7 +170,6 @@ public class MarcaTempoController {
 	    	Date date = new Date() ;
 	    	Optional<Utente> optionalUtente = utenteRepository.findById(id);
 	        Boolean image = imageDataService.getIngByDataByUtente(date, optionalUtente.get());
-
 	        return image;
 	    }
 }

@@ -89,7 +89,6 @@ public class InterventoController {
 
     @GetMapping("/utente/{id}")
     public ResponseEntity<List<Optional<Intervento>>> getInterventoByUtente(@PathVariable("id") int utenteId){
-        System.out.println("PROVAAAAAAAAAAAAAAAA GET INTERVENTI BY UTENTE");
         Utente utente = utenteService.getUtenteById(utenteId);
         List<Optional<Intervento>> interventi = interventoService.getInterventoByUtente(utente);
         return new ResponseEntity<>(interventi, HttpStatus.OK);

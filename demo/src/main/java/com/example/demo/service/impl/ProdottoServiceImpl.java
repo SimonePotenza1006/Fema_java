@@ -41,6 +41,12 @@ public class ProdottoServiceImpl implements ProdottoService{
     }
 
     @Override
+    public Optional<Prodotto> getProdottoForDDT(String codice_danea, String lotto_seriale){
+        Optional<Prodotto> optionalProdotto = prodottoRepository.findByCodiceDaneaAndLottoSeriale(codice_danea, lotto_seriale);
+        return optionalProdotto;
+    }
+
+    @Override
     public List<Prodotto> getAllProdotti(){
         return prodottoRepository.findAll();
     }

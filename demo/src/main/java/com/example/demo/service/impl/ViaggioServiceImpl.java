@@ -36,13 +36,13 @@ public class ViaggioServiceImpl implements ViaggioService{
         return optionalViaggio.get();
     }
 
-    @Override
-    public List<Optional<Viaggio>> getViaggioByUtente(Utente utente) {
+    // @Override
+    // public List<Optional<Viaggio>> getViaggioByUtente(Utente utente) {
     	
-        List<Optional<Viaggio>> optionalViaggio = viaggioRepository.findByUtenti(utente);
+    //     List<Optional<Viaggio>> optionalViaggio = viaggioRepository.findByUtenti(utente);
         
-        return optionalViaggio;
-    }
+    //     return optionalViaggio;
+    // }
 
     @Override 
     public List<Viaggio> getAllViaggi() {

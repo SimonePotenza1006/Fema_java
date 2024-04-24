@@ -45,12 +45,14 @@ public class Sopralluogo {
     @Column(name = "idsopralluogo", nullable = false)
     private int id;
 
+    @Column(name = "data")
+    private Date data;
+
+    @Column(name = "posizione")
+    private String posizione;
+
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
-
-    @Lob
-    @Column(name = "foto", length = 16777213)//columnDefinition = "MEDIUMBLOB")
-    private byte[] foto;
 
     @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idclienti", nullable = false)
@@ -58,20 +60,10 @@ public class Sopralluogo {
 
     @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "idtipologia_intervento", nullable = false)
-    private TipologiaIntervento tipologia_Intervento;
+    private TipologiaIntervento tipologia;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "idcategorie_intervento_specifiche", nullable = false)
-    private CategoriaInterventoSpecifico categoria_intervento_specifica;
-
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_prodotto_sopralluogo", joinColumns = { 
-        @JoinColumn(name = "FK_idsopralluogo")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_idprodotto")
-    })
-    private List<Prodotto> prodotti;
-
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "idUser")
+    private Utente utente;
 
 }

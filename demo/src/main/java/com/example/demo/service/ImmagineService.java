@@ -3,8 +3,15 @@ package com.example.demo.service;
 import com.example.demo.util.ImageUtil;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
+import com.example.demo.entity.MerceInRiparazione;
+import com.example.demo.entity.Sopralluogo;
+import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.ImmagineRepository;
 import com.example.demo.repository.InterventoRepository;
+import com.example.demo.repository.MerceInRiparazioneRepository;
+import com.example.demo.repository.SopralluogoRepository;
+import com.example.demo.repository.SpesaVeicoloRepository;
+import com.example.demo.repository.VeicoloRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -28,6 +35,15 @@ public class ImmagineService {
     @Autowired
     private InterventoRepository interventoRepository;
 
+    @Autowired
+    private SopralluogoRepository sopralluogoRepository;
+
+    @Autowired
+    private VeicoloRepository veicoloRepository;
+
+    @Autowired
+    private MerceInRiparazioneRepository merceRepository;
+
     private final RestTemplate restTemplate;
 
     public ImmagineService() {
@@ -44,14 +60,60 @@ public class ImmagineService {
 
     public String uploadImage(MultipartFile file, int interventoId) throws IOException {
         Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId);
+        System.out.println(interventoId);
         immagineRepository.save(Immagine.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .imageData(ImageUtil.compressImage(file.getBytes()))
                 .intervento(optionalIntervento.get())
                 .build());
+            
         return "Image uploaded successfully: " + file.getOriginalFilename();
     }
+
+    public String uploadImageSopralluogo(MultipartFile file, int sopralluogoId) throws IOException {
+        Optional<Sopralluogo> optionalSopralluogo = sopralluogoRepository.findById(sopralluogoId);
+        System.out.println(sopralluogoId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .sopralluogo(optionalSopralluogo.get())
+                .build());
+            
+        return "Image uploaded successfully: " + file.getOriginalFilename();
+    }
+
+    public String uploadImageSpesaveicolo(MultipartFile file, int veicoloId) throws IOException {
+        Optional<Veicolo> optionalVeicolo = veicoloRepository.findById(veicoloId);
+        System.out.println(veicoloId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .veicolo(optionalVeicolo.get())
+                .build());
+            
+        return "Image uploaded successfully: " + file.getOriginalFilename();
+    }
+
+    public String uploadImageMerce(MultipartFile file, int merceId) throws IOException {
+        Optional<MerceInRiparazione> optionalMerce = merceRepository.findById(merceId);
+        if (file == null || file.isEmpty()) {
+            return "Errore: nessun file ricevuto.";
+        }
+    
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .merceInRiparazione(optionalMerce.get())
+                .build());
+            
+        return "Immagine caricata con successo: " + file.getOriginalFilename();
+    }
+    
+
 
     @Transactional
     public Immagine getInfoByImageByName(String name) {

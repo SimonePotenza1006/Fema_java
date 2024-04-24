@@ -31,7 +31,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cliente")
+@Table(name = "clienti")
 public class Cliente {
     
     @Id
@@ -89,6 +89,9 @@ public class Cliente {
 
     @Column(name = "note")
     private String note;
+
+    @Column(name = "note_tecnico")
+    private String note_tecnico;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "relazione_clienti_tipologia_intervento", joinColumns = { 

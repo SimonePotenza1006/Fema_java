@@ -16,4 +16,5 @@ public interface RelazioneDdtProdottoRepository extends JpaRepository<RelazioneD
     Optional<RelazioneDdtProdotto> findById(int id);
     List<Optional<RelazioneDdtProdotto>> findByDdt (Ddt ddt);
     List<Optional<RelazioneDdtProdotto>> findByProdotto(Prodotto prodotto);
+    List<RelazioneDdtProdotto> findByScaricato(boolean scaricato);
 }

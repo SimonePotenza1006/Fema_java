@@ -61,8 +61,15 @@ public class Utente {
     @JoinColumn(referencedColumnName = "iduser_role")
     private Ruolo ruolo;
 
+    @Column(name = "capogruppo")
+    private boolean capogruppo;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(referencedColumnName = "idtipologia_intervento")
     private TipologiaIntervento tipologia_intervento;
 
+
+    // public String getCognome() {
+    //     return this.cognome;
+    // }
 }

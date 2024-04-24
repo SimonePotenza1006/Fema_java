@@ -15,6 +15,8 @@ public interface RelazioneDdtProdottoService {
 
     List<RelazioneDdtProdotto> getAllRelazioni();
 
+    List<RelazioneDdtProdotto> findByStatus(boolean scaricato);
+
     List<Optional<RelazioneDdtProdotto>> getRelazioniByProdotto (Prodotto prodotto);
 
     List<Optional<RelazioneDdtProdotto>> getRelazioniByDdt(Ddt ddt);

@@ -26,6 +26,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/prodotto")
@@ -51,6 +52,15 @@ public class ProdottoController {
     	Prodotto prodotto = prodottoService.getProdottoById(prodottoId);
         return new ResponseEntity<>(prodotto, HttpStatus.OK);
     }
+
+    @GetMapping("/DDT/{codice_danea}/{lotto_seriale}")
+    public ResponseEntity<Optional<Prodotto>> getProdottoForDDT(@PathVariable("codice_danea") String codice_danea, @PathVariable("lotto_seriale") String lotto_seriale){
+        Optional<Prodotto> prodotto = prodottoService.getProdottoForDDT(codice_danea, lotto_seriale);
+        System.out.println(lotto_seriale);
+        System.out.println(codice_danea);
+        return new ResponseEntity<>(prodotto, HttpStatus.OK);
+    }
+
 
     @GetMapping
     public ResponseEntity<List<Prodotto>> getAllProdotti(){

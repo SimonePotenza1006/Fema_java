@@ -41,6 +41,11 @@ public class RelazioneDdtProdottoServiceImpl implements RelazioneDdtProdottoServ
     }
 
     @Override
+    public List<RelazioneDdtProdotto> findByStatus(boolean scaricato) {
+        return relazioneRepository.findByScaricato(scaricato);
+    }
+
+    @Override
     public List<Optional<RelazioneDdtProdotto>> getRelazioniByDdt(Ddt ddt){
         List<Optional<RelazioneDdtProdotto>> optionalRelazioni = relazioneRepository.findByDdt(ddt);
         return optionalRelazioni;

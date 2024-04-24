@@ -43,7 +43,7 @@ public class Prodotto {
     private int id;
 
     @Column(name = "cod_danea")
-    private String codice_danea;
+    private String codiceDanea;
 
     @Column(name = "descrizione")
     private String descrizione;
@@ -106,7 +106,7 @@ public class Prodotto {
     private String stato_magazzino;
 
     @Column(name = "lotto_seriale")
-    private String lotto_seriale;
+    private String lottoSeriale;
 
     // @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     // @JoinTable(name = "relazione_ddt_prodotti", joinColumns = { 
@@ -126,7 +126,4 @@ public class Prodotto {
         @JoinColumn(name = "FK_idsopralluogo")
     })
     private List<Sopralluogo> sopralluoghi;
-
-    @OneToMany(mappedBy = "prodotto")
-    private List<RelazioneDdtProdotto> relazioniDdt;
 }

@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
+import com.example.demo.entity.Sopralluogo;
+import com.example.demo.entity.Veicolo;
 
 
 @Transactional
