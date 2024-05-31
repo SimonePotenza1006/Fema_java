@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.TipologiaIntervento;
 import com.example.demo.entity.Cliente;
+import com.example.demo.entity.GruppoInterventi;
 import com.example.demo.entity.Utente;
 import com.example.demo.repository.UtenteRepository;
 import com.example.demo.repository.ClienteRepository;
@@ -57,6 +58,12 @@ public class InterventoServiceImpl implements InterventoService{
         return optionalInterventi;
     }
 
+    @Override 
+    public List<Intervento> getInterventiOrderedByGruppo(){
+        List<Intervento> optionalInterventi = interventoRepository.findAllOrderByGruppoOrderById();
+        return optionalInterventi;
+    }
+
     @Override
     public Intervento getInterventoById(int interventoId) {
         Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId);
@@ -84,6 +91,12 @@ public class InterventoServiceImpl implements InterventoService{
     public List<Optional<Intervento>> getInterventoByTipologia(TipologiaIntervento tipologiaIntervento){
         List<Optional<Intervento>> optionalIntervento = interventoRepository.findByTipologia(tipologiaIntervento);
         return optionalIntervento;
+    }
+
+    @Override
+    public List<Optional<Intervento>> getInterventiByGruppo(GruppoInterventi gruppo){
+        List<Optional<Intervento>> optionalInterventi = interventoRepository.findByGruppo(gruppo);
+        return optionalInterventi;
     }
 
     @Override

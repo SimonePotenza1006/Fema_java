@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Movimenti;
 import com.example.demo.repository.MovimentiRepository;
 
@@ -26,6 +27,16 @@ public class MovimentiService {
     // Metodo per recuperare un movimento per ID
     public Optional<Movimenti> getMovimentiById(int id) {
         return movimentiRepository.findById(id);
+    }
+
+    public List<Movimenti> getAllMovimentiOrderByDesc(){
+        List<Movimenti> optionalMovimenti = movimentiRepository.findAllByOrderByIdDesc();
+        return optionalMovimenti;
+    }
+
+    public List<Optional<Movimenti>> getMovimentiByIntervento(Intervento intervento){
+        List<Optional<Movimenti>> movimenti = movimentiRepository.findByIntervento(intervento);
+        return movimenti;
     }
 
     // Metodo per salvare un movimento

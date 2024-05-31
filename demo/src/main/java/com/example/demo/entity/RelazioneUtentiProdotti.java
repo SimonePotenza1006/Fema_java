@@ -50,6 +50,13 @@ public class RelazioneUtentiProdotti {
     @JoinColumn(referencedColumnName = "idddt")
     private Ddt ddt;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "idinterventi")
+    private Intervento intervento;
+
+    @Column(name = "quantita")
+    private Double quantita;
+
     @Column(name = "asseganto")
     private boolean assegnato;
 

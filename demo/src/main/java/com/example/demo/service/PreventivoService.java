@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.example.demo.entity.Agente;
 import com.example.demo.entity.Azienda;
+import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Preventivo;
 import com.example.demo.entity.Utente;
 
@@ -21,6 +22,8 @@ public interface PreventivoService {
     List<Optional<Preventivo>> getPreventivoByAgente(Agente agente);
 
     List<Optional<Preventivo>> getPreventivoByAzienda (Azienda azienda);
+
+    List<Optional<Preventivo>> getPreventivoByCliente(Cliente cliente);
 
     List<Optional<Preventivo>> getAllPreventiviOrderedByAgente();
 

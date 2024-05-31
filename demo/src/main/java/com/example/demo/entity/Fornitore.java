@@ -29,7 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "fornitore")
+@Table(name = "fornitori")
 public class Fornitore {
     
     @Id
@@ -37,8 +37,8 @@ public class Fornitore {
     @Column(name = "idfornitori", nullable = false)
     private int id;
 
-    @Column(name = "codice_fiscale")
-    private String codice_fiscale;
+    @Column(name = "codice")
+    private String codice;
 
     @Column(name = "partita_iva")
     private String partita_iva;
@@ -49,36 +49,12 @@ public class Fornitore {
     @Column(name = "indirizzo")
     private String indirizzo;
 
-    @Column(name = "cap")
-    private String cap;
-
     @Column(name = "citta")
     private String citta;
 
     @Column(name = "provincia")
     private String provincia;
 
-    @Column(name = "nazione")
-    private String nazione;
-
-    @Column(name = "referente")
-    private String referente;
-
-    @Column(name = "fax")
-    private String fax;
-
     @Column(name = "telefono")
     private String telefono;
-
-    @Column(name = "cellulare")
-    private String cellulare;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "pec")
-    private String pec;
-
-    @Column(name = "note")
-    private String note;
 }

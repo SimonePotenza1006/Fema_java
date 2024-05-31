@@ -60,6 +60,10 @@ public class Movimenti {
     @Column(name = "data_creazione", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime dataCreazione;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idinterventi", nullable = true)
+    private Intervento intervento;
 }
 
 

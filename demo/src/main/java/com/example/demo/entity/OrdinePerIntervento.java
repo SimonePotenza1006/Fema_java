@@ -46,5 +46,12 @@ public class OrdinePerIntervento {
     @ManyToOne (cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
-    
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Prodotto prodotto;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "idfornitori")
+    private Fornitore fornitore;
 }

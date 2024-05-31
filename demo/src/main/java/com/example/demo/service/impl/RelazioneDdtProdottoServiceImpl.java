@@ -57,7 +57,7 @@ public class RelazioneDdtProdottoServiceImpl implements RelazioneDdtProdottoServ
     }
 
     @Override
-    public void deleteRelazione (int relazioenId){
-        relazioneRepository.deleteById(relazioenId);
+    public void deleteRelazione (int relazioneId){
+        relazioneRepository.deleteById(relazioneId);
     }
 }

@@ -2,11 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Agente;
 import com.example.demo.entity.Azienda;
+import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Preventivo;
 import com.example.demo.entity.Utente;
 import com.example.demo.service.AgenteService;
 import com.example.demo.service.AziendaService;
+import com.example.demo.service.ClienteService;
 import com.example.demo.service.PreventivoService;
 import com.example.demo.service.UtenteService;
 
@@ -36,6 +38,9 @@ public class PreventivoController {
 
     @Autowired
     private AziendaService aziendaService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @Autowired
     private PreventivoService preventivoService;
@@ -87,6 +92,13 @@ public class PreventivoController {
     public ResponseEntity<List<Optional<Preventivo>>> getPreventivoByAgente(@PathVariable("id") int agenteId){
         Agente agente = agenteService.getAgenteById(agenteId);
         List<Optional<Preventivo>> preventivi = preventivoService.getPreventivoByAgente(agente);
+        return new ResponseEntity<>(preventivi, HttpStatus.OK);
+    }
+
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity<List<Optional<Preventivo>>> getPreventivoByCliente(@PathVariable("id") int clienteId){
+        Cliente cliente = clienteService.getClienteById(clienteId);
+        List<Optional<Preventivo>> preventivi = preventivoService.getPreventivoByCliente(cliente);
         return new ResponseEntity<>(preventivi, HttpStatus.OK);
     }
 

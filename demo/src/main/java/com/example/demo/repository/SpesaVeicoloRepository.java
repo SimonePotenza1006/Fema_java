@@ -11,8 +11,8 @@ import com.example.demo.entity.Veicolo;
 
 @Repository
 public interface SpesaVeicoloRepository extends JpaRepository<SpesaVeicolo, Integer>{
-    List<SpesaVeicolo> findAllByOrderByIdDesc();
-    Optional<SpesaVeicolo> findById(int id);
+    List<SpesaVeicolo> findAllByOrderByIdSpesaVeicoloDesc();
+    Optional<SpesaVeicolo> findByIdSpesaVeicolo(int id_spesa_veicolo);
     List<Optional<SpesaVeicolo>> findByUtente(Utente utente);
     List<Optional<SpesaVeicolo>> findByVeicolo(Veicolo veicolo);
 }

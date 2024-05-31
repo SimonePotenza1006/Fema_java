@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Agente;
 import com.example.demo.entity.Azienda;
+import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Preventivo;
 import com.example.demo.repository.PreventivoRepository;
 import com.example.demo.service.PreventivoService;
@@ -50,6 +51,12 @@ public class PreventivoServiceImpl implements PreventivoService{
     @Override 
     public List<Optional<Preventivo>> getPreventivoByUtente(Utente utente){
         List<Optional<Preventivo>> optionalPreventivo = preventivoRepository.findByUtente(utente);
+        return optionalPreventivo;
+    }
+
+    @Override 
+    public List<Optional<Preventivo>> getPreventivoByCliente(Cliente cliente){
+        List<Optional<Preventivo>> optionalPreventivo = preventivoRepository.findByCliente(cliente);
         return optionalPreventivo;
     }
 

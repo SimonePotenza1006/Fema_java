@@ -137,6 +137,13 @@ public class ImmagineService {
         return ImageUtil.decompressImage(dbImage.get().getImageData());
     }
 
+    // @Transactional
+    // public byte[] getImageBySopralluogo(int sopralluogoId){
+    //     Optional<Sopralluogo> optionalSopralluogo = sopralluogoRepository.findById(sopralluogoId);
+    //     List<Optional<Immagine>> dbImage = immagineRepository.findBySopralluogo(optionalSopralluogo.get());
+    //     return ImageUtil.decompressImage(dbImage.get().getImageData());
+    // }
+
     @Transactional
     public List<Immagine> getAllImmagini() {
         List<Immagine> dbImages = immagineRepository.findAll();

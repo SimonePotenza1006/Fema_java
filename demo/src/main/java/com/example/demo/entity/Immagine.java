@@ -52,19 +52,23 @@ public class Immagine {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(optional = true)
+    @JoinColumn(referencedColumnName = "id_spesa_veicolo")
+    private SpesaVeicolo spesaVeicolo;
+
+    @ManyToOne(optional = true)
     @JoinColumn(name = "idinterventi")
     private Intervento intervento;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "idsopralluogo")
     private Sopralluogo sopralluogo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "idveicolo")
     private Veicolo veicolo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "idMerce")
     private MerceInRiparazione merceInRiparazione;
 }

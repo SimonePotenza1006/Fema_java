@@ -58,7 +58,7 @@ public class NotaTecnicoController{
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<NotaTecnico> getInterventoById(@PathVariable("id") int notaId) {
+    public ResponseEntity<NotaTecnico> getNotaById(@PathVariable("id") int notaId) {
         int idvariable = notaId;
         NotaTecnico nota = notaService.getNotaById(idvariable);
         if (nota == null) {
@@ -125,7 +125,7 @@ public class NotaTecnicoController{
     @DeleteMapping("{id}")
     public ResponseEntity<String> delete(@PathVariable("id") int notaId){
         notaService.deleteNota(notaId);
-        return new ResponseEntity<>("Intervento successfully deleted!", HttpStatus.OK);
+        return new ResponseEntity<>("Intervento eliminato!", HttpStatus.OK);
     }
 
 

@@ -90,5 +90,4 @@ public class RelazioneDdtProdottoController {
         relazioneService.deleteRelazione(relazioneId);
         return new ResponseEntity<>("Relazione successfully deleted!", HttpStatus.OK);
     }
-    
 }

@@ -39,6 +39,12 @@ public class Veicolo {
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
 
+    @Column(name = "proprietario", nullable = false)
+    private String proprietario;
+
+    @Column(name = "chilometraggio_attuale", nullable = false)
+    private int chilometraggio_attuale;
+
     @Column(name = "data_scadenza_bollo", nullable = true)
     private Date data_scadenza_bollo;
 
@@ -48,13 +54,30 @@ public class Veicolo {
     @Column(name = "data_tagliando", nullable = true)
     private Date data_tagliando;
 
+    @Column(name = "chilometraggio_ultimo_tagliando", nullable = true)
+    private int chilometraggio_ultimo_tagliando;
+
+    @Column(name = "soglia_tagliando", nullable = true)
+    private int soglia_tagliando;
+
     @Column(name = "data_revisione", nullable = true)
     private Date data_revisione;
 
     @Column(name = "data_inversione_gomme", nullable = true)
     private Date data_inversione_gomme;
 
+    @Column(name = "chilometraggio_ultima_inversione", nullable = true)
+    private int chilometraggio_ultima_inversione;
+
+    @Column(name = "soglia_inversione", nullable = true)
+    private int soglia_inversione;
+
     @Column(name = "data_sostituzione_gomme", nullable = true)
     private Date data_sostituzione_gomme;
 
+    @Column(name = "chilometraggio_ultima_sostituzione", nullable = true)
+    private int chilometraggio_ultima_sostituzione;
+
+    @Column(name = "soglia_sostituzione", nullable = true)
+    private int soglia_sostituzione;
 }

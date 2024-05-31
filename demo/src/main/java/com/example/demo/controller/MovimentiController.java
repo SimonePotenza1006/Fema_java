@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Movimenti;
+import com.example.demo.service.InterventoService;
 import com.example.demo.service.MovimentiService;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +28,9 @@ public class MovimentiController {
     
     @Autowired
     private MovimentiService movimentiService;
+
+    @Autowired 
+    private InterventoService interventoService;
 
     @GetMapping
     public ResponseEntity<List<Movimenti>> getAllMovimenti() {
@@ -42,6 +47,19 @@ public class MovimentiController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("ordered")
+    public ResponseEntity<List<Movimenti>> getAllMovimentiOrderByDesc(){
+        List<Movimenti> movimenti = movimentiService.getAllMovimentiOrderByDesc();
+        return new ResponseEntity<>(movimenti, HttpStatus.OK);
+    }
+
+    @GetMapping("/intervento/{id}")
+    public ResponseEntity<List<Optional<Movimenti>>> getMovimentiByIntervento(@PathVariable("id") int interventoId){
+        Intervento intervento = interventoService.getInterventoById(interventoId);
+        List<Optional<Movimenti>> movimenti = movimentiService.getMovimentiByIntervento(intervento);
+        return new ResponseEntity<>(movimenti, HttpStatus.OK);
     }
 
     // Endpoint per salvare un nuovo movimento

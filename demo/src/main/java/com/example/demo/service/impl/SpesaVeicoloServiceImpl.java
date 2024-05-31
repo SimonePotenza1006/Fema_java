@@ -29,7 +29,7 @@ public class SpesaVeicoloServiceImpl implements SpesaVeicoloService{
 
     @Override
     public SpesaVeicolo getSpesaById(int spesaId){
-        Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(spesaId);
+        Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findByIdSpesaVeicolo(spesaId);
         return optionalSpesa.get();
     }
 
@@ -40,7 +40,7 @@ public class SpesaVeicoloServiceImpl implements SpesaVeicoloService{
 
     @Override
     public List<SpesaVeicolo> getAllSpesaVeicoloOrderByDesc(){
-        List<SpesaVeicolo> optionalSpese = spesaRepository.findAllByOrderByIdDesc();
+        List<SpesaVeicolo> optionalSpese = spesaRepository.findAllByOrderByIdSpesaVeicoloDesc();
         return optionalSpese;
     }
 

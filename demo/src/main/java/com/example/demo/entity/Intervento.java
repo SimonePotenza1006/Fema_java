@@ -56,6 +56,9 @@ public class Intervento {
     @Column(name = "data_intervento")
     private Date data;
 
+    @Column(name = "orario_appuntamento", nullable = true)
+    private LocalDateTime orario_appuntamento;
+
     @Column(name = "orario_inizio")
     private LocalDateTime orario_inizio;
 
@@ -67,6 +70,9 @@ public class Intervento {
 
     @Column(name = "importo_intervento", nullable = true)
     private Double importo_intervento;
+
+    @Column(name = "acconto", nullable = true)
+    private Double acconto;
 
     @Column(name = "assegnato")
     private boolean assegnato;
@@ -122,4 +128,7 @@ public class Intervento {
     @JoinColumn(name = "FK_iddestinazione", nullable = false)
     private Destinazione destinazione;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idgruppo", nullable = true)
+    private GruppoInterventi gruppo;
 }

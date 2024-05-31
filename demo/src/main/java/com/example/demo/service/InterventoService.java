@@ -7,6 +7,7 @@ import com.example.demo.entity.Intervento;
 import com.example.demo.entity.TipologiaIntervento;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Cliente;
+import com.example.demo.entity.GruppoInterventi;
 
 public interface InterventoService {
     
@@ -22,7 +23,11 @@ public interface InterventoService {
 
     List<Optional<Intervento>> getInterventoByTipologia(TipologiaIntervento tipologiaIntervento);
 
+    List<Optional<Intervento>> getInterventiByGruppo(GruppoInterventi gruppo);
+
     List<Intervento> getAllInterventiOrderdByDesc();
+
+    List<Intervento> getInterventiOrderedByGruppo();
 
     Intervento updateIntervento(Intervento intervento);
 

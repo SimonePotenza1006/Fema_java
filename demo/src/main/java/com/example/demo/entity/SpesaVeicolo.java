@@ -35,8 +35,8 @@ public class SpesaVeicolo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private int id;
+    @Column(name = "id_spesa_veicolo", nullable = false)
+    private int idSpesaVeicolo;
 
     @Column(name = "data", nullable = false)
     private Date data;
