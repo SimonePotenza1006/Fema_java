@@ -5,6 +5,7 @@ import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.Sopralluogo;
+import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.ImmagineRepository;
 import com.example.demo.repository.InterventoRepository;
@@ -44,6 +45,9 @@ public class ImmagineService {
     @Autowired
     private MerceInRiparazioneRepository merceRepository;
 
+    @Autowired
+    private SpesaVeicoloRepository spesaRepository; 
+
     private final RestTemplate restTemplate;
 
     public ImmagineService() {
@@ -82,6 +86,18 @@ public class ImmagineService {
                 .build());
             
         return "Image uploaded successfully: " + file.getOriginalFilename();
+    }
+
+    public String uploadImageSpesa(MultipartFile file, int spesaId) throws IOException{
+        Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(spesaId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .spesaVeicolo(optionalSpesa.get())
+                .build());
+
+        return "Image uploaded successfully:" + file.getOriginalFilename();        
     }
 
     public String uploadImageSpesaveicolo(MultipartFile file, int veicoloId) throws IOException {
@@ -133,8 +149,41 @@ public class ImmagineService {
     @Transactional
     public byte[] getImageByIntervento(int interventoId) {
         Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId);
-        Optional<Immagine> dbImage = immagineRepository.findByIntervento(optionalIntervento.get());
-        return ImageUtil.decompressImage(dbImage.get().getImageData());
+        List<Immagine> dbImage = immagineRepository.findByIntervento(optionalIntervento.get());
+        return ImageUtil.decompressImage(dbImage.get(interventoId).getImageData());
+    }
+
+    @Transactional
+    public List<Immagine> getImagesByMerce(int merceId){
+        Optional<MerceInRiparazione> optionalMerce = merceRepository.findById(merceId);
+        if(optionalMerce.isPresent()){
+            return immagineRepository.findByMerceInRiparazione(optionalMerce.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<Immagine> getImagesBySopralluogo(int sopralluogoId){
+        Optional<Sopralluogo> optionalSopralluogo = sopralluogoRepository.findById(sopralluogoId);
+        if(optionalSopralluogo.isPresent()) {
+            return immagineRepository.findBySopralluogo(optionalSopralluogo.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<Immagine> getImagesByIntervento(int interventoId) { 
+        Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId); 
+        if (optionalIntervento.isPresent()) { 
+            return immagineRepository.findByIntervento(optionalIntervento.get()); 
+        } else {
+
+     }
+        return null; 
     }
 
     // @Transactional
@@ -143,6 +192,14 @@ public class ImmagineService {
     //     List<Optional<Immagine>> dbImage = immagineRepository.findBySopralluogo(optionalSopralluogo.get());
     //     return ImageUtil.decompressImage(dbImage.get().getImageData());
     // }
+
+    @Transactional
+    public byte[] getImageBySpesa(int idSpesa){
+        Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(idSpesa);
+        Optional<Immagine> dbImage = immagineRepository.findBySpesaVeicolo(optionalSpesa.get());
+        byte[] image = ImageUtil.decompressImage(dbImage.get().getImageData());
+        return image;
+    }
 
     @Transactional
     public List<Immagine> getAllImmagini() {

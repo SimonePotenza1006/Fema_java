@@ -42,4 +42,7 @@ public class RelazioneProdottiIntervento {
 
     @Column(name = "presenza_storico_utente")
     private boolean presenza_storico_utente;
+
+    @Column(name = "seriale")
+    private String seriale;
 }

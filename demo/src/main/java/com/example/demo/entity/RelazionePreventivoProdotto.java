@@ -29,14 +29,17 @@ public class RelazionePreventivoProdotto {
     @Column(name = "idrelazione_preventivo_prodotti", nullable = false)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(referencedColumnName = "idpreventivi", nullable = false)
     private Preventivo preventivo;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Prodotto prodotto;
 
     @Column(name = "quantita")
     private Double quantita;
+
+    @Column(name = "prezzo")
+    private Double prezzo;
 }

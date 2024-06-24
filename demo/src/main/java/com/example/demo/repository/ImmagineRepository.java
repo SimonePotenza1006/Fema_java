@@ -12,6 +12,7 @@ import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.Sopralluogo;
+import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Veicolo;
 
 
@@ -21,9 +22,9 @@ public interface ImmagineRepository extends JpaRepository<Immagine, Integer>{
     
     Optional<Immagine> findByName (String name);
     List<Immagine> findAll();
-    Optional<Immagine> findByIntervento(Intervento intervento);
-    List<Optional<Immagine>> findBySopralluogo(Sopralluogo sopralluogo);
-    List<Optional<Immagine>> findByMerceInRiparazione(MerceInRiparazione merce);
+    List<Immagine> findByIntervento(Intervento intervento);
+    List<Immagine> findBySopralluogo(Sopralluogo sopralluogo);
+    List<Immagine> findByMerceInRiparazione(MerceInRiparazione merce);
     List<Optional<Immagine>> findByVeicolo(Veicolo veicolo);
+    Optional<Immagine> findBySpesaVeicolo(SpesaVeicolo spesa);
 }
-;

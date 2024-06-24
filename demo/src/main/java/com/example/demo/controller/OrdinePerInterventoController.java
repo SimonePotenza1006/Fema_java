@@ -1,15 +1,19 @@
 package com.example.demo.controller;
 
+import org.aspectj.apache.bcel.generic.RET;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.OrdinePerIntervento;
 import com.example.demo.entity.Prodotto;
+import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Utente;
 import com.example.demo.service.OrdinePerInterventoService;
 import com.example.demo.service.UtenteService;
+import com.example.demo.service.ClienteService;
 import com.example.demo.service.InterventoService;
 
 import java.io.IOException;
@@ -24,9 +28,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/ordine")
 public class OrdinePerInterventoController {
+
+    @Autowired
     private OrdinePerInterventoService ordineService;
+
+    @Autowired
     private InterventoService interventoService;
+
+    @Autowired
     private UtenteService utenteService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @PostMapping
     public ResponseEntity<OrdinePerIntervento> createOrdine(@RequestBody OrdinePerIntervento ordine){
@@ -46,6 +59,12 @@ public class OrdinePerInterventoController {
         return new ResponseEntity<>(ordini, HttpStatus.OK);
     }
 
+    @GetMapping("/ordered")
+    public ResponseEntity<List<OrdinePerIntervento>> getAllOrdiniOrderByDesc(){
+        List<OrdinePerIntervento> ordini = ordineService.getAllOrdiniOrderByDesc();
+        return new ResponseEntity<>(ordini, HttpStatus.OK);
+    }
+
     @GetMapping("/intervento/{id}")
     public ResponseEntity<List<Optional<OrdinePerIntervento>>> getOrdineByIntervento(@PathVariable("id") int interventoId){
         Intervento intervento = interventoService.getInterventoById(interventoId);
@@ -57,6 +76,13 @@ public class OrdinePerInterventoController {
     public ResponseEntity<List<Optional<OrdinePerIntervento>>> getOrdineByUtente(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);
         List<Optional<OrdinePerIntervento>> ordini = ordineService.getOrdineByUtente(utente);
+        return new ResponseEntity<>(ordini, HttpStatus.OK);
+    }
+
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity<List<Optional<OrdinePerIntervento>>> getOrdineByCliente(@PathVariable("id") int clienteId){
+        Cliente cliente = clienteService.getClienteById(clienteId);
+        List<Optional<OrdinePerIntervento>> ordini = ordineService.getOrdineByCliente(cliente);
         return new ResponseEntity<>(ordini, HttpStatus.OK);
     }
 

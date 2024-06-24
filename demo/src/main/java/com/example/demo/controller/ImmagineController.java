@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
-
+import com.example.demo.controller.ImmagineController.ImageWrapper;
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
@@ -30,6 +31,8 @@ import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.Preventivo;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.Spesa;
+import com.example.demo.entity.SpesaVeicolo;
+import com.example.demo.entity.SpesaVeicoloSivis;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.ImmagineRepository;
@@ -37,11 +40,14 @@ import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
 import com.example.demo.repository.PreventivoRepository;
 import com.example.demo.repository.SopralluogoRepository;
+import com.example.demo.repository.SpesaVeicoloRepository;
 import com.example.demo.repository.VeicoloRepository;
 import com.example.demo.service.ImmagineService;
 import com.example.demo.service.InterventoService;
 import com.example.demo.service.PreventivoService;
+import com.example.demo.service.SpesaVeicoloService;
 import com.example.demo.service.VeicoloService;
+import com.example.demo.util.ImageUtil;
 
 
 @RestController
@@ -75,6 +81,12 @@ public class ImmagineController {
 	@Autowired
 	public SopralluogoRepository sopralluogoRepository;
 
+	@Autowired
+	public SpesaVeicoloRepository spesaRepository;
+
+	@Autowired
+	public SpesaVeicoloService spesaService;
+
 	@PostMapping("sopralluogo/{id}")
 public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") MultipartFile file,
                                                  @PathVariable("id") int sopralluogoId) throws IOException {
@@ -101,6 +113,35 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
     return ResponseEntity.status(HttpStatus.OK)
             .body(response);
 }
+
+	@PostMapping("/spesa/{spesaId}")
+    public ResponseEntity<?> uploadImageSpesa(@RequestParam("spesa") MultipartFile file, 
+    		@PathVariable("spesaId") int idSpesa) throws IOException {
+	    	
+	    	Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(idSpesa);
+	        String response = immagineService.uploadImageSpesa(file, idSpesa);
+	        try {
+	        	Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Spese_Veicolo\\Spesa_"+optionalSpesa.get().getIdSpesaVeicolo()));
+	        	Path path2 = Paths.get("C:\\Spese\\Spesa_"+optionalSpesa.get().getVeicolo().getDescrizione());
+    		    Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+    		    System.out.println("File is created!");
+    		  } catch (IOException e) {
+    		    System.err.println("Failed to create directory!" + e.getMessage());
+    		  }
+	        
+	        System.out.print(response);
+	        return ResponseEntity.status(HttpStatus.OK)
+	                .body(response);
+	    }
+
+        @GetMapping("/spesa/{spesaId}")
+	    public ResponseEntity<?>  getImageBySpesa(@PathVariable int spesaId){
+	        byte[] image = immagineService.getImageBySpesa(spesaId);
+
+	        return ResponseEntity.status(HttpStatus.OK)
+	                .contentType(MediaType.valueOf("image/png"))
+	                .body(image);
+	    }   
 
 @PostMapping("veicolo/{id}")
 public ResponseEntity<?> uploadImageSpesaVeicolo(@RequestParam("veicolo") MultipartFile file,
@@ -221,10 +262,6 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 	                .body(response);
 	    }
 
-
-
-
-
         @GetMapping("/name/{name}")
 	    public ResponseEntity<?>  getImageByName(@PathVariable String name){
 	        byte[] image = immagineService.getImage(name);
@@ -234,14 +271,67 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 	                .body(image);
 	    }
 
-        @GetMapping("/spesa/{id}")
-	    public ResponseEntity<?>  getImageByIntervento(@PathVariable int interventoId){
-	        byte[] image = immagineService.getImageByIntervento(interventoId);
+		@GetMapping(value = "/sopralluogo/{sopralluogoId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesBySopralluogo(@PathVariable int sopralluogoId) {
+			List<Immagine> images = immagineService.getImagesBySopralluogo(sopralluogoId);
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> ImageUtil.decompressImage(image.getImageData()))
+				.collect(Collectors.toList());
 
-	        return ResponseEntity.status(HttpStatus.OK)
-	                .contentType(MediaType.valueOf("image/png"))
-	                .body(image);
-	    }
+				List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}
+				return ResponseEntity.ok(imageWrappers);
+		}
+
+		@GetMapping(value = "/merce/{merceId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByMerce(@PathVariable int merceId) {
+			List<Immagine> images = immagineService.getImagesByMerce(merceId);
+
+				List<byte[]> imageBytes = images.stream()
+					.map(image -> ImageUtil.decompressImage(image.getImageData()))
+					.collect(Collectors.toList());
+
+					List<ImageWrapper> imageWrappers = new ArrayList<>();
+					for(byte[] imageData : imageBytes){
+						ImageWrapper wrapper = new ImageWrapper();
+						wrapper.setImageData(imageData);
+						imageWrappers.add(wrapper);
+					}
+					return ResponseEntity.ok(imageWrappers);
+		}
+
+        @GetMapping(value = "/intervento/{interventoId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByIntervento(@PathVariable int interventoId) {
+    		List<Immagine> images = immagineService.getImagesByIntervento(interventoId);
+
+    			List<byte[]> imageBytes = images.stream()
+            		.map(image -> ImageUtil.decompressImage(image.getImageData()))
+            		.collect(Collectors.toList());
+
+					List<ImageWrapper> imageWrappers = new ArrayList<>();
+					for (byte[] imageData : imageBytes) {
+						ImageWrapper wrapper = new ImageWrapper();
+						wrapper.setImageData(imageData);
+						imageWrappers.add(wrapper);
+					}
+					return ResponseEntity.ok(imageWrappers);
+				}
+
+				class ImageWrapper {
+					private String imageData;
+				
+					public String getImageData() {
+						return imageData;
+					}
+				
+					public void setImageData(byte[] imageData) {
+						this.imageData = Base64.getEncoder().encodeToString(imageData);
+					}
+				}
 
         @GetMapping("/all/all")
 	    public List<byte[]>  getAll(){

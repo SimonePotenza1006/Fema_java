@@ -46,11 +46,8 @@ public class ImmagineSpesaSivisController {
 	    	Optional<SpesaVeicoloSivis> optionalSpesa = spesaRepository.findById(idSpesa);
 	        String response = imageService.uploadImage(file, idSpesa);
 	        try {
-    		    //Path path = Paths.get("C:\\Viaggi\\Viaggio_"+optionalUtente.get().getViaggio().getId());
 	        	Path path = Files.createDirectories(Paths.get("C:\\APP_SIVIS\\Spese_Veicolo\\Spesa_"+optionalSpesa.get().getId()));
 	        	Path path2 = Paths.get("C:\\Spese\\Spesa_"+optionalSpesa.get().getVeicolo().getDescrizione());
-    		    //java.nio.file.Files;
-    		    //Files.createFile(path, null);//createDirectories(path);
     		    Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
     		    System.out.println("File is created!");
     		  } catch (IOException e) {
