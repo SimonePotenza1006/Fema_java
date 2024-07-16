@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CartellaRepository extends JpaRepository<Cartella, Integer>{
-    List<Cartella> findByParentFolder(Cartella parentFolder);
+    List<Cartella> findByParent(Cartella parent);
 }

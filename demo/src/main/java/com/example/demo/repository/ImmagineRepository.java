@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.entity.Azienda;
+import com.example.demo.entity.Cartella;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
@@ -25,6 +27,8 @@ public interface ImmagineRepository extends JpaRepository<Immagine, Integer>{
     List<Immagine> findByIntervento(Intervento intervento);
     List<Immagine> findBySopralluogo(Sopralluogo sopralluogo);
     List<Immagine> findByMerceInRiparazione(MerceInRiparazione merce);
+    List<Immagine> findByCartella(Cartella cartella);
+    //List<Immagine> findByAzienda(Azienda azienda);
     List<Optional<Immagine>> findByVeicolo(Veicolo veicolo);
     Optional<Immagine> findBySpesaVeicolo(SpesaVeicolo spesa);
 }

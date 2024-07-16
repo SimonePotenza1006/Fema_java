@@ -1,5 +1,4 @@
 package com.example.demo.entity;
-
 import java.util.List;
 import java.util.Set;
 
@@ -35,12 +34,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "immagineSpesaSivis")
-public class ImmagineSpesaSivis {
+@Table(name = "immagine_azienda")
+public class ImmagineAzienda {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id_immagine", nullable = false)
+    private int id_immagine;
 
     @Lob
     @Column(name = "imagedata", length = 16777213)
@@ -48,11 +48,11 @@ public class ImmagineSpesaSivis {
 
     @Column(name = "name", nullable = false)
     private String name;
-	
+
     @Column(name = "type", nullable = false)
     private String type;
 
-    @ManyToOne
-    @JoinColumn(name = "idSpesa", nullable = false)
-    private SpesaVeicoloSivis spesa;
+    @ManyToOne(optional = true)
+    @JoinColumn(referencedColumnName = "id")
+    private Azienda azienda;
 }

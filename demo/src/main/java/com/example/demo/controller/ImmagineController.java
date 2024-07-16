@@ -11,6 +11,7 @@ import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,20 +23,17 @@ import org.springframework.http.MediaType;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
-
-import com.example.demo.controller.ImmagineController.ImageWrapper;
 import com.example.demo.entity.Azienda;
+import com.example.demo.entity.Cartella;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.Preventivo;
 import com.example.demo.entity.Sopralluogo;
-import com.example.demo.entity.Spesa;
 import com.example.demo.entity.SpesaVeicolo;
-import com.example.demo.entity.SpesaVeicoloSivis;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
-import com.example.demo.repository.ImmagineRepository;
+import com.example.demo.repository.CartellaRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
 import com.example.demo.repository.PreventivoRepository;
@@ -44,7 +42,6 @@ import com.example.demo.repository.SpesaVeicoloRepository;
 import com.example.demo.repository.VeicoloRepository;
 import com.example.demo.service.ImmagineService;
 import com.example.demo.service.InterventoService;
-import com.example.demo.service.PreventivoService;
 import com.example.demo.service.SpesaVeicoloService;
 import com.example.demo.service.VeicoloService;
 import com.example.demo.util.ImageUtil;
@@ -82,6 +79,9 @@ public class ImmagineController {
 	public SopralluogoRepository sopralluogoRepository;
 
 	@Autowired
+	public CartellaRepository cartellaRepository;
+
+	@Autowired
 	public SpesaVeicoloRepository spesaRepository;
 
 	@Autowired
@@ -112,7 +112,24 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
     System.out.print(response);
     return ResponseEntity.status(HttpStatus.OK)
             .body(response);
-}
+	}
+
+	@PostMapping("/cartella/{cartellaId}")
+	public ResponseEntity<?> uploadImageCartella(@RequestParam("cartella") MultipartFile file,
+			@PathVariable("cartellaId") int cartellaId) throws IOException{
+				Optional<Cartella> optionalCartella = cartellaRepository.findById(cartellaId);
+				String response = immagineService.uploadImageCartella(file, cartellaId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Archivio\\Cartella_"+ optionalCartella.get().getNome()));
+					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+	        return ResponseEntity.status(HttpStatus.OK)
+	                .body(response);
+		}
 
 	@PostMapping("/spesa/{spesaId}")
     public ResponseEntity<?> uploadImageSpesa(@RequestParam("spesa") MultipartFile file, 
@@ -122,7 +139,6 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 	        String response = immagineService.uploadImageSpesa(file, idSpesa);
 	        try {
 	        	Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Spese_Veicolo\\Spesa_"+optionalSpesa.get().getIdSpesaVeicolo()));
-	        	Path path2 = Paths.get("C:\\Spese\\Spesa_"+optionalSpesa.get().getVeicolo().getDescrizione());
     		    Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
     		    System.out.println("File is created!");
     		  } catch (IOException e) {
@@ -304,6 +320,22 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 					return ResponseEntity.ok(imageWrappers);
 		}
 
+		@GetMapping(value = "/cartella/{cartellaId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByCartella(@PathVariable int cartellaId){
+			List<Immagine> images = immagineService.getImagesByCartella(cartellaId);
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> ImageUtil.decompressImage(image.getImageData()))
+				.collect(Collectors.toList());
+
+				List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}
+				return ResponseEntity.ok(imageWrappers);
+		}
+
         @GetMapping(value = "/intervento/{interventoId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<List<ImageWrapper>> getImagesByIntervento(@PathVariable int interventoId) {
     		List<Immagine> images = immagineService.getImagesByIntervento(interventoId);
@@ -332,6 +364,13 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 						this.imageData = Base64.getEncoder().encodeToString(imageData);
 					}
 				}
+
+		@DeleteMapping("{id}")
+		public ResponseEntity<String> deleteImage(@PathVariable("id") int immagineId) {
+    		immagineService.deleteImmagine(immagineId);
+			return new ResponseEntity<>("Immagine eliminata", HttpStatus.OK);
+		}
+		
 
         @GetMapping("/all/all")
 	    public List<byte[]>  getAll(){

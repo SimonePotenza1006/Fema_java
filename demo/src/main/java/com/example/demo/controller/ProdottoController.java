@@ -1,29 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Prodotto;
-import com.example.demo.entity.Ruolo;
-import com.example.demo.entity.Spesa;
-import com.example.demo.entity.Viaggio;
-import com.example.demo.entity.Fornitore;
-import com.example.demo.entity.CategoriaProdotto;
 import com.example.demo.service.ProdottoService;
-import com.example.demo.service.FornitoreService;
-import com.example.demo.service.CategoriaProdottoService;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 
@@ -34,12 +20,6 @@ public class ProdottoController {
     
     @Autowired
     private ProdottoService prodottoService;
-
-    @Autowired
-    private FornitoreService fornitoreService;
-
-    @Autowired
-    private CategoriaProdottoService categoriaProdottoService;
 
     @PostMapping
     public ResponseEntity<Prodotto> createProdotto(@RequestBody Prodotto prodotto){

@@ -11,7 +11,6 @@ import com.example.demo.service.UtenteService;
 import com.example.demo.service.CommissioneService;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Commissione;
-import com.example.demo.entity.Task;
 
 
 @RestController

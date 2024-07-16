@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
@@ -31,7 +28,6 @@ import com.example.demo.entity.MarcaTempo;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Viaggio;
 import com.example.demo.repository.MarcaTempoRepository;
-import com.example.demo.repository.SpesaRepository;
 import com.example.demo.repository.ViaggioRepository;
 import com.example.demo.service.MarcaTempoService;
 import com.example.demo.util.ImageUtil;
@@ -49,9 +45,6 @@ public class MarcaTempoController {
 	
 	@Autowired
 	private UtenteRepository utenteRepository;
-	
-	@Autowired
-	private SpesaRepository spesaRepository;
 
 	@Autowired
 	private MarcaTempoRepository marcatempoRepository;
@@ -76,8 +69,6 @@ public class MarcaTempoController {
 	public ResponseEntity<?> uploadImage(@RequestParam("pdf") MultipartFile file, 
 	    @PathVariable("idu") int idutente, @PathVariable int idviaggio, @PathVariable Integer ing, @PathVariable String gps,  @PathVariable int idmt) throws IOException, ParseException {
 	    	System.out.println("yt yyt yt "+idmt);
-	    	Optional<Viaggio> optionalViaggio = viaggioRepository.findById(idviaggio);
-	    	Optional<Utente> optionalUtente = utenteRepository.findById(idutente);
 	        String response = imageDataService.uploadPdf(file, idviaggio, idutente, ing, gps, idmt);
 	        System.out.println(file.getBytes());
 	        return ResponseEntity.status(HttpStatus.OK).body(response);

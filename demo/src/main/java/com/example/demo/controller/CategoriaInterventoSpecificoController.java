@@ -1,19 +1,14 @@
 package com.example.demo.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.util.StringUtils;
 
 import com.example.demo.entity.CategoriaInterventoSpecifico;
-import com.example.demo.entity.Spesa;
 import com.example.demo.entity.TipologiaIntervento;
-import com.example.demo.entity.Viaggio;
 import com.example.demo.service.CategoriaInterventoSpecificoService;
 import com.example.demo.service.TipologiaInterventoService;
 

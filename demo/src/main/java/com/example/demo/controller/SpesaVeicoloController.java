@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.SpesaVeicolo;
-import com.example.demo.entity.Task;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.service.SpesaVeicoloService;

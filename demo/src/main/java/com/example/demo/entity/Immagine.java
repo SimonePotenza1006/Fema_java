@@ -40,6 +40,7 @@ public class Immagine {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
 
     @Lob
@@ -69,6 +70,11 @@ public class Immagine {
     private Veicolo veicolo;
 
     @ManyToOne(optional = true)
+    @JoinColumn(name = "idcartella")
+    private Cartella cartella;
+
+    @ManyToOne(optional = true)
     @JoinColumn(name = "idMerce")
     private MerceInRiparazione merceInRiparazione;
+
 }

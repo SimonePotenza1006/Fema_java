@@ -1,13 +1,13 @@
 package com.example.demo.controller;
 
-import org.aspectj.apache.bcel.generic.RET;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.OrdinePerIntervento;
-import com.example.demo.entity.Prodotto;
+
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Utente;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
 
 

@@ -1,12 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.util.ImageUtil;
+import com.example.demo.entity.Azienda;
+import com.example.demo.entity.Cartella;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Veicolo;
+import com.example.demo.repository.AziendaRepository;
+import com.example.demo.repository.CartellaRepository;
 import com.example.demo.repository.ImmagineRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
@@ -40,7 +44,13 @@ public class ImmagineService {
     private SopralluogoRepository sopralluogoRepository;
 
     @Autowired
+    private AziendaRepository aziendaRepository;
+
+    @Autowired
     private VeicoloRepository veicoloRepository;
+
+    @Autowired
+    private CartellaRepository cartellaRepository;
 
     @Autowired
     private MerceInRiparazioneRepository merceRepository;
@@ -88,6 +98,19 @@ public class ImmagineService {
         return "Image uploaded successfully: " + file.getOriginalFilename();
     }
 
+    public String uploadImageCartella(MultipartFile file, int cartellaId) throws IOException{
+        Optional<Cartella> optionalCartella = cartellaRepository.findById(cartellaId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .cartella(optionalCartella.get())
+                .build()
+        );
+        return "Image uploaded succesfully:" + file.getOriginalFilename();
+    }
+
+    
     public String uploadImageSpesa(MultipartFile file, int spesaId) throws IOException{
         Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(spesaId);
         immagineRepository.save(Immagine.builder()
@@ -176,6 +199,17 @@ public class ImmagineService {
     }
 
     @Transactional
+    public List<Immagine> getImagesByCartella(int cartellaId){
+        Optional<Cartella> optionalCartella = cartellaRepository.findById(cartellaId);
+        if(optionalCartella.isPresent()){
+            return immagineRepository.findByCartella(optionalCartella.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
     public List<Immagine> getImagesByIntervento(int interventoId) { 
         Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId); 
         if (optionalIntervento.isPresent()) { 
@@ -184,6 +218,11 @@ public class ImmagineService {
 
      }
         return null; 
+    }
+
+    @Transactional
+    public void deleteImmagine(int immagineId) {
+        immagineRepository.deleteById(immagineId);
     }
 
     // @Transactional

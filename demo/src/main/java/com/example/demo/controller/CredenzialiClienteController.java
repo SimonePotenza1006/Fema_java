@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;

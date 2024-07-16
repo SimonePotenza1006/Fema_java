@@ -53,7 +53,7 @@ public class Cartella {
     private String nome;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "idcartella")
-    private Cartella parentFolder;
+    @JoinColumn(referencedColumnName = "idcartella", nullable = true)
+    private Cartella parent;
 
 }

@@ -45,17 +45,9 @@ public class RuoloController {
     }
 
     @PutMapping//("{id}")
-    // http://localhost:8080/api/reports/1
-    public ResponseEntity<Ruolo> updateRuolo(//@PathVariable("id") Long utenteId//, @RequestParam("file") MultipartFile file
+    public ResponseEntity<Ruolo> updateRuolo(
     		@RequestBody Ruolo ruolo
     		) throws IOException{
-    	//String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        //long size = multipartFile.getSize();
-         
-        //String filecode = FileUploadUtil.saveFile(fileName, file);
-    	//report.setId(reportId);
-    	//Utente utente = utenteService.getUtenteById(utenteId);
-    	//Utente updatedUtente = utenteService.updateUtente(utente);
     	Ruolo updatedRuolo = ruoloService.updateRuolo(ruolo);
         return new ResponseEntity<>(updatedRuolo, HttpStatus.OK);
     }

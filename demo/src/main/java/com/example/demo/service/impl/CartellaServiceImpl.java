@@ -30,7 +30,7 @@ public class CartellaServiceImpl implements CartellaService{
 
     @Override
     public List<Cartella> getCartelleByParentFolder(Cartella cartella){
-        List<Cartella> optionalCartella = cartellaRepository.findByParentFolder(cartella);
+        List<Cartella> optionalCartella = cartellaRepository.findByParent(cartella);
         return optionalCartella;
     }
 

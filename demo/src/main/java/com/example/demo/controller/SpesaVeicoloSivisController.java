@@ -1,17 +1,11 @@
 package com.example.demo.controller;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.SpesaVeicoloSivis;
-import com.example.demo.service.SpesaVeicoloSivisService;
-import com.example.demo.service.UtenteSivisService;
-import com.example.demo.service.VeicoloSivisService;
 import com.example.demo.service.impl.SpesaVeicoloSivisServiceImpl;
 
 import lombok.AllArgsConstructor;
