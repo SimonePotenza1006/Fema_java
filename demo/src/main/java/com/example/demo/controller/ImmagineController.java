@@ -28,6 +28,7 @@ import com.example.demo.entity.Cartella;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
+import com.example.demo.entity.Movimenti;
 import com.example.demo.entity.Preventivo;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
@@ -36,6 +37,7 @@ import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.CartellaRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
+import com.example.demo.repository.MovimentiRepository;
 import com.example.demo.repository.PreventivoRepository;
 import com.example.demo.repository.SopralluogoRepository;
 import com.example.demo.repository.SpesaVeicoloRepository;
@@ -76,6 +78,9 @@ public class ImmagineController {
 	public AziendaRepository aziendaRepository;
 
 	@Autowired
+	public MovimentiRepository movimentoRepository;
+
+	@Autowired
 	public SopralluogoRepository sopralluogoRepository;
 
 	@Autowired
@@ -113,6 +118,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
     return ResponseEntity.status(HttpStatus.OK)
             .body(response);
 	}
+
+	@PostMapping("/movimento/{movimentoId}")
+	public ResponseEntity<?> uploadImageMovimento(@RequestParam("movimento") MultipartFile file,
+			@PathVariable("movimentoId") int movimentoId) throws IOException{
+				Optional<Movimenti> optionalMovimento = movimentoRepository.findById(movimentoId);
+				String response = immagineService.uploadImageMovimento(file, movimentoId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Movimenti\\Movimento_"+optionalMovimento.get().getDescrizione()));
+					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
 
 	@PostMapping("/cartella/{cartellaId}")
 	public ResponseEntity<?> uploadImageCartella(@RequestParam("cartella") MultipartFile file,

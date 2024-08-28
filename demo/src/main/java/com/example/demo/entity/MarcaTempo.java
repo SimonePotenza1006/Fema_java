@@ -62,7 +62,13 @@ public class MarcaTempo {
     private Date datau;
     
     @Column(name = "ingresso")
-    private Boolean ingresso;    
+    private Boolean ingresso;   
+    
+    @Column(name = "edit", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean edit;
+
+    @Column(name = "editu", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean editu;
     
     @Lob
     @Column(name = "imagedata", length = 16777213)//columnDefinition = "MEDIUMBLOB")

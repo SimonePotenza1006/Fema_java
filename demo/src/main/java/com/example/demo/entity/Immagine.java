@@ -77,4 +77,8 @@ public class Immagine {
     @JoinColumn(name = "idMerce")
     private MerceInRiparazione merceInRiparazione;
 
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "id_movimento")
+    private Movimenti movimento;
+
 }

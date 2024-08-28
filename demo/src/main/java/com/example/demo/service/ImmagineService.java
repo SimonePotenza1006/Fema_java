@@ -6,6 +6,7 @@ import com.example.demo.entity.Cartella;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
+import com.example.demo.entity.Movimenti;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Veicolo;
@@ -14,6 +15,7 @@ import com.example.demo.repository.CartellaRepository;
 import com.example.demo.repository.ImmagineRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
+import com.example.demo.repository.MovimentiRepository;
 import com.example.demo.repository.SopralluogoRepository;
 import com.example.demo.repository.SpesaVeicoloRepository;
 import com.example.demo.repository.VeicoloRepository;
@@ -48,6 +50,9 @@ public class ImmagineService {
 
     @Autowired
     private VeicoloRepository veicoloRepository;
+
+    @Autowired
+    private MovimentiRepository movimentiRepository;
 
     @Autowired
     private CartellaRepository cartellaRepository;
@@ -105,6 +110,18 @@ public class ImmagineService {
                 .type(file.getContentType())
                 .imageData(ImageUtil.compressImage(file.getBytes()))
                 .cartella(optionalCartella.get())
+                .build()
+        );
+        return "Image uploaded succesfully:" + file.getOriginalFilename();
+    }
+
+    public String uploadImageMovimento(MultipartFile file, int movimentoId) throws IOException{
+        Optional<Movimenti> optionalMovimento = movimentiRepository.findById(movimentoId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .movimento(optionalMovimento.get())
                 .build()
         );
         return "Image uploaded succesfully:" + file.getOriginalFilename();
