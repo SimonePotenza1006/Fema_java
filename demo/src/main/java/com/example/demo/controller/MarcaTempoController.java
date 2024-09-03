@@ -65,6 +65,13 @@ public class MarcaTempoController {
 		return new ResponseEntity<>(marcatempoList, HttpStatus.OK);
 	}
 
+	@GetMapping("/ordered")
+	public ResponseEntity<List<MarcaTempo>> getAllMarcatemposOrdered(){
+		List<MarcaTempo> marcatempoList = marcatempoRepository.findAllByOrderByUtenteAscDataAsc();
+		return new ResponseEntity<>(marcatempoList, HttpStatus.OK);
+	}
+	
+
     @PostMapping("/{idu}/{idviaggio}/{ing}/{gps}/{idmt}")
 	public ResponseEntity<?> uploadImage(@RequestParam("pdf") MultipartFile file, 
 	    @PathVariable("idu") int idutente, @PathVariable int idviaggio, @PathVariable Integer ing, @PathVariable String gps,  @PathVariable int idmt) throws IOException, ParseException {
@@ -97,8 +104,6 @@ public class MarcaTempoController {
 
         @GetMapping("/s/{idu}/{idviaggio}")
 	    public ResponseEntity<List<MarcaTempo>> getMarcaTempos(@PathVariable int idu, @PathVariable int idviaggio){
-
-	    	
 	    	List<MarcaTempo> viaggi = imageDataService.findByViaggioAndUtente(idviaggio, idu);
 	        return new ResponseEntity<>(viaggi, HttpStatus.OK);
 	    }

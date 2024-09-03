@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -38,6 +39,18 @@ public class Veicolo {
 
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
+
+    @Column(name = "targa", nullable = true)
+    private String targa;
+
+    @Column(name = "serial_number", nullable = true)
+    private String seriale;
+
+    @Column(name = "imei", nullable = true)
+    private String imei;
+
+    @Column(name = "scadenza_gps", nullable = true)
+    private Date scadenza_gps;
 
     @Column(name = "proprietario", nullable = false)
     private String proprietario;

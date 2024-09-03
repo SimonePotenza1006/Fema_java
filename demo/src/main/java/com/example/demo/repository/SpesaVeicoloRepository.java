@@ -15,4 +15,5 @@ public interface SpesaVeicoloRepository extends JpaRepository<SpesaVeicolo, Inte
     Optional<SpesaVeicolo> findByIdSpesaVeicolo(int id_spesa_veicolo);
     List<Optional<SpesaVeicolo>> findByUtente(Utente utente);
     List<Optional<SpesaVeicolo>> findByVeicolo(Veicolo veicolo);
+    List<SpesaVeicolo> findAllByOrderByDataDescVeicoloId();
 }

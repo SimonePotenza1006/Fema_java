@@ -53,6 +53,10 @@ public class Movimenti {
     @Column(name = "importo", nullable = false)
     private Double importo;
 
+    @ManyToOne
+    @JoinColumn(name = "id_tipologia_movimento")
+    private TipologiaMovimento tipologia;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "FK_idUser")
     private Utente utente;
@@ -64,6 +68,10 @@ public class Movimenti {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idinterventi", nullable = true)
     private Intervento intervento;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idclienti", nullable = true)
+    private Cliente cliente;
 }
 
 

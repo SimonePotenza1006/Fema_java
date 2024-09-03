@@ -62,4 +62,10 @@ public class SpesaVeicolo {
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
 
+    @Column(name = "note_tipologia_spesa", nullable = true)
+    private String note_tipologia_spesa;
+
+    @Column(name = "note_fornitore", nullable = true)
+    private String note_fornitore;
+
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Veicolo;
+import com.example.demo.repository.SpesaVeicoloRepository;
 import com.example.demo.service.SpesaVeicoloService;
 import com.example.demo.service.UtenteService;
 import com.example.demo.service.VeicoloService;
@@ -21,6 +22,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping(value = "/api/spesaVeicolo")
 public class SpesaVeicoloController {
+
+    @Autowired
+    private SpesaVeicoloRepository spesaRepository;
     
     @Autowired
     private UtenteService utenteService;
@@ -56,7 +60,7 @@ public class SpesaVeicoloController {
 
     @GetMapping("ordered")
     public ResponseEntity<List<SpesaVeicolo>> getAllSpesaVeicoloOrderByDesc(){
-        List<SpesaVeicolo> spese = spesaService.getAllSpesaVeicoloOrderByDesc();
+        List<SpesaVeicolo> spese = spesaRepository.findAllByOrderByDataDescVeicoloId();
         return new ResponseEntity<>(spese, HttpStatus.OK);
     }
 

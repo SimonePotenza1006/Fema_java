@@ -127,6 +127,18 @@ public class ImmagineService {
         return "Image uploaded succesfully:" + file.getOriginalFilename();
     }
 
+    public String uploadImageVeicolo(MultipartFile file, int veicoloId) throws IOException{
+        Optional<Veicolo> optionalVeicolo = veicoloRepository.findById(veicoloId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .veicolo(optionalVeicolo.get())
+                .build()
+        );
+        return "Image uploaded succesfully:" + file.getOriginalFilename();
+    }
+
     
     public String uploadImageSpesa(MultipartFile file, int spesaId) throws IOException{
         Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(spesaId);
@@ -242,12 +254,15 @@ public class ImmagineService {
         immagineRepository.deleteById(immagineId);
     }
 
-    // @Transactional
-    // public byte[] getImageBySopralluogo(int sopralluogoId){
-    //     Optional<Sopralluogo> optionalSopralluogo = sopralluogoRepository.findById(sopralluogoId);
-    //     List<Optional<Immagine>> dbImage = immagineRepository.findBySopralluogo(optionalSopralluogo.get());
-    //     return ImageUtil.decompressImage(dbImage.get().getImageData());
-    // }
+    @Transactional
+    public void deleteImmagineMovimento(int movimentoId){
+    Optional<Movimenti> optionalMovimento = movimentiRepository.findById(movimentoId);
+        if(optionalMovimento.isPresent()){
+            List<Immagine> immagini = immagineRepository.findByMovimento(optionalMovimento.get());
+            immagineRepository.deleteAll(immagini);
+        }
+    }          
+
 
     @Transactional
     public byte[] getImageBySpesa(int idSpesa){

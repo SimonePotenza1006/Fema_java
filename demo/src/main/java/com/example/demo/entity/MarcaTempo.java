@@ -81,4 +81,8 @@ public class MarcaTempo {
     @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "iduser", nullable = false) //ruolo_id è il nome della colonna fk, non ruolo. referencedColumnName invece si riferisce all'id della tabella ruolo
     private Utente utente;
+
+    @ManyToOne //(cascade = CascadeType.MERGE)
+    @JoinColumn(referencedColumnName = "iduser", nullable = true)
+    private Utente utenteEdit;
 }

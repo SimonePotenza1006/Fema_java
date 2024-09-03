@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Base64;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -125,7 +127,7 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				Optional<Movimenti> optionalMovimento = movimentoRepository.findById(movimentoId);
 				String response = immagineService.uploadImageMovimento(file, movimentoId);
 				try{
-					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Movimenti\\Movimento_"+optionalMovimento.get().getDescrizione()));
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Movimenti\\Movimento_"+optionalMovimento.get().getDescrizione().replace(" ", "")));
 					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
 					System.out.println("File is created!");
 				} catch(IOException e){
@@ -180,33 +182,33 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 	                .body(image);
 	    }   
 
-@PostMapping("veicolo/{id}")
-public ResponseEntity<?> uploadImageSpesaVeicolo(@RequestParam("veicolo") MultipartFile file,
-                                                 @PathVariable("id") int veicoloId) throws IOException {
-    Optional<Veicolo> optionalVeicolo = veicoloRepository.findById(veicoloId);
-	System.out.println("Prova upload immagine sopralluogo");
-    String response = immagineService.uploadImageSpesaveicolo(file, veicoloId);
-    try {
-        System.out.println("Prova upload immagine sopralluogo");
+// @PostMapping("veicolo/{id}")
+// public ResponseEntity<?> uploadImageSpesaVeicolo(@RequestParam("veicolo") MultipartFile file,
+//                                                  @PathVariable("id") int veicoloId) throws IOException {
+//     Optional<Veicolo> optionalVeicolo = veicoloRepository.findById(veicoloId);
+// 	System.out.println("Prova upload immagine sopralluogo");
+//     String response = immagineService.uploadImageSpesaveicolo(file, veicoloId);
+//     try {
+//         System.out.println("Prova upload immagine sopralluogo");
         
 
-        LocalDate currentDate = LocalDate.now();
-        String formattedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
+//         LocalDate currentDate = LocalDate.now();
+//         String formattedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
         
 
-        Path folderPath = Files.createDirectories(Paths.get("C:\\APP_FEMA\\SpesaVeicolo\\Veicolo_" + optionalVeicolo.get().getDescrizione().toString() + "_" + formattedDate + "\\Foto"));
+//         Path folderPath = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Veicolo\\Veicolo_" + optionalVeicolo.get().getDescrizione().replace(" ","") + "\\Foto"));
         
 
-        Files.copy(file.getInputStream(), folderPath.resolve(file.getOriginalFilename()));
+//         Files.copy(file.getInputStream(), folderPath.resolve(file.getOriginalFilename()));
         
-        System.out.println("File is created!");
-    } catch (IOException e) {
-        System.err.println("Failed to create directory!" + e.getMessage());
-    }
-    System.out.print(response);
-    return ResponseEntity.status(HttpStatus.OK)
-            .body(response);
-}
+//         System.out.println("File is created!");
+//     } catch (IOException e) {
+//         System.err.println("Failed to create directory!" + e.getMessage());
+//     }
+//     System.out.print(response);
+//     return ResponseEntity.status(HttpStatus.OK)
+//             .body(response);
+// }
 
 @PostMapping("merce/{id}")
 public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile file,
@@ -258,6 +260,24 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 	        return ResponseEntity.status(HttpStatus.OK)
 	                .body(response);
 	    }
+
+		@PostMapping("/veicolo/{id}")
+		public ResponseEntity<?> uploadImageVeicolo(@RequestParam("veicolo") MultipartFile file,
+									 @PathVariable("id") int veicoloId) throws IOException {
+			Optional<Veicolo> optionalVeicolo = veicoloRepository.findById(veicoloId);
+			String response = immagineService.uploadImage(file, veicoloId);
+			try{
+				System.out.println("Prova upload Immagine");
+				Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Aziende\\Azienda_"+optionalVeicolo.get().getDescrizione().replace(" ", "")+"\\Foto"));
+				Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+    		    System.out.println("File is created!");
+			} catch(IOException e){
+				System.err.println("Failed to create directory!" + e.getMessage());
+			}
+			System.out.print(response);
+	        return ResponseEntity.status(HttpStatus.OK)
+	                .body(response);
+		}
 
 		@PostMapping("/azienda/{id}") // Definisci l'ID come parametro di percorso
 		public ResponseEntity<?> uploadImageLogo(@RequestParam("azienda") MultipartFile file, 
@@ -390,6 +410,12 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 		public ResponseEntity<String> deleteImage(@PathVariable("id") int immagineId) {
     		immagineService.deleteImmagine(immagineId);
 			return new ResponseEntity<>("Immagine eliminata", HttpStatus.OK);
+		}
+
+		@DeleteMapping("/movimento/{id}")
+		public ResponseEntity<String> deleteImagesMovimento(@PathVariable("id") int movimentoId) {
+    		immagineService.deleteImmagineMovimento(movimentoId);
+    		return new ResponseEntity<>("Immagini associate al movimento eliminate", HttpStatus.OK);
 		}
 		
 

@@ -34,4 +34,6 @@ public interface MarcaTempoRepository extends JpaRepository<MarcaTempo, Integer>
 
     List<Optional<MarcaTempo>> findByViaggioAndUtenteAndDataBetween(Viaggio viaggio, Utente utente, Date datetoday, Date datetomorrow);
 
+    List<MarcaTempo> findAllByOrderByUtenteAscDataAsc();
+
 }
