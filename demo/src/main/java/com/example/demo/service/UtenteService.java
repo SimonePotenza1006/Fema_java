@@ -22,6 +22,8 @@ public interface UtenteService {
 
     List<Utente> getAllUtenti();
 
+    List<Utente> getAllUtentiAttivi();
+
     Utente updateUtente(Utente utente);
 
     void deleteUtente(int utenteId);

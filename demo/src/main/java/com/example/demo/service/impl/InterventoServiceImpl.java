@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Intervento;
+import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.TipologiaIntervento;
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.GruppoInterventi;
@@ -78,6 +79,12 @@ public class InterventoServiceImpl implements InterventoService{
     @Override
     public List<Optional<Intervento>> getInterventoByCliente(Cliente cliente){
         List<Optional<Intervento>> optionalIntervento = interventoRepository.findByCliente(cliente);
+        return optionalIntervento;
+    }
+
+    @Override
+    public List<Intervento> getInterventiByMerce(MerceInRiparazione merce){
+        List<Intervento> optionalIntervento = interventoRepository.findByMerce(merce);
         return optionalIntervento;
     }
 

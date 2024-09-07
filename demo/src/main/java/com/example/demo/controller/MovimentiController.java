@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Movimenti;
+import com.example.demo.entity.TipologiaMovimento;
+import com.example.demo.repository.TipologiaMovimentoRepository;
 import com.example.demo.service.InterventoService;
 import com.example.demo.service.MovimentiService;
 
@@ -25,6 +27,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping("/api/movimenti")
 public class MovimentiController {
+
+    @Autowired
+    private TipologiaMovimentoRepository tipologiaRepository;
     
     @Autowired
     private MovimentiService movimentiService;
@@ -62,7 +67,13 @@ public class MovimentiController {
         return new ResponseEntity<>(movimenti, HttpStatus.OK);
     }
 
-    // Endpoint per salvare un nuovo movimento
+    @GetMapping("/tipologia/{id}")
+    public ResponseEntity<List<Movimenti>> getMovimentiByTipologia(@PathVariable("id") int tipologiaId){
+        TipologiaMovimento tipoloigia = tipologiaRepository.findById(tipologiaId);
+        List<Movimenti> movimenti = movimentiService.getAllByTipologiaOrdered(tipoloigia);
+        return new ResponseEntity<>(movimenti, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Movimenti> saveMovimenti(@RequestBody Movimenti movimento) {
         System.out.println("PROVAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ");
@@ -70,7 +81,6 @@ public class MovimentiController {
         return new ResponseEntity<>(savedMovimento, HttpStatus.CREATED);
     }
 
-    // Endpoint per eliminare un movimento per ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMovimentiById(@PathVariable("id") int id) {
         movimentiService.deleteMovimentiById(id);

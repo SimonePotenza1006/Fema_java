@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Movimenti;
+import com.example.demo.entity.TipologiaMovimento;
 import com.example.demo.repository.MovimentiRepository;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +28,11 @@ public class MovimentiService {
     // Metodo per recuperare un movimento per ID
     public Optional<Movimenti> getMovimentiById(int id) {
         return movimentiRepository.findById(id);
+    }
+
+    public List<Movimenti> getAllByTipologiaOrdered(TipologiaMovimento tipologia){
+        List<Movimenti> optionalMovimenti = movimentiRepository.findByTipologiaOrderByIdDesc(tipologia);
+        return optionalMovimenti;
     }
 
     public List<Movimenti> getAllMovimentiOrderByDesc(){

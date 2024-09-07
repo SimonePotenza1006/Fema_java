@@ -12,5 +12,5 @@ import java.util.List;
 public interface UtenteRepository extends JpaRepository<Utente, Integer>{
     Utente findByEmail(String email);
     List<Utente> findByRuolo(Ruolo ruolo);
-    List<Utente> findByAttivo(Boolean ruolo);
+    List<Utente> findByAttivoTrue();
 }

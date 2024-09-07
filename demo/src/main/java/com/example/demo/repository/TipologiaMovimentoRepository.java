@@ -9,4 +9,5 @@ import com.example.demo.entity.TipologiaMovimento;
 @Repository
 public interface TipologiaMovimentoRepository extends JpaRepository<TipologiaMovimento, Integer>{
     List<TipologiaMovimento> findAll();
+    TipologiaMovimento findById(int id);
 }

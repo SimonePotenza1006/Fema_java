@@ -72,10 +72,19 @@ public class MerceInRiparazione {
     private String dati;
 
     @Column(name = "preventivo")
-    private boolean preventivo;
+    private Boolean preventivo;
 
-    @Column(name = "importo_preventivato")
+    @Column(name = "importo_preventivato", nullable = true)
     private double importo_preventivato;
+
+    @Column(name = "data_comunica_preventivo", nullable = true)
+    private Date data_comunica_preventivo;
+
+    @Column(name = "preventivo_accettato", nullable = true)
+    private Boolean preventivo_accettato;
+
+    @Column(name = "data_accettazione_preventivo", nullable = true)
+    private Date data_accettazione_preventivo;
 
     @Column(name = "diagnosi")
     private String diagnosi;

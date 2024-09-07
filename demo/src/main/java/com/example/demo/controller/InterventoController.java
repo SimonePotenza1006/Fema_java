@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Intervento;
+import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.TipologiaIntervento;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Cliente;
@@ -10,6 +11,7 @@ import com.example.demo.service.UtenteService;
 import com.example.demo.service.impl.InterventoServiceImpl;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.GruppoInterventiService;
+import com.example.demo.service.MerceInRiparazioneService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,9 @@ public class InterventoController {
 
     @Autowired
     private UtenteService utenteService;
+
+    @Autowired
+    private MerceInRiparazioneService merceService;
 
     @Autowired
     private TipologiaInterventoService tipologiaInterventoService;
@@ -106,6 +111,14 @@ public class InterventoController {
         List<Optional<Intervento>> interventi = interventoService.getInterventiByGruppo(gruppo);
         return new ResponseEntity<>(interventi, HttpStatus.OK); 
     }
+    
+    @GetMapping("/merce/{id}")
+    public ResponseEntity<List<Intervento>> getInterventoByMerce(@PathVariable("id") int merceId){
+        MerceInRiparazione merce = merceService.getMerceById(merceId);
+        List<Intervento> interventi = interventoService.getInterventiByMerce(merce);
+        return new ResponseEntity<>(interventi, HttpStatus.OK);
+    }
+
 
     @PutMapping("{id}")
     public ResponseEntity<Intervento> updateIntervento(@RequestBody Intervento intervento) throws IOException{

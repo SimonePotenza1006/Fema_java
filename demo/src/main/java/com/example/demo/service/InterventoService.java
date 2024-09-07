@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.entity.Intervento;
+import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.TipologiaIntervento;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Cliente;
@@ -24,6 +25,8 @@ public interface InterventoService {
     List<Optional<Intervento>> getInterventoByTipologia(TipologiaIntervento tipologiaIntervento);
 
     List<Optional<Intervento>> getInterventiByGruppo(GruppoInterventi gruppo);
+
+    List<Intervento> getInterventiByMerce(MerceInRiparazione merce);
 
     List<Intervento> getAllInterventiOrderdByDesc();
 

@@ -46,6 +46,12 @@ public class UtenteController {
         return new ResponseEntity<>(utente, HttpStatus.OK);
     }
 
+    @GetMapping("/attivo")
+    public ResponseEntity<List<Utente>> getUtentiAttivi(){
+        List<Utente> utentiAttivi = utenteService.getAllUtentiAttivi();
+        return new ResponseEntity<>(utentiAttivi, HttpStatus.OK);
+    }
+
     @GetMapping("/email/{email}")
     public ResponseEntity<Utente> getUtenteByEmail(@PathVariable("email") String utenteEmail){
     	Utente utente = utenteService.getUtenteByEmail(utenteEmail);

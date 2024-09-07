@@ -81,7 +81,12 @@ public class UtenteServiceImpl implements UtenteService{
     @Override
     public List<Utente> getAllUtenti() {
         //return utenteRepository.findAll();
-    	return utenteRepository.findByAttivo(true);
+    	return utenteRepository.findAll();
+    }
+
+    @Override 
+    public List<Utente> getAllUtentiAttivi(){
+        return utenteRepository.findByAttivoTrue();
     }
 
     @Override

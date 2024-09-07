@@ -71,6 +71,9 @@ public class Intervento {
     @Column(name = "importo_intervento", nullable = true)
     private Double importo_intervento;
 
+    @Column(name = "prezzo_ivato", nullable = true)
+    private boolean prezzo_ivato;
+
     @Column(name = "acconto", nullable = true)
     private Double acconto;
 
