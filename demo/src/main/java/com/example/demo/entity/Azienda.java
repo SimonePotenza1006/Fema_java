@@ -33,6 +33,9 @@ public class Azienda {
     @Column(name = "luogo_di_lavoro", nullable = false)
     private String luogo_di_lavoro;
 
+    @Column(name = "sede_legale", nullable = true)
+    private String sede_legale;
+
     @Column(name = "partita_iva")
     private String partita_iva;
 

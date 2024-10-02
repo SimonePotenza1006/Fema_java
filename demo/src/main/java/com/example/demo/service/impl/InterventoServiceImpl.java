@@ -77,6 +77,16 @@ public class InterventoServiceImpl implements InterventoService{
     }
 
     @Override
+    public List<Intervento> getAllInterventiWithMerceNonConclusiByUtente(Utente utente){
+        return interventoRepository.findByMerceNotNullAndDataConsegnaIsNullAndUtente(utente);
+    }
+
+    @Override
+    public List<Intervento> getAllInterventiWithMerce(){
+        return interventoRepository.findDistinctByMerceIsNotNull();
+    }
+
+    @Override
     public List<Optional<Intervento>> getInterventoByCliente(Cliente cliente){
         List<Optional<Intervento>> optionalIntervento = interventoRepository.findByCliente(cliente);
         return optionalIntervento;

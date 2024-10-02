@@ -18,6 +18,10 @@ public interface InterventoService {
 
     List<Intervento> getAllInterventi();
 
+    List<Intervento> getAllInterventiWithMerce();
+
+    List<Intervento> getAllInterventiWithMerceNonConclusiByUtente(Utente utente);
+
     List<Optional<Intervento>> getInterventoByCliente(Cliente cliente);
 
     List<Optional<Intervento>> getInterventoByUtente(Utente utente);

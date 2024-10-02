@@ -59,6 +59,9 @@ public class Intervento {
     @Column(name = "orario_appuntamento", nullable = true)
     private LocalDateTime orario_appuntamento;
 
+    @Column(name = "posizione_gps", nullable = true)
+    private String posizione_gps;
+
     @Column(name = "orario_inizio")
     private LocalDateTime orario_inizio;
 
@@ -89,6 +92,9 @@ public class Intervento {
     @Column(name = "saldato")
     private boolean saldato;
 
+    @Column(name = "saldato_da_tecnico", nullable = true)
+    private Boolean saldato_da_tecnico;
+
     @Column(name = "note")
     private String note;
 
@@ -112,7 +118,7 @@ public class Intervento {
     private Veicolo veicolo;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "FK_id_merceRiparazione")
+    @JoinColumn(name = "FK_id_merceRiparazione", nullable = true)
     private MerceInRiparazione merce;
 
     @ManyToOne 

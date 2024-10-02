@@ -1,5 +1,6 @@
 package com.example.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.quartz.QuartzTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,7 +11,11 @@ import java.util.Set;
 import java.util.Optional;
 import com.example.demo.entity.Pdf;
 import com.example.demo.entity.Utente;
+import com.example.demo.entity.Azienda;
+import com.example.demo.entity.Cliente;
 import com.example.demo.entity.ImageData;
+import com.example.demo.repository.AziendaRepository;
+import com.example.demo.repository.ClienteRepository;
 import com.example.demo.repository.ImageDataRepository;
 import com.example.demo.repository.PdfRepository;
 import com.example.demo.repository.UtenteRepository;
@@ -24,6 +29,14 @@ public class PdfService {
 
     @Autowired
     private UtenteRepository utenteRepository;
+
+	@Autowired 
+	private AziendaRepository aziendaRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+
+
 
     public String uploadPdf(Optional<MultipartFile> file, int utenteId) //throws Exception 
 	{
@@ -70,39 +83,34 @@ public class PdfService {
 	public byte[] getProfilo(String tipofoto, int utenteId) {
 			Optional<Utente> optionalUtente = utenteRepository.findById(utenteId);
 	        Optional<Pdf> dbImage = Optional.ofNullable(pdfRepository.findByUtente(optionalUtente.get()).get(0));
-	        /*List<byte[]> images = new ArrayList<>();
-	        for (Optional<ImageData> def : dbImage){
-                images.add(def.get().getImageData());
-
-            }*/
 	        byte[] image = ImageUtil.decompressImage(dbImage.get().getImageData());
 	return image;
 	}
 	
 	@Transactional
-	public List<Pdf> getAllByUtente(int utenteId){//String tipofoto, Long utenteId) {
-			Optional<Utente> optionalUtente = utenteRepository.findById(utenteId);
-	        List<Pdf> dbImages = pdfRepository.findByUtente(optionalUtente.get());
-	        /*List<byte[]> images = new ArrayList<>();
-	        for (Optional<ImageData> def : dbImage){
-                images.add(def.get().getImageData());
-
-            }*/
-	        //byte[] images = ImageUtil.decompressImage(dbImage.get().getImageData());
-	return dbImages;
+	public List<Pdf> getAllByUtente(int utenteId){
+		Optional<Utente> optionalUtente = utenteRepository.findById(utenteId);
+	    List<Pdf> dbImages = pdfRepository.findByUtente(optionalUtente.get());
+		return dbImages;
 	}
 
-	
 	@Transactional
-	public List<Pdf> getAll(){//String tipofoto, Long utenteId) {
-			//Optional<Utente> optionalUtente = utenteRepository.findById(utenteId);
-	        List<Pdf> dbImages = pdfRepository.findAll();
-	        /*List<byte[]> images = new ArrayList<>();
-	        for (Optional<ImageData> def : dbImage){
-                images.add(def.get().getImageData());
+	public List<Pdf> getAllByCliente(int clienteId){
+		Optional<Cliente> optionalCliente = clienteRepository.findById(clienteId);
+		List<Pdf> pdfs = pdfRepository.findByCliente(optionalCliente.get());
+		return pdfs;
+	}
 
-            }*/
-	        //byte[] images = ImageUtil.decompressImage(dbImage.get().getImageData());
+	@Transactional
+	public List<Pdf> getAllByAzienda(int aziendaId){
+		Optional<Azienda> optionalAzienda = aziendaRepository.findById(aziendaId);
+		List<Pdf> pdfs = pdfRepository.findByAzienda(optionalAzienda.get());
+		return pdfs;
+	}
+
+	@Transactional
+	public List<Pdf> getAll(){
+	        List<Pdf> dbImages = pdfRepository.findAll();
 	return dbImages;
 	}
 

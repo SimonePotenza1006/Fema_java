@@ -72,6 +72,14 @@ public class InterventoController {
         return new ResponseEntity<>(interventi, HttpStatus.OK);
     }
 
+    @GetMapping("withMerce")
+    public ResponseEntity<List<Intervento>> getAllInterventiWithMerce(){
+        List<Intervento> interventi = interventoService.getAllInterventiWithMerce();
+        return new ResponseEntity<>(interventi, HttpStatus.OK);
+    }
+
+
+
     @GetMapping("ordered")
     public ResponseEntity<List<Intervento>> getAllInterventiOrderByDesc(){
         List<Intervento> interventi = interventoService.getAllInterventiOrderdByDesc();
@@ -88,6 +96,13 @@ public class InterventoController {
     public ResponseEntity<List<Optional<Intervento>>> getInterventiByCliente(@PathVariable("id") int clienteId){
         Cliente cliente = clienteService.getClienteById(clienteId);
         List<Optional<Intervento>> interventi = interventoService.getInterventoByCliente(cliente);
+        return new ResponseEntity<>(interventi, HttpStatus.OK);
+    }
+
+    @GetMapping("withMerce/{id}")
+    public ResponseEntity<List<Intervento>> getInterventiWithMerceByUtente(@PathVariable("id") int utenteId){
+        Utente utente = utenteService.getUtenteById(utenteId);
+        List<Intervento> interventi = interventoService.getAllInterventiWithMerceNonConclusiByUtente(utente);
         return new ResponseEntity<>(interventi, HttpStatus.OK);
     }
 

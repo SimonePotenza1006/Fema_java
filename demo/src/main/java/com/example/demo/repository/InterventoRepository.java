@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Intervento;
@@ -27,4 +28,11 @@ public interface InterventoRepository extends JpaRepository<Intervento, Integer>
     List<Optional<Intervento>> findByTipologia(TipologiaIntervento tipologiaIntervento);
     List<Optional<Intervento>> findByGruppo(GruppoInterventi gruppoInterventi);
     List<Intervento> findByMerce(MerceInRiparazione merce);
+    List<Intervento> findDistinctByMerceIsNotNull();
+    List<Intervento> findByMerceNotNullAndUtenteAndConclusoFalse(Utente utente);
+
+    @Query("SELECT i FROM Intervento i WHERE i.merce IS NOT NULL AND i.merce.data_consegna IS NULL AND i.utente = :utente")
+    List<Intervento> findByMerceNotNullAndDataConsegnaIsNullAndUtente(@Param("utente") Utente utente);
+
+
 }

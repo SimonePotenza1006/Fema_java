@@ -74,6 +74,9 @@ public class MerceInRiparazione {
     @Column(name = "preventivo")
     private Boolean preventivo;
 
+    @Column(name = "presenza_magazzino")
+    private Boolean presenza_magazzino;
+
     @Column(name = "importo_preventivato", nullable = true)
     private double importo_preventivato;
 
