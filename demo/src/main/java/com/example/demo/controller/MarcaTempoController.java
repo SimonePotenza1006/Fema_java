@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import java.util.Date;
@@ -55,7 +56,10 @@ public class MarcaTempoController {
 
 	@PostMapping
 	public ResponseEntity<MarcaTempo> createMarcaTempo(@RequestBody MarcaTempo marcatempo){
+		LocalDateTime now = LocalDateTime.now();
+    	System.out.println("Orario della chiamata POST: " + now);
 		MarcaTempo savedMarcatempo = marcatemposervice.saveMarcatempo(marcatempo);
+		System.out.println("Salvata la timbratura alle: " + now);
 		return new ResponseEntity<>(savedMarcatempo, HttpStatus.CREATED);
 	}
 
@@ -94,11 +98,15 @@ public class MarcaTempoController {
 
         @GetMapping("/oggi/{idu}/{idviaggio}")
 	    public ResponseEntity<List<Optional<MarcaTempo>>> getMarcaTempoToday(@PathVariable int idu, @PathVariable int idviaggio){
-			System.out.println("today");
+			System.out.println("ACCESSO PAGINA TIMBRATURA");
+			LocalDateTime now = LocalDateTime.now();
+    		System.out.println("Orario della chiamata GET: " + now);
 	    	//ResponseEntity<List<MarcaTempo>>
+			Optional<Utente> utente = utenteRepository.findById(idu);
+			System.out.println("Utente: " + utente.get().getCognome() );
 	    	List<Optional<MarcaTempo>> marche = imageDataService.findByViaggioAndUtenteToday(idviaggio, idu);
 	    	//byte[] maa = ImageUtil.decompressImage(marche.get(0).getImageData());
-	    	System.out.println("today "+marche.size()+" "+marche);
+	    	System.out.println("Timbrature odierne utente " + utente.get().getCognome() +" : "+marche.size()+" "+marche);
 	    	return new ResponseEntity<>(marche, HttpStatus.OK);
 	    }
 

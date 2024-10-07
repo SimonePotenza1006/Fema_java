@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Veicolo;
-import com.example.demo.entity.VeicoloSivis;
 import com.example.demo.repository.VeicoloRepository;
 
 @Service
@@ -38,11 +37,19 @@ public class VeicoloNotificationService {
     }
 
     private void verificaScadenzeTemporali(Veicolo veicolo, LocalDate today) {
-        // Controlla il bollo, polizza, revisione, ecc.
+        // Controlla il bollo, polizza, ecc.
         verificaScadenza(veicolo.getData_scadenza_bollo(), "Bollo", veicolo, today);
         verificaScadenza(veicolo.getData_scadenza_polizza(), "Polizza RCA", veicolo, today);
-        verificaScadenza(veicolo.getData_revisione(), "Revisione", veicolo, today);
-        // Altri controlli...
+
+        // Calcola la scadenza della revisione (aggiungendo 2 anni all'ultima revisione)
+        Date ultimaRevisione = veicolo.getData_revisione();
+        if (ultimaRevisione != null) {
+            // Aggiungi 2 anni alla data dell'ultima revisione
+            LocalDate prossimaRevisione = convertToLocalDateViaInstant(ultimaRevisione).plusYears(2);
+
+            // Verifica la scadenza della revisione
+            verificaScadenza(prossimaRevisione, "Revisione", veicolo, today);
+        }
     }
 
     private void verificaScadenzeChilometri(Veicolo veicolo) {
@@ -68,12 +75,23 @@ public class VeicoloNotificationService {
     private void verificaScadenza(Date dataScadenza, String tipoScadenza, Veicolo veicolo, LocalDate today) {
         if (dataScadenza == null) return;
 
-        LocalDate scadenza = dataScadenza.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        long giorniAllaScadenza = ChronoUnit.DAYS.between(today, scadenza);
+        LocalDate scadenza = convertToLocalDateViaInstant(dataScadenza);
+        verificaScadenza(scadenza, tipoScadenza, veicolo, today);
+    }
 
-        // Controllo delle scadenze: 30 giorni, 20 giorni, 15 giorni, 7 giorni e ogni giorno
-        if (giorniAllaScadenza == 30 || giorniAllaScadenza == 29 || giorniAllaScadenza == 31 || giorniAllaScadenza == 20 || giorniAllaScadenza == 15 || giorniAllaScadenza == 7 || giorniAllaScadenza <= 0) {
+    private void verificaScadenza(LocalDate dataScadenza, String tipoScadenza, Veicolo veicolo, LocalDate today) {
+        long giorniAllaScadenza = ChronoUnit.DAYS.between(today, dataScadenza);
+
+        // Controllo delle scadenze: 30 giorni, 20 giorni, 15 giorni, 7 giorni, 3 giorni, 1 giorno e scadenza passata
+        if (giorniAllaScadenza == 30 || giorniAllaScadenza == 20 || giorniAllaScadenza == 15 || giorniAllaScadenza == 7 || giorniAllaScadenza == 3 || giorniAllaScadenza == 1 || giorniAllaScadenza <= 0) {
             emailService.sendEmail(veicolo, tipoScadenza, giorniAllaScadenza);
         }
+    }
+
+    // Metodo per convertire Date a LocalDate
+    private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 }

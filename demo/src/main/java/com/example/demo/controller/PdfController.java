@@ -76,7 +76,7 @@ public class PdfController {
                 }
 
                 // Percorso dinamico in base a nome azienda e targa
-                String baseDir = "C:\\AppFema\\Certificazioni\\Azienda";
+                String baseDir = "C:\\APP_FEMA\\Certificazioni\\Azienda";
                 Path path = Paths.get(baseDir, aziendaNome);
 
                 // Crea le directory se non esistono
@@ -118,7 +118,7 @@ public class PdfController {
                 }
 
                 // Percorso dinamico in base a nome azienda e targa
-                String baseDir = "C:\\AppFema\\Certificazioni\\Clienti";
+                String baseDir = "C:\\APP_FEMA\\Certificazioni\\Clienti";
                 Path path = Paths.get(baseDir, clienteNome);
 
                 // Crea le directory se non esistono
@@ -147,7 +147,7 @@ public class PdfController {
         }
 
         @GetMapping("/certificazioni/{path:.+}/{filename:.+}")
-        public ResponseEntity<?> getNoleggio(@PathVariable("path") String path, @PathVariable("filename") String filename) {
+        public ResponseEntity<?> getPdf(@PathVariable("path") String path, @PathVariable("filename") String filename) {
             // Sostituisci '_' con '/' per ricostruire il path corretto
             String decodedPath = path.replace('_', '/');
 
@@ -155,7 +155,7 @@ public class PdfController {
             System.out.println("Decoded Path: " + decodedPath);
 
             // Costruisci il percorso completo del file
-            String fileBasePath = "C:\\AppFema\\Certificazioni\\";
+            String fileBasePath = "C:\\APP_FEMA\\Certificazioni\\";
             Path completePath = Paths.get(fileBasePath + decodedPath.replace('/', '\\') + "\\" + filename);
 
             // Log per il percorso completo
@@ -187,9 +187,9 @@ public class PdfController {
         }
 
     
-        @GetMapping("/filesnamenoleggio")
-        public ResponseEntity<List<Map<String, Object>>> getFilesNameNoleggio() {
-            String fileBasePath = "C:\\AppFema\\Certificazioni\\";
+        @GetMapping("/filesnameCertificazioni")
+        public ResponseEntity<List<Map<String, Object>>> getFilesName() {
+            String fileBasePath = "C:\\APP_FEMA\\Certificazioni\\";
             File baseDirectory = new File(fileBasePath);
 
             // Lista per immagazzinare la struttura gerarchica
@@ -223,7 +223,7 @@ public class PdfController {
                 fileMap.put("name", file.getName());
                 fileMap.put("lastModified", new Date(file.lastModified()).toString()); // Aggiungi la data di ultima modifica
 
-                String relativePath = dir.getPath().replace("C:\\AppFema\\Certificazioni", "").replace("\\", "/"); // Percorso relativo dal root
+                String relativePath = dir.getPath().replace("C:\\APP_FEMA\\Certificazioni", "").replace("\\", "/"); // Percorso relativo dal root
                 fileMap.put("path", relativePath); // Aggiungi il percorso completo per ogni file o directory
 
                 if (file.isDirectory()) {
@@ -252,7 +252,7 @@ public class PdfController {
         }
 
         @DeleteMapping("/noleggio/{path:.+}/{filename:.+}")
-        public ResponseEntity<?> deleteNoleggio(@PathVariable("path") String path, @PathVariable("filename") String filename) {
+        public ResponseEntity<?> deletePdf(@PathVariable("path") String path, @PathVariable("filename") String filename) {
             // Decodifica il percorso sostituendo '_' con '/'
             String decodedPath = path.replace('_', '/');
 
@@ -260,7 +260,7 @@ public class PdfController {
             System.out.println("Decoded Path: " + decodedPath);
 
             // Costruisci il percorso completo del file
-            String fileBasePath = "C:\\AppFema\\Certificazioni";
+            String fileBasePath = "C:\\APP_FEMA\\Certificazioni";
             Path completePath = Paths.get(fileBasePath + decodedPath.replace('/', '\\') + "\\" + filename);
 
             // Log per il percorso completo
