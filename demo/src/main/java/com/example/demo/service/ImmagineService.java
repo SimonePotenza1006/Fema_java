@@ -7,6 +7,7 @@ import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
 import com.example.demo.entity.Movimenti;
+import com.example.demo.entity.RestituzioneMerce;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Veicolo;
@@ -16,6 +17,7 @@ import com.example.demo.repository.ImmagineRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
 import com.example.demo.repository.MovimentiRepository;
+import com.example.demo.repository.RestituzioneMerceRepository;
 import com.example.demo.repository.SopralluogoRepository;
 import com.example.demo.repository.SpesaVeicoloRepository;
 import com.example.demo.repository.VeicoloRepository;
@@ -58,6 +60,9 @@ public class ImmagineService {
     private CartellaRepository cartellaRepository;
 
     @Autowired
+    private RestituzioneMerceRepository restituzioneRepository;
+
+    @Autowired
     private MerceInRiparazioneRepository merceRepository;
 
     @Autowired
@@ -70,7 +75,7 @@ public class ImmagineService {
     }
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {
-        int timeout = 10000; // Timeout in milliseconds (5 seconds)
+        int timeout = 10000;  
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(timeout);
         factory.setReadTimeout(timeout);
@@ -125,6 +130,18 @@ public class ImmagineService {
                 .build()
         );
         return "Image uploaded succesfully:" + file.getOriginalFilename();
+    }
+
+    public String uploadImageRestituzioneMerce (MultipartFile file, int restituzioneId) throws IOException{
+        Optional<RestituzioneMerce> optionalRestituzione = restituzioneRepository.findById(restituzioneId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .restituzione(optionalRestituzione.get())
+                .build()
+        );
+        return "Immagine Restituzione caricata correttamente:" + file.getOriginalFilename();
     }
 
     public String uploadImageVeicolo(MultipartFile file, int veicoloId) throws IOException{

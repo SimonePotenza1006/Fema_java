@@ -28,7 +28,6 @@ public class EmailService {
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
-
             mailSender.send(message);
         }
 
@@ -42,6 +41,7 @@ public class EmailService {
                       " entro 120 km. Chilometri percorsi dall'ultimo intervento: " + kmPercorsi;
 
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@femasistemi.it"); 
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);

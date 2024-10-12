@@ -23,7 +23,7 @@ public class VeicoloNotificationService {
     @Autowired
     private EmailService emailService; // Servizio per inviare le email
 
-    @Scheduled(cron = "0 15 10 * * ?")
+    @Scheduled(cron = "0 17 13 * * ?")
     public void verificaScadenzeVeicoli() {
         List<Veicolo> veicoli = veicoloRepository.findAll();  // Recupera tutti i veicoli
 
@@ -73,6 +73,7 @@ public class VeicoloNotificationService {
 
         // Controllo delle scadenze: 30 giorni, 20 giorni, 15 giorni, 7 giorni e ogni giorno
         if (giorniAllaScadenza == 30 || giorniAllaScadenza == 29 || giorniAllaScadenza == 31 || giorniAllaScadenza == 20 || giorniAllaScadenza == 15 || giorniAllaScadenza == 7 || giorniAllaScadenza <= 0) {
+            
             emailService.sendEmail(veicolo, tipoScadenza, giorniAllaScadenza);
         }
     }
