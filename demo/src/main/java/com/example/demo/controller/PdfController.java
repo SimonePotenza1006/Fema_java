@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,47 +105,44 @@ public class PdfController {
             }
         }
 
-        @PostMapping("/certificazioni/clienti")
-        public ResponseEntity<?> uploadCertificazioneCliente(
-                @RequestParam("pdf") Optional<MultipartFile> file,
-                @RequestParam("cliente") String clienteNome
-        ) throws org.springframework.web.server.ResponseStatusException {
-            String response = null;
+       @PostMapping("/certificazioni/clienti")
+public ResponseEntity<?> uploadCertificazioneCliente(
+        @RequestParam("pdf") MultipartFile file,
+        @RequestParam("cliente") String clienteNome
+) throws org.springframework.web.server.ResponseStatusException {
+    String response = null;
 
-            try {
-                // Verifica che il file non sia vuoto
-                if (file.isEmpty()) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Il file PDF è obbligatorio.");
-                }
-
-                // Percorso dinamico in base a nome azienda e targa
-                String baseDir = "C:\\APP_FEMA\\Certificazioni\\Clienti";
-                Path path = Paths.get(baseDir, clienteNome);
-
-                // Crea le directory se non esistono
-                Files.createDirectories(path);
-
-                // Destinazione del file
-                File targetFile = new File(path.toString() + "\\" + file.get().getOriginalFilename());
-
-                // Trasferisci il file
-                file.get().transferTo(targetFile);
-
-                // Risposta di conferma
-                response = "File caricato con successo in: " + targetFile.getAbsolutePath();
-                System.out.println(response);
-
-                // Chiudi lo stream del file
-                file.get().getInputStream().close();
-
-                // Risposta con successo
-                return ResponseEntity.status(HttpStatus.OK).body(response);
-
-            } catch (Exception e) {
-                System.err.println("Errore durante il caricamento del file: " + e.getMessage());
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante il caricamento del file.");
-            }
+    try {
+        // Verifica che il file non sia vuoto
+        if (file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Il file PDF è obbligatorio.");
         }
+
+        // Percorso dinamico in base al nome del cliente
+        String baseDir = "C:\\APP_FEMA\\Certificazioni\\Clienti";
+        Path path = Paths.get(baseDir, clienteNome);
+
+        // Crea le directory se non esistono
+        Files.createDirectories(path);
+
+        // Destinazione del file
+        Path targetPath = path.resolve(file.getOriginalFilename());
+
+        // Trasferisci il file
+        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+        // Risposta di conferma
+        response = "File caricato con successo in: " + targetPath.toAbsolutePath();
+        System.out.println(response);
+
+        // Risposta con successo
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    } catch (Exception e) {
+        System.err.println("Errore durante il caricamento del file: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante il caricamento del file.");
+    }
+}
 
         @GetMapping("/certificazioni/{path:.+}/{filename:.+}")
         public ResponseEntity<?> getPdf(@PathVariable("path") String path, @PathVariable("filename") String filename) {

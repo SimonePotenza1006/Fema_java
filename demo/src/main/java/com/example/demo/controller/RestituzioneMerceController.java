@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/api/restituzionMerce")
+@RequestMapping(value = "/api/restituzioneMerce")
 public class RestituzioneMerceController {
     
     @Autowired

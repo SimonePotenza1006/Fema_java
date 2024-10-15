@@ -55,4 +55,7 @@ public class ImmagineAzienda {
     @ManyToOne(optional = true)
     @JoinColumn(referencedColumnName = "id")
     private Azienda azienda;
+
+    @Column(name = "timbro", nullable = false)
+    private Boolean timbro;
 }

@@ -53,4 +53,16 @@ public class Azienda {
 
     @Column(name = "sito")
     private String sito;
+
+    @Column(name ="numero_rea")
+    private String numero_rea;
+
+    @Column(name = "citta_rea")
+    private String citta_rea;
+
+    @Column(name = "numero_albo")
+    private String numero_albo;
+
+    @Column(name = "citta_albo")
+    private String citta_albo;
 }

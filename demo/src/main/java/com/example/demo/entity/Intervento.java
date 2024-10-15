@@ -114,7 +114,7 @@ public class Intervento {
     private Cliente cliente;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "FK_idVeicolo")
+    @JoinColumn(name = "FK_idVeicolo", nullable = true)
     private Veicolo veicolo;
 
     @ManyToOne(cascade = CascadeType.MERGE)
