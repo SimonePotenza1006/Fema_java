@@ -64,6 +64,7 @@ public class InterventoController {
     @GetMapping
     public ResponseEntity<List<Intervento>> getAllInterventi(){
         List<Intervento> interventi = interventoService.getAllInterventi();
+        System.out.println("Get all interventi");
         return new ResponseEntity<>(interventi, HttpStatus.OK);
     }
 
