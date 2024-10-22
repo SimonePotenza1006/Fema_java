@@ -34,6 +34,6 @@ public interface ImmagineRepository extends JpaRepository<Immagine, Integer>{
     List<Immagine> findByVeicolo(Veicolo veicolo);
     Optional<Immagine> findBySpesaVeicolo(SpesaVeicolo spesa);
     List<Immagine> findByMovimento(Movimenti movimento);
-    Optional<Immagine> findByRestituzione(RestituzioneMerce restituzione);
+    List<Immagine> findByRestituzione(RestituzioneMerce restituzione);
     
 }

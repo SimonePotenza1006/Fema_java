@@ -382,6 +382,22 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 					return ResponseEntity.ok(imageWrappers);
 		}
 
+		@GetMapping(value="/restituzioneMerce/{restituzioneId}/images",  produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByRestituzione(@PathVariable int restituzioneId){
+			List<Immagine> images = immagineService.getImagesByRestituzione(restituzioneId);
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> ImageUtil.decompressImage(image.getImageData()))
+				.collect(Collectors.toList());
+
+				List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}
+				return ResponseEntity.ok(imageWrappers);
+		}
+
 		@GetMapping(value = "/cartella/{cartellaId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<List<ImageWrapper>> getImagesByCartella(@PathVariable int cartellaId){
 			List<Immagine> images = immagineService.getImagesByCartella(cartellaId);

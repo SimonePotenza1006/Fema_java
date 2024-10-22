@@ -28,11 +28,11 @@ public class RelazioneUtentiInterventi {
     @Column(name = "idrelazione")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(referencedColumnName = "idinterventi")
     private Intervento intervento;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
 }

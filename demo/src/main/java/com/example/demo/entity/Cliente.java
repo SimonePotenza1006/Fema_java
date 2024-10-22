@@ -90,16 +90,4 @@ public class Cliente {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "note_tecnico")
-    private String note_tecnico;
-
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_clienti_tipologia_intervento", joinColumns = { 
-        @JoinColumn(name = "FK_IDCliente")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_IDTipologia_intervento")
-    })
-    private List<TipologiaIntervento> tipologie_interventi;
-
 }

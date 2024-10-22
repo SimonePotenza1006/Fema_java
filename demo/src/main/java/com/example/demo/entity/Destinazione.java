@@ -63,7 +63,7 @@ public class Destinazione {
     @Column(name = "cellulare")
     private String cellulare;
 
-    @ManyToOne //(cascade = CascadeType)//, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(referencedColumnName = "idclienti")
     private Cliente cliente;
 }

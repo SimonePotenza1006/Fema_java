@@ -256,6 +256,17 @@ public class ImmagineService {
     }
 
     @Transactional
+    public List<Immagine> getImagesByRestituzione(int restituzioneId){
+        Optional<RestituzioneMerce> optionalRestituzione = restituzioneRepository.findById(restituzioneId);
+        if(optionalRestituzione.isPresent()){
+            return immagineRepository.findByRestituzione(optionalRestituzione.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
     public List<Immagine> getImagesByIntervento(int interventoId) { 
         Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId); 
         if (optionalIntervento.isPresent()) { 
