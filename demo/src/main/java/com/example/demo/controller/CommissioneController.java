@@ -9,14 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import com.example.demo.service.UtenteService;
 import com.example.demo.service.CommissioneService;
+import com.example.demo.service.InterventoService;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Commissione;
+import com.example.demo.entity.Intervento;
 
 
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/api/commissione")
 public class CommissioneController {
+
+    @Autowired
+    private InterventoService interventoService;
     
     @Autowired
     private UtenteService utenteService;
@@ -57,6 +62,13 @@ public class CommissioneController {
     public ResponseEntity<List<Optional<Commissione>>> getCommissioneByUtente(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);
         List<Optional<Commissione>> commissioni = commissioneService.getCommissioneByUtente(utente);
+        return new ResponseEntity<>(commissioni, HttpStatus.OK);
+    }
+
+    @GetMapping("/intervento/{id}")
+    public ResponseEntity<List<Optional<Commissione>>> getCommissioneByIntervento(@PathVariable("id") int interventoId){
+        Intervento intervento = interventoService.getInterventoById(interventoId);
+        List<Optional<Commissione>> commissioni = commissioneService.getCommissioneByIntervento(intervento);
         return new ResponseEntity<>(commissioni, HttpStatus.OK);
     }
 

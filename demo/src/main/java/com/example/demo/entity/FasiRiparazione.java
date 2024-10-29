@@ -59,6 +59,8 @@ public class FasiRiparazione {
     @Column(name = "descrizione", nullable = true)
     private String descrizione;
 
+    @Column(name = "conclusione", nullable = true)
+    private Boolean conclusione;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "FK_idUser") 

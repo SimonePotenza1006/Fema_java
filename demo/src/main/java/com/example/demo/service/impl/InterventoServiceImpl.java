@@ -55,7 +55,7 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Override
     public List<Intervento> getAllInterventiOrderdByDesc(){
-        List<Intervento> optionalInterventi = interventoRepository.findAllByOrderByIdDesc();
+        List<Intervento> optionalInterventi = interventoRepository.findAllByAttivoTrueOrderByIdDesc();
         return optionalInterventi;
     }
 
@@ -78,41 +78,41 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Override
     public List<Intervento> getAllInterventiWithMerceNonConclusiByUtente(Utente utente){
-        return interventoRepository.findByMerceNotNullAndDataConsegnaIsNullAndUtente(utente);
+        return interventoRepository.findByMerceNotNullAndUtenteAndConclusoFalseAndAttivoTrue(utente);
     }
 
     @Override
     public List<Intervento> getAllInterventiWithMerce(){
-        return interventoRepository.findDistinctByMerceIsNotNull();
+        return interventoRepository.findDistinctByMerceIsNotNullAndAttivoTrue();
     }
 
     @Override
     public List<Optional<Intervento>> getInterventoByCliente(Cliente cliente){
-        List<Optional<Intervento>> optionalIntervento = interventoRepository.findByCliente(cliente);
+        List<Optional<Intervento>> optionalIntervento = interventoRepository.findByClienteAndAttivoTrue(cliente);
         return optionalIntervento;
     }
 
     @Override
     public List<Intervento> getInterventiByMerce(MerceInRiparazione merce){
-        List<Intervento> optionalIntervento = interventoRepository.findByMerce(merce);
+        List<Intervento> optionalIntervento = interventoRepository.findByMerceAndAttivoTrue(merce);
         return optionalIntervento;
     }
 
     @Override 
     public List<Optional<Intervento>> getInterventoByUtente(Utente utente){
-        List<Optional<Intervento>> optionalIntervento = interventoRepository.findByUtente(utente);
+        List<Optional<Intervento>> optionalIntervento = interventoRepository.findByUtenteAndAttivoTrue(utente);
         return optionalIntervento;
     }
 
     @Override
     public List<Optional<Intervento>> getInterventoByTipologia(TipologiaIntervento tipologiaIntervento){
-        List<Optional<Intervento>> optionalIntervento = interventoRepository.findByTipologia(tipologiaIntervento);
+        List<Optional<Intervento>> optionalIntervento = interventoRepository.findByTipologiaAndAttivoTrue(tipologiaIntervento);
         return optionalIntervento;
     }
 
     @Override
     public List<Optional<Intervento>> getInterventiByGruppo(GruppoInterventi gruppo){
-        List<Optional<Intervento>> optionalInterventi = interventoRepository.findByGruppo(gruppo);
+        List<Optional<Intervento>> optionalInterventi = interventoRepository.findByGruppoAndAttivoTrue(gruppo);
         return optionalInterventi;
     }
 

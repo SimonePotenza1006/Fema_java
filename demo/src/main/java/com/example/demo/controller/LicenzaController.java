@@ -47,6 +47,12 @@ public class LicenzaController {
         return new ResponseEntity<>(savedRuoloUt, HttpStatus.CREATED);
     }
 
+    @PostMapping("/nuova")
+    public ResponseEntity<Licenza> createNuovaLicenza(@RequestBody Licenza licenza){
+        Licenza nuovaLicenza = ruoloService.createRuolo(licenza);
+        return new ResponseEntity<>(nuovaLicenza, HttpStatus.CREATED);
+    }
+    
     // build get report by id REST API
     // http://localhost:8080/api/reports/1
     @GetMapping("{id}")

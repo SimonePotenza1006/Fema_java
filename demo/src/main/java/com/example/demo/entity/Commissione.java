@@ -48,7 +48,7 @@ public class Commissione {
     @CreationTimestamp
     private LocalDateTime data_creazione;
 
-    @Column(name = "data", nullable = false, updatable = false)
+    @Column(name = "data", nullable = true)
     private LocalDateTime data;
 
     @Column(name = "descrizione")
@@ -57,10 +57,17 @@ public class Commissione {
     @Column(name = "concluso")
     private boolean concluso;
 
+    @Column(name = "attivo")
+    private boolean attivo;
+
     @Column(name = "note")
     private String note;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "FK_idUser")
     private Utente utente;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "idinterventi", nullable = true)
+    private Intervento intervento;
 }

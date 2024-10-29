@@ -53,6 +53,9 @@ public class Intervento {
     @Column(name = "idinterventi", nullable = false)
     private int id;
 
+    @Column(name = "attivo", nullable = true)
+    private boolean attivo;
+
     @Column(name = "numerazione_danea", nullable = true)
     private String numerazione_danea;
 
@@ -60,6 +63,8 @@ public class Intervento {
     @Column(name = "priorita", nullable = true)
     private Priorita priorita = Priorita.NULLA;
 
+    @Column(name = "titolo", nullable = true)
+    private String titolo;
 
     @Column(name = "data_apertura_intervento", nullable = true)
     private Date data_apertura_intervento;
@@ -85,11 +90,17 @@ public class Intervento {
     @Column(name = "importo_intervento", nullable = true)
     private Double importo_intervento;
 
+    @Column(name = "saldo_tecnico", nullable = true)
+    private Double saldo_tecnico;
+
     @Column(name = "prezzo_ivato", nullable = true)
     private boolean prezzo_ivato;
 
     @Column(name = "iva", nullable = true, columnDefinition = "int default 0")
     private int iva;
+
+    @Column(name = "annullato", nullable = true, columnDefinition = "boolean default false")
+    private boolean annullato;
 
     @Column(name = "accettato_da_tecnico", nullable = true, columnDefinition = "boolean default false")
     private boolean accettato_da_tecnico;
@@ -122,7 +133,11 @@ public class Intervento {
     @Column(name = "firma_cliente", length = 16777213)
     private byte[] firma_cliente;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "iduser", nullable = true)
+    private Utente utente_apertura;
+
+    @ManyToOne
     @JoinColumn(name = "FK_idUser") 
     private Utente utente;
 
