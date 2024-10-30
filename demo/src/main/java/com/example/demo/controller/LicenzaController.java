@@ -52,6 +52,12 @@ public class LicenzaController {
         Licenza nuovaLicenza = ruoloService.createRuolo(licenza);
         return new ResponseEntity<>(nuovaLicenza, HttpStatus.CREATED);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Licenza>> getAllLicenze(){
+        List<Licenza> allLicenze = ruoloService.getRuoli();
+        return new ResponseEntity<>(allLicenze, HttpStatus.OK);
+    }
     
     // build get report by id REST API
     // http://localhost:8080/api/reports/1
