@@ -1,6 +1,9 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.CascadeType;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,14 +17,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="relazione_utenti_interventi")
-public class RelazioneUtentiInterventi {
+@Table(name="relazione_task_utenti")
+public class RelazioneTaskUtenti {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +31,18 @@ public class RelazioneUtentiInterventi {
     private int id;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "idinterventi")
-    private Intervento intervento;
+    @JoinColumn(referencedColumnName = "idtask")
+    private Task task;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "iduser")
     private Utente utente;
 
-    @Column(name = "visualizzato", nullable = false, columnDefinition = "boolean default false")
-    private boolean visualizzato;
+    @Column(name = "accettato", nullable = false, columnDefinition = "boolean default false")
+    private boolean accettato;
+
+    @Column(name = "data_invio", nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime data_invio;
+    
 }

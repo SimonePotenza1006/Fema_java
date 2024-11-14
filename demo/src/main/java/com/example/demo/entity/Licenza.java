@@ -37,8 +37,9 @@ public class Licenza {
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
 	
-    
     @Column(name = "utilizzato", nullable = false)
     private Boolean utilizzato;
 
+    @Column(name = "note", nullable = true)
+    private String note;
 }

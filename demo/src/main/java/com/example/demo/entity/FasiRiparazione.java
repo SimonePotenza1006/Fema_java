@@ -1,12 +1,19 @@
 package com.example.demo.entity;
 
 import java.util.List;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import org.eclipse.angus.mail.util.DefaultProvider;
+import org.hibernate.annotations.OnDelete;
+import org.w3c.dom.Text;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +38,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @Data
@@ -39,45 +45,29 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "task")
-public class Task {
+@Table(name = "fasi_riparazione")
+public class FasiRiparazione {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idtask", nullable = false)
+    @Column(name = "id_fase", nullable = false)
     private int id;
 
-    @Column(name = "data_creazione", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime data_creazione;
-
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "iduser", nullable = true)
-    private Utente utente;
-
-    @Column(name = "titolo", nullable = true)
-    private String titolo;
+    @Column(name = "data", nullable = true)
+    private Date data;
 
     @Column(name = "descrizione", nullable = true)
     private String descrizione;
 
-    @Column(name = "concluso", nullable = true, columnDefinition = "boolean default false")
-    private boolean concluso;
+    @Column(name = "conclusione", nullable = true)
+    private Boolean conclusione;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipologia", nullable = true)
-    private TipologiaTask tipologia;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "FK_idUser") 
+    private Utente utente;
 
-    @Column(name = "condiviso", nullable = true, columnDefinition = "boolean default false")
-    private boolean condiviso;
-
-    @ManyToOne
-    @JoinColumn(name = "FK_iduser")
-    private Utente utente_conclusione;
-
-    @Column(name = "data_conclusione", nullable = true)
-    private LocalDateTime data_conclusione;
-
-
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "FK_id_merceRiparazione", nullable = true)
+    private MerceInRiparazione merce;
 
 }

@@ -39,10 +39,13 @@ public class Cliente {
     @Column(name = "idclienti", nullable = false)
     private int id;
 
-    @Column(name = "codice_fiscale")
+    @Column(name = "cod_danea", nullable = true)
+    private String cod_danea;
+
+    @Column(name = "codice_fiscale", nullable = true)
     private String codice_fiscale;
 
-    @Column(name = "partita_iva")
+    @Column(name = "partita_iva", nullable = true)
     private String partita_iva;
 
     @Column(name = "denominazione", nullable = false)
@@ -51,55 +54,43 @@ public class Cliente {
     @Column(name = "indirizzo", nullable = false)
     private String indirizzo;
 
-    @Column(name = "cap")
+    @Column(name = "cap", nullable = true)
     private String cap;
 
-    @Column(name = "citta")
+    @Column(name = "citta", nullable = true)
     private String citta;
 
-    @Column(name = "provincia")
+    @Column(name = "provincia", nullable = true)
     private String provincia;
 
-    @Column(name = "nazione")
+    @Column(name = "nazione", nullable = true)
     private String nazione;
 
-    @Column(name = "recapito_fatturazione_elettronica")
+    @Column(name = "recapito_fatturazione_elettronica", nullable = true)
     private String recapito_fatturazione_elettronica;
 
-    @Column(name = "riferimento_amministrativo")
+    @Column(name = "riferimento_amministrativo", nullable = true)
     private String riferimento_amministrativo;
 
-    @Column(name = "referente")
+    @Column(name = "referente", nullable = true)
     private String referente;
 
-    @Column(name = "fax")
+    @Column(name = "fax", nullable = true)
     private String fax;
 
-    @Column(name = "telefono")
+    @Column(name = "telefono", nullable = true)
     private String telefono;
 
-    @Column(name = "cellulare")
+    @Column(name = "cellulare", nullable = true)
     private String cellulare;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = true)
     private String email;
 
-    @Column(name = "pec")
+    @Column(name = "pec", nullable = true)
     private String pec;
 
-    @Column(name = "note")
+    @Column(name = "note", nullable = true)
     private String note;
-
-    @Column(name = "note_tecnico")
-    private String note_tecnico;
-
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "relazione_clienti_tipologia_intervento", joinColumns = { 
-        @JoinColumn(name = "FK_IDCliente")
-    }, 
-    inverseJoinColumns = {
-        @JoinColumn(name = "FK_IDTipologia_intervento")
-    })
-    private List<TipologiaIntervento> tipologie_interventi;
 
 }

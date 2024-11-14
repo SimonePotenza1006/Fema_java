@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Commissione;
-import com.example.demo.entity.Task;
+import com.example.demo.entity.Intervento;
 import com.example.demo.repository.CommissioneRepository;
 
 @Service
@@ -37,13 +37,19 @@ public class CommissioneServiceImpl implements CommissioneService{
 
     @Override
     public List<Commissione> getAllCommissioniOrderByDesc() {
-        List<Commissione> optionalCommissione = commissioneRepository.findAllByOrderByIdDesc();
+        List<Commissione> optionalCommissione = commissioneRepository.findAllByAttivoTrueOrderByIdDesc();
         return optionalCommissione;
     }
 
     @Override
     public List<Optional<Commissione>> getCommissioneByUtente(Utente utente){
-        List<Optional<Commissione>> optionalCommissione = commissioneRepository.findByUtente(utente);
+        List<Optional<Commissione>> optionalCommissione = commissioneRepository.findByUtenteAndAttivoTrue(utente);
+        return optionalCommissione;
+    }
+
+    @Override 
+    public List<Optional<Commissione>> getCommissioneByIntervento(Intervento intervento){
+        List<Optional<Commissione>> optionalCommissione = commissioneRepository.findByIntervento(intervento);
         return optionalCommissione;
     }
 

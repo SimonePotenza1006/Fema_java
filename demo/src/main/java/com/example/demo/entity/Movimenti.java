@@ -23,8 +23,6 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Getter
 @Setter
 @Data

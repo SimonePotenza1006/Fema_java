@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Cartella;
+import com.example.demo.entity.CredenzialiCliente;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
@@ -38,6 +39,7 @@ import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.CartellaRepository;
+import com.example.demo.repository.CredenzialiClienteRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
 import com.example.demo.repository.MovimentiRepository;
@@ -97,6 +99,9 @@ public class ImmagineController {
 	public SpesaVeicoloService spesaService;
 
 	@Autowired
+	public CredenzialiClienteRepository credenzialiRepository;
+
+	@Autowired
 	public RestituzioneMerceRepository restituzioneRepository;
 
 	@PostMapping("sopralluogo/{id}")
@@ -141,6 +146,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				System.out.print(response);
 				return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
+
+	@PostMapping("/credenziali/{credenzialiId}")
+	public ResponseEntity<?> uploadImageCredenziali(@RequestParam("credenziali") MultipartFile file,
+			@PathVariable("credenzialiId") int credenzialiId) throws IOException{
+				Optional<CredenzialiCliente> optionalCredenziali = credenzialiRepository.findById(credenzialiId);
+				String response = immagineService.uploadImageCredenziali(file, credenzialiId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Credenziali\\Credenziale_"+optionalCredenziali.get().getDescrizione().replace(" ", "")));
+					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
 
 	@PostMapping("/restituzione/{restituzioneId}")
 	public ResponseEntity<?> uploadImageRestituzione(@RequestParam("restituzione") MultipartFile file,
@@ -194,70 +215,35 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 	                .body(response);
 	    }
 
-        @GetMapping("/spesa/{spesaId}")
-	    public ResponseEntity<?>  getImageBySpesa(@PathVariable int spesaId){
-	        byte[] image = immagineService.getImageBySpesa(spesaId);
 
-	        return ResponseEntity.status(HttpStatus.OK)
-	                .contentType(MediaType.valueOf("image/png"))
-	                .body(image);
-	    }   
 
-// @PostMapping("veicolo/{id}")
-// public ResponseEntity<?> uploadImageSpesaVeicolo(@RequestParam("veicolo") MultipartFile file,
-//                                                  @PathVariable("id") int veicoloId) throws IOException {
-//     Optional<Veicolo> optionalVeicolo = veicoloRepository.findById(veicoloId);
-// 	System.out.println("Prova upload immagine sopralluogo");
-//     String response = immagineService.uploadImageSpesaveicolo(file, veicoloId);
-//     try {
-//         System.out.println("Prova upload immagine sopralluogo");
-        
+	@PostMapping("merce/{id}")
+	public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile file,
+	                                                 @PathVariable("id") int merceId) throws IOException {
+	    Optional<MerceInRiparazione> optionalMerce = merceRepository.findById(merceId);
+		System.out.println("Prova upload immagine merce");
+	    String response = immagineService.uploadImageMerce(file, merceId);
+	    try {
+	        System.out.println("Prova upload immagine sopralluogo");
+		
 
-//         LocalDate currentDate = LocalDate.now();
-//         String formattedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
-        
+	        LocalDate currentDate = LocalDate.now();
+	        String formattedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
+		
 
-//         Path folderPath = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Veicolo\\Veicolo_" + optionalVeicolo.get().getDescrizione().replace(" ","") + "\\Foto"));
-        
+	        Path folderPath = Files.createDirectories(Paths.get("C:\\APP_FEMA\\MerceInRiparazione\\Merce_" + optionalMerce.get().getArticolo().toString() + "_" + formattedDate + "\\Foto"));
+		
 
-//         Files.copy(file.getInputStream(), folderPath.resolve(file.getOriginalFilename()));
-        
-//         System.out.println("File is created!");
-//     } catch (IOException e) {
-//         System.err.println("Failed to create directory!" + e.getMessage());
-//     }
-//     System.out.print(response);
-//     return ResponseEntity.status(HttpStatus.OK)
-//             .body(response);
-// }
-
-@PostMapping("merce/{id}")
-public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile file,
-                                                 @PathVariable("id") int merceId) throws IOException {
-    Optional<MerceInRiparazione> optionalMerce = merceRepository.findById(merceId);
-	System.out.println("Prova upload immagine merce");
-    String response = immagineService.uploadImageMerce(file, merceId);
-    try {
-        System.out.println("Prova upload immagine sopralluogo");
-        
-
-        LocalDate currentDate = LocalDate.now();
-        String formattedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
-        
-
-        Path folderPath = Files.createDirectories(Paths.get("C:\\APP_FEMA\\MerceInRiparazione\\Merce_" + optionalMerce.get().getArticolo().toString() + "_" + formattedDate + "\\Foto"));
-        
-
-        Files.copy(file.getInputStream(), folderPath.resolve(file.getOriginalFilename()));
-        
-        System.out.println("File is created!");
-    } catch (IOException e) {
-        System.err.println("Failed to create directory!" + e.getMessage());
-    }
-    System.out.print(response);
-    return ResponseEntity.status(HttpStatus.OK)
-            .body(response);
-}
+	        Files.copy(file.getInputStream(), folderPath.resolve(file.getOriginalFilename()));
+		
+	        System.out.println("File is created!");
+	    } catch (IOException e) {
+	        System.err.println("Failed to create directory!" + e.getMessage());
+	    }
+	    System.out.print(response);
+	    return ResponseEntity.status(HttpStatus.OK)
+	            .body(response);
+	}
 
 
 
@@ -380,6 +366,55 @@ public ResponseEntity<?> uploadImageMerce(@RequestParam("merce") MultipartFile f
 						imageWrappers.add(wrapper);
 					}
 					return ResponseEntity.ok(imageWrappers);
+		}
+
+		@GetMapping(value = "/spesa/{spesaId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesBySpesa(@PathVariable int spesaId){
+			List<Immagine> images = immagineService.getImagesBySpesa(spesaId);
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> ImageUtil.decompressImage(image.getImageData()))
+				.collect(Collectors.toList());
+
+				List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}
+				return ResponseEntity.ok(imageWrappers);
+		}
+		
+
+		@GetMapping(value="/restituzioneMerce/{restituzioneId}/images",  produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByRestituzione(@PathVariable int restituzioneId){
+			List<Immagine> images = immagineService.getImagesByRestituzione(restituzioneId);
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> ImageUtil.decompressImage(image.getImageData()))
+				.collect(Collectors.toList());
+
+				List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}
+				return ResponseEntity.ok(imageWrappers);
+		}
+
+		@GetMapping(value = "/credenziali/{credenzialeId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByCredenziale(@PathVariable int credenzialeId){
+			List<Immagine> images = immagineService.getImagesByCredenziale(credenzialeId);
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> ImageUtil.decompressImage(image.getImageData()))
+				.collect(Collectors.toList());
+				
+				List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}
+				return ResponseEntity.ok(imageWrappers);
 		}
 
 		@GetMapping(value = "/cartella/{cartellaId}/images", produces = MediaType.APPLICATION_JSON_VALUE)

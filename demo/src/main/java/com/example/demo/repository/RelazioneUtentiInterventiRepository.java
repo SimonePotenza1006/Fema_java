@@ -14,4 +14,5 @@ public interface RelazioneUtentiInterventiRepository extends JpaRepository<Relaz
     Optional<RelazioneUtentiInterventi> findById(int id);
     List<Optional<RelazioneUtentiInterventi>> findByUtente(Utente utente);
     List<Optional<RelazioneUtentiInterventi>> findByIntervento(Intervento intervento);
+    Optional<RelazioneUtentiInterventi> findByInterventoAndUtente(Intervento intervento, Utente utente);
 }

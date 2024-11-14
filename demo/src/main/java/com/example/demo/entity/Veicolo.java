@@ -38,6 +38,9 @@ public class Veicolo {
     @Column(name = "idveicolo", nullable = false)
     private int id;
 
+    @Column(name = "flotta", nullable = true)
+    private Boolean flotta;
+
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
 

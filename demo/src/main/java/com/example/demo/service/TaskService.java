@@ -1,26 +1,31 @@
 package com.example.demo.service;
-import com.example.demo.entity.Utente;
-import com.example.demo.entity.Cliente;
-import com.example.demo.entity.Task;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.example.demo.entity.Task;
+import com.example.demo.entity.TipologiaTask;
+import com.example.demo.entity.Utente;
 
 public interface TaskService {
     
     Task createTask(Task task);
 
-    Task getTaskById(int taskId);
+    Optional<Task> getTaskById(int taskId);
 
     List<Task> getAllTasks();
 
-    List<Optional<Task>> getTaskByUtente(Utente utente);
+    List<Task> getAllTasksByUtente(Utente utente);
 
-    List<Optional<Task>> getTaskByCliente(Cliente cliente);
+    List<Task> getAllTasksByConcluso(boolean concluso);
 
-    List<Task> getAllTasksOrderByDesc();
+    List<Task> getAllTasksByTipologia(TipologiaTask tipologia);
 
-    Task updateTask(Task task);
+    List<Task> getTasksByUtenteAndTipologia(Utente utente, TipologiaTask tipologia);
+
+    List<Task> getTasksByTipologiaAndConcluso(TipologiaTask tipologia, boolean concluso);
+
+    List<Task> getTasksByUtenteAndConcluso(Utente utente, boolean concluso);
 
     void deleteTask(int taskId);
 }

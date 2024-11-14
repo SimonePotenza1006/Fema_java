@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Cartella;
+import com.example.demo.entity.CredenzialiCliente;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
@@ -32,8 +33,9 @@ public interface ImmagineRepository extends JpaRepository<Immagine, Integer>{
     List<Immagine> findByCartella(Cartella cartella);
     //List<Immagine> findByAzienda(Azienda azienda);
     List<Immagine> findByVeicolo(Veicolo veicolo);
-    Optional<Immagine> findBySpesaVeicolo(SpesaVeicolo spesa);
+    List<Immagine> findBySpesaVeicolo(SpesaVeicolo spesa);
     List<Immagine> findByMovimento(Movimenti movimento);
-    Optional<Immagine> findByRestituzione(RestituzioneMerce restituzione);
+    List<Immagine> findByRestituzione(RestituzioneMerce restituzione);
+    List<Immagine> findByCredenziali(CredenzialiCliente credenziali);
     
 }

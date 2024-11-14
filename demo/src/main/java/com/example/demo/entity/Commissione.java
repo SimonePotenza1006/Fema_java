@@ -20,7 +20,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -48,14 +49,21 @@ public class Commissione {
     @CreationTimestamp
     private LocalDateTime data_creazione;
 
-    @Column(name = "data", nullable = false, updatable = false)
+    @Column(name = "data", nullable = true)
     private LocalDateTime data;
 
     @Column(name = "descrizione")
     private String descrizione;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priorita", nullable = true)
+    private Priorita priorita = Priorita.NULLA;
 
     @Column(name = "concluso")
     private boolean concluso;
+
+    @Column(name = "attivo")
+    private boolean attivo;
 
     @Column(name = "note")
     private String note;
@@ -63,4 +71,8 @@ public class Commissione {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "FK_idUser")
     private Utente utente;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "idinterventi", nullable = true)
+    private Intervento intervento;
 }

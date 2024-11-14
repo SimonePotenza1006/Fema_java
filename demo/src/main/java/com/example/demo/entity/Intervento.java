@@ -4,18 +4,11 @@ import java.util.List;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
-import org.hibernate.annotations.OnDelete;
-import org.w3c.dom.Text;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -50,10 +43,26 @@ public class Intervento {
     @Column(name = "idinterventi", nullable = false)
     private int id;
 
-    @Column(name = "data_apertura_intervento")
+    @Column(name = "attivo", nullable = true)
+    private boolean attivo;
+
+    @Column(name = "visualizzato", nullable = false, columnDefinition = "boolean default false")
+    private boolean visualizzato;
+
+    @Column(name = "numerazione_danea", nullable = true)
+    private String numerazione_danea;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priorita", nullable = true)
+    private Priorita priorita = Priorita.NULLA;
+
+    @Column(name = "titolo", nullable = true)
+    private String titolo;
+
+    @Column(name = "data_apertura_intervento", nullable = true)
     private Date data_apertura_intervento;
 
-    @Column(name = "data_intervento")
+    @Column(name = "data_intervento", nullable = true)
     private Date data;
 
     @Column(name = "orario_appuntamento", nullable = true)
@@ -62,40 +71,52 @@ public class Intervento {
     @Column(name = "posizione_gps", nullable = true)
     private String posizione_gps;
 
-    @Column(name = "orario_inizio")
+    @Column(name = "orario_inizio", nullable = true)
     private LocalDateTime orario_inizio;
 
-    @Column(name = "orario_fine")
+    @Column(name = "orario_fine", nullable = true)
     private LocalDateTime orario_fine;
 
-    @Column(name = "descrizione")
+    @Column(name = "descrizione", nullable = true)
     private String descrizione;
 
     @Column(name = "importo_intervento", nullable = true)
     private Double importo_intervento;
 
+    @Column(name = "saldo_tecnico", nullable = true)
+    private Double saldo_tecnico;
+
     @Column(name = "prezzo_ivato", nullable = true)
     private boolean prezzo_ivato;
+
+    @Column(name = "iva", nullable = true, columnDefinition = "int default 0")
+    private int iva;
+
+    @Column(name = "annullato", nullable = true, columnDefinition = "boolean default false")
+    private boolean annullato;
+
+    @Column(name = "accettato_da_tecnico", nullable = true, columnDefinition = "boolean default false")
+    private boolean accettato_da_tecnico;
 
     @Column(name = "acconto", nullable = true)
     private Double acconto;
 
-    @Column(name = "assegnato")
+    @Column(name = "assegnato", nullable = true)
     private boolean assegnato;
 
     @Column(name = "conclusione_parziale", nullable = true)
     private boolean conclusione_parziale;
 
-    @Column(name = "concluso")
+    @Column(name = "concluso", nullable = true)
     private boolean concluso;
 
-    @Column(name = "saldato")
+    @Column(name = "saldato", nullable = true)
     private boolean saldato;
 
     @Column(name = "saldato_da_tecnico", nullable = true)
     private Boolean saldato_da_tecnico;
 
-    @Column(name = "note")
+    @Column(name = "note", nullable = true)
     private String note;
 
     @Column(name = "relazione_tecnico")
@@ -105,7 +126,11 @@ public class Intervento {
     @Column(name = "firma_cliente", length = 16777213)
     private byte[] firma_cliente;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "iduser", nullable = true)
+    private Utente utente_apertura;
+
+    @ManyToOne
     @JoinColumn(name = "FK_idUser") 
     private Utente utente;
 
@@ -134,7 +159,7 @@ public class Intervento {
     private TipologiaPagamento tipologia_pagamento;
 
     @ManyToOne(cascade = CascadeType.MERGE)// fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_iddestinazione", nullable = false)
+    @JoinColumn(name = "FK_iddestinazione", nullable = true)
     private Destinazione destinazione;
 
     @ManyToOne(cascade = CascadeType.MERGE)

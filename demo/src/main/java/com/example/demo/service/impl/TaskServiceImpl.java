@@ -1,21 +1,18 @@
 package com.example.demo.service.impl;
-import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.example.demo.service.TaskService;
-import com.example.demo.entity.Cliente;
-import com.example.demo.entity.Task;
-import com.example.demo.entity.Utente;
-import com.example.demo.repository.TaskRepository;
-
-import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Task;
+import com.example.demo.entity.TipologiaTask;
+import com.example.demo.entity.Utente;
+import com.example.demo.repository.TaskRepository;
+import com.example.demo.service.TaskService;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -25,47 +22,52 @@ public class TaskServiceImpl implements TaskService{
     private TaskRepository taskRepository;
 
     @Override
-    public Task createTask(Task task) {
+    public Task createTask(Task task){
         return taskRepository.save(task);
     }
 
     @Override
-    public Task getTaskById(int taskId){
-        Optional<Task> optionalTask = taskRepository.findById(taskId);
-        return optionalTask.get();
+    public Optional<Task> getTaskById(int taskId){
+        return taskRepository.findById(taskId);
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<Task> getAllTasks(){
+        return taskRepository.findAllByOrderByIdDesc();
     }
 
     @Override
-    public List<Task> getAllTasksOrderByDesc() {
-        List<Task> optionalTasks = taskRepository.findAllByOrderByIdDesc();
-        return optionalTasks;
+    public List<Task> getAllTasksByUtente(Utente utente){
+        return taskRepository.findByUtenteOrderByIdDesc(utente);
     }
 
     @Override
-    public List<Optional<Task>> getTaskByUtente(Utente utente){
-        List<Optional<Task>> optionalTasks = taskRepository.findByUtente(utente);
-        return optionalTasks;
+    public List<Task> getAllTasksByConcluso(boolean concluso){
+        return taskRepository.findByConclusoOrderByIdDesc(concluso);
     }
 
     @Override
-    public List<Optional<Task>> getTaskByCliente(Cliente cliente){
-        List<Optional<Task>> optionalTasks = taskRepository.findByCliente(cliente);
-        return optionalTasks;
+    public List<Task> getAllTasksByTipologia(TipologiaTask tipologia){
+        return taskRepository.findByTipologiaOrderByIdDesc(tipologia);
     }
 
     @Override
-    public Task updateTask(Task task){
-        return taskRepository.save(task);
+    public List<Task> getTasksByUtenteAndTipologia(Utente utente, TipologiaTask tipologia){
+        return taskRepository.findByUtenteAndTipologiaOrderByIdDesc(utente, tipologia);
+    }
+
+    @Override
+    public List<Task> getTasksByTipologiaAndConcluso(TipologiaTask tipologia, boolean concluso){
+        return taskRepository.findByTipologiaAndConclusoOrderByIdDesc(tipologia, concluso);
+    }
+
+    @Override
+    public List<Task> getTasksByUtenteAndConcluso(Utente utente, boolean concluso){
+        return taskRepository.findByUtenteAndConclusoOrderByIdDesc(utente, concluso);
     }
 
     @Override
     public void deleteTask(int taskId){
         taskRepository.deleteById(taskId);
     }
-
 }

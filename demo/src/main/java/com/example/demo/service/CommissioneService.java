@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Optional;
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Commissione;
+import com.example.demo.entity.Intervento;
 
 public interface CommissioneService {
     
@@ -13,6 +14,8 @@ public interface CommissioneService {
     List<Commissione> getAllCommissioni();
 
     List<Optional<Commissione>> getCommissioneByUtente(Utente utente);
+
+    List<Optional<Commissione>> getCommissioneByIntervento(Intervento intervento);
 
     List<Commissione> getAllCommissioniOrderByDesc();
 

@@ -6,14 +6,16 @@ import java.util.List;
 
 import com.example.demo.entity.Utente;
 import com.example.demo.entity.Commissione;
+import com.example.demo.entity.Intervento;
 
 
 
 @Repository
 public interface CommissioneRepository extends JpaRepository<Commissione, Integer>{
     
-    List<Commissione> findAllByOrderByIdDesc();
+    List<Commissione> findAllByAttivoTrueOrderByIdDesc();
     Optional<Commissione> findById(int id);
-    List<Optional<Commissione>> findByUtente(Utente utente);
+    List<Optional<Commissione>> findByUtenteAndAttivoTrue(Utente utente);
+    List<Optional<Commissione>> findByIntervento(Intervento intervento);
     
 }

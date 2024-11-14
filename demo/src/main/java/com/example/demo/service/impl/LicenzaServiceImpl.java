@@ -52,6 +52,11 @@ public class LicenzaServiceImpl implements LicenzaService {
         return ruoloRepository.findByUtilizzato(false);
     }
 
+    @Override 
+    public List<Licenza> getRuoli(){
+        return ruoloRepository.findAll();
+    }
+
     //senza id?
     @Override
     public Licenza updateRuolo(Licenza ruolo) {

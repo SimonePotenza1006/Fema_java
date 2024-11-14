@@ -18,6 +18,8 @@ public interface LicenzaService {
 
     List<Licenza> getAllRuoli();
 
+    List<Licenza> getRuoli();
+
     Licenza updateRuolo(Licenza ruolo);
 
     void deleteRuolo(Long ruoloId);

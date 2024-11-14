@@ -6,5 +6,6 @@ public enum TipoMovimentazione {
     Acconto,
     Pagamento,
     Prelievo,
-    Versamento
+    Versamento,
+    Chiusura
 }
