@@ -1,7 +1,17 @@
 package com.example.demo.entity;
+
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +31,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -39,39 +44,40 @@ public class Task {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "idtask", nullable = false)
     private int id;
 
     @Column(name = "data_creazione", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime data_creazione;
 
-    @Column(name = "data_accordata")
-    private LocalDateTime data_accordata;
-
-    @Column(name = "orario_inizio")
-    private LocalDateTime orario_inizio;
-
-    @Column(name = "orario_fine")
-    private LocalDateTime orario_fine;
-
-    @Column(name = "descrizione")
-    private String descrizione;
-
-    @Column(name = "concluso")
-    private boolean concluso;
-
-    @Column(name = "importo", nullable = true)
-    private Double importo;
-
-    @Column(name = "note")
-    private String note;
-
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_idUser") //, nullable = false)
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "iduser", nullable = true)
     private Utente utente;
 
-    @ManyToOne(cascade = CascadeType.MERGE)//, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_idCliente", nullable = false)
-    private Cliente cliente;
+    @Column(name = "titolo", nullable = true)
+    private String titolo;
+
+    @Column(name = "descrizione", nullable = true)
+    private String descrizione;
+
+    @Column(name = "concluso", nullable = true, columnDefinition = "boolean default false")
+    private boolean concluso;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipologia", nullable = true)
+    private TipologiaTask tipologia;
+
+    @Column(name = "condiviso", nullable = true, columnDefinition = "boolean default false")
+    private boolean condiviso;
+
+    @ManyToOne
+    @JoinColumn(name = "FK_iduser")
+    private Utente utente_conclusione;
+
+    @Column(name = "data_conclusione", nullable = true)
+    private LocalDateTime data_conclusione;
+
+
+
 }
