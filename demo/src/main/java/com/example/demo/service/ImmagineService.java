@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.util.ImageUtil;
+import com.example.demo.controller.CredenzialiClienteController;
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Cartella;
+import com.example.demo.entity.CredenzialiCliente;
 import com.example.demo.entity.Immagine;
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
@@ -13,6 +15,7 @@ import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.CartellaRepository;
+import com.example.demo.repository.CredenzialiClienteRepository;
 import com.example.demo.repository.ImmagineRepository;
 import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.MerceInRiparazioneRepository;
@@ -67,6 +70,9 @@ public class ImmagineService {
 
     @Autowired
     private SpesaVeicoloRepository spesaRepository; 
+
+    @Autowired 
+    private CredenzialiClienteRepository credenzialiRepository;
 
     private final RestTemplate restTemplate;
 
@@ -142,6 +148,18 @@ public class ImmagineService {
                 .build()
         );
         return "Immagine Restituzione caricata correttamente:" + file.getOriginalFilename();
+    }
+
+    public String uploadImageCredenziali(MultipartFile file, int credenzialId) throws IOException{
+        Optional<CredenzialiCliente> optionalCredenziale = credenzialiRepository.findById(credenzialId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .credenziali(optionalCredenziale.get())
+                .build()
+        );
+        return "Immagine credenziale caricata correttamente:" + file.getOriginalFilename();
     }
 
     public String uploadImageVeicolo(MultipartFile file, int veicoloId) throws IOException{
@@ -256,6 +274,28 @@ public class ImmagineService {
     }
 
     @Transactional
+    public List<Immagine> getImagesBySpesa(int idSpesa){
+        Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(idSpesa);
+        if(optionalSpesa.isPresent()){
+            return immagineRepository.findBySpesaVeicolo(optionalSpesa.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<Immagine> getImagesByCredenziale(int credenzialId){
+        Optional<CredenzialiCliente> optionalCredenziali = credenzialiRepository.findById(credenzialId);
+        if(optionalCredenziali.isPresent()){
+            return immagineRepository.findByCredenziali(optionalCredenziali.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
     public List<Immagine> getImagesByRestituzione(int restituzioneId){
         Optional<RestituzioneMerce> optionalRestituzione = restituzioneRepository.findById(restituzioneId);
         if(optionalRestituzione.isPresent()){
@@ -290,15 +330,6 @@ public class ImmagineService {
             immagineRepository.deleteAll(immagini);
         }
     }          
-
-
-    @Transactional
-    public byte[] getImageBySpesa(int idSpesa){
-        Optional<SpesaVeicolo> optionalSpesa = spesaRepository.findById(idSpesa);
-        Optional<Immagine> dbImage = immagineRepository.findBySpesaVeicolo(optionalSpesa.get());
-        byte[] image = ImageUtil.decompressImage(dbImage.get().getImageData());
-        return image;
-    }
 
     @Transactional
     public List<Immagine> getAllImmagini() {

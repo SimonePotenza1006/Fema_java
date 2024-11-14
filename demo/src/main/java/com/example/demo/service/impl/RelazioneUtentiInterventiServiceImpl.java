@@ -45,6 +45,12 @@ public class RelazioneUtentiInterventiServiceImpl implements RelazioneUtentiInte
     }
 
     @Override
+    public Optional<RelazioneUtentiInterventi> getRelazioneByInterventoAndUtente(Intervento intervento, Utente utente){
+        Optional<RelazioneUtentiInterventi> optionalRelazione = relazioneRepository.findByInterventoAndUtente(intervento, utente);
+        return optionalRelazione;
+    }
+
+    @Override
     public RelazioneUtentiInterventi updateRelazione(RelazioneUtentiInterventi relazione){
         return relazioneRepository.save(relazione);
     }

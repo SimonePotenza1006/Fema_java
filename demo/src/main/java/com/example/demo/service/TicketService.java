@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Ticket;
+import com.example.demo.entity.Utente;
 
 public interface TicketService {
     
@@ -11,9 +12,9 @@ public interface TicketService {
 
     Ticket getTicketById(int ticketId);
 
-    Ticket getAllTicket();
-
-    List<Ticket> getAllTicketNonConclusi();
+    List<Ticket> getAllTicket();
 
     List<Ticket> getAllTicketByCliente(Cliente cliente);
+
+    List<Ticket> getAllTicketByUtente(Utente utente);
 }

@@ -4,16 +4,6 @@ import java.util.List;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
-import org.eclipse.angus.mail.util.DefaultProvider;
-import org.hibernate.annotations.OnDelete;
-import org.w3c.dom.Text;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,6 +45,9 @@ public class Intervento {
 
     @Column(name = "attivo", nullable = true)
     private boolean attivo;
+
+    @Column(name = "visualizzato", nullable = false, columnDefinition = "boolean default false")
+    private boolean visualizzato;
 
     @Column(name = "numerazione_danea", nullable = true)
     private String numerazione_danea;

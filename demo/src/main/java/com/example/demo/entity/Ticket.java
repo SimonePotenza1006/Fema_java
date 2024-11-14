@@ -6,24 +6,18 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 
 @Getter
 @Setter
@@ -40,62 +34,45 @@ public class Ticket {
     @Column(name = "idticket", nullable = false)
     private int id;
 
-    @Column(name = "data_apertura_ticket", nullable = true)
-    private Date data_apertura_intervento;
+    @Column(name = "data_creazione", nullable = true, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime data_creazione;
 
-    @Column(name = "data", nullable = true)
+    @Column(name = "data_intervento", nullable = true)
     private Date data;
 
     @Column(name = "orario_appuntamento", nullable = true)
     private LocalDateTime orario_appuntamento;
 
-    @Column(name = "orario_inizio", nullable = true)
-    private LocalDateTime orario_inizio;
+    @Column(name = "titolo", nullable = true)
+    private String titolo;
 
-    @Column(name = "orario_fine", nullable = true)
-    private LocalDateTime orario_fine;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priorita", nullable = true)
+    private Priorita priorita = Priorita.NULLA;
 
     @Column(name = "descrizione", nullable = true)
     private String descrizione;
 
-    @Column(name = "assegnato", nullable = true)
-    private boolean assegnato;
-
-    @Column(name = "concluso", nullable = true)
-    private boolean concluso;
-
     @Column(name = "note", nullable = true)
     private String note;
 
-    @Column(name = "relazione_tecnico", nullable = true)
-    private String relazione_tecnico;
+    @Column(name = "convertito", nullable = false, columnDefinition = "boolean default false")
+    private boolean convertito;
 
     @ManyToOne
     @JoinColumn(name = "FK_idCliente", nullable = true)
     private Cliente cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "FK_idVeicolo", nullable = true)
-    private Veicolo veicolo;
-
-    @ManyToOne
-    @JoinColumn(name = "FK_id_merceRiparazione", nullable = true)
-    private MerceInRiparazione merce;
 
     @ManyToOne 
     @JoinColumn(name = "FK_idTipologia_intervento", nullable = true)
     private TipologiaIntervento tipologia;
 
     @ManyToOne
-    @JoinColumn(name = "FK_idCategoria_specifica", nullable = true)
-    private CategoriaInterventoSpecifico categoria_intervento_specifico;
-
-    @ManyToOne 
-    @JoinColumn(name = "FK_idtipologia_pagamento", nullable = true)
-    private TipologiaPagamento tipologia_pagamento;
-
-    @ManyToOne
     @JoinColumn(name = "FK_iddestinazione", nullable = true)
     private Destinazione destinazione;
 
+    @ManyToOne
+    @JoinColumn(name = "FK_idUser") 
+    private Utente utente;
 }

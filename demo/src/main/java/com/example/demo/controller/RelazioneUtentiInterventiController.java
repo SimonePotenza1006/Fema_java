@@ -58,6 +58,14 @@ public class RelazioneUtentiInterventiController {
         return new ResponseEntity<>(relazioni, HttpStatus.OK);
     }
 
+    @GetMapping("/interventoutente/{idi}/{idu}")
+    public ResponseEntity<Optional<RelazioneUtentiInterventi>> getRelazioneByInterventoAndUtente(@PathVariable("idi") int interventoId, @PathVariable("idu") int utenteId){
+        Intervento intervento = interventoService.getInterventoById(interventoId);
+        Utente utente = utenteService.getUtenteById(utenteId);
+        Optional<RelazioneUtentiInterventi> relazione = relazioneService.getRelazioneByInterventoAndUtente(intervento, utente);
+        return new ResponseEntity<>(relazione, HttpStatus.OK);
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<RelazioneUtentiInterventi> updateRelazioneDdtProdotto(@RequestBody RelazioneUtentiInterventi relazione) throws IOException{
         RelazioneUtentiInterventi updatedRelazione = relazioneService.updateRelazione(relazione);

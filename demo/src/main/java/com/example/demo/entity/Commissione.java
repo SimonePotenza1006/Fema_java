@@ -20,7 +20,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -53,6 +54,10 @@ public class Commissione {
 
     @Column(name = "descrizione")
     private String descrizione;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priorita", nullable = true)
+    private Priorita priorita = Priorita.NULLA;
 
     @Column(name = "concluso")
     private boolean concluso;
