@@ -18,6 +18,7 @@ import com.example.demo.entity.Movimenti;
 import com.example.demo.entity.RestituzioneMerce;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
+import com.example.demo.entity.Task;
 import com.example.demo.entity.Veicolo;
 
 
@@ -37,5 +38,5 @@ public interface ImmagineRepository extends JpaRepository<Immagine, Integer>{
     List<Immagine> findByMovimento(Movimenti movimento);
     List<Immagine> findByRestituzione(RestituzioneMerce restituzione);
     List<Immagine> findByCredenziali(CredenzialiCliente credenziali);
-    
+    List<Immagine> findByTask(Task task);
 }

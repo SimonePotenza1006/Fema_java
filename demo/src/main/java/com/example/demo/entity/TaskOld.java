@@ -39,17 +39,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "task")
-public class Task {
+@Table(name = "taskold")
+public class TaskOld {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtask", nullable = false)
     private int id;
 
-    @Column(name = "data_creazione", nullable = false)
-    private Date data_creazione;
-    
+    @Column(name = "data_creazione", nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime data_creazione;
+
     @ManyToOne
     @JoinColumn(referencedColumnName = "iduser", nullable = true)
     private Utente utente;
@@ -70,11 +71,12 @@ public class Task {
     @Column(name = "condiviso", nullable = true, columnDefinition = "boolean default false")
     private boolean condiviso;
 
-    @Column(name = "accettato", nullable = true, columnDefinition = "boolean default false")
-    private boolean accettato;
+    @ManyToOne
+    @JoinColumn(name = "FK_iduser")
+    private Utente utente_conclusione;
 
     @Column(name = "data_conclusione", nullable = true)
-    private Date data_conclusione;
+    private LocalDateTime data_conclusione;
 
 
 

@@ -36,6 +36,7 @@ import com.example.demo.entity.Preventivo;
 import com.example.demo.entity.RestituzioneMerce;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
+import com.example.demo.entity.Task;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.CartellaRepository;
@@ -47,6 +48,7 @@ import com.example.demo.repository.PreventivoRepository;
 import com.example.demo.repository.RestituzioneMerceRepository;
 import com.example.demo.repository.SopralluogoRepository;
 import com.example.demo.repository.SpesaVeicoloRepository;
+import com.example.demo.repository.TaskRepository;
 import com.example.demo.repository.VeicoloRepository;
 import com.example.demo.service.ImmagineService;
 import com.example.demo.service.InterventoService;
@@ -103,6 +105,9 @@ public class ImmagineController {
 
 	@Autowired
 	public RestituzioneMerceRepository restituzioneRepository;
+
+	@Autowired
+	public TaskRepository taskRepository;
 
 	@PostMapping("sopralluogo/{id}")
 public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") MultipartFile file,
@@ -170,6 +175,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				String response = immagineService.uploadImageRestituzioneMerce(file, restituzioneId);
 				try{
 					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\RMA\\Rma_"+optionalRestituzione.get().getProdotto().replace(" ", "")));
+					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
+	
+	@PostMapping("/task/{taskId}")
+	public ResponseEntity<?> uploadImageTask(@RequestParam("task") MultipartFile file,
+			@PathVariable("taskId") int taskId) throws IOException{
+				Optional<Task> optionalTask = taskRepository.findById(taskId);
+				String response = immagineService.uploadImageTask(file, taskId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Task\\Task_"+optionalTask.get().getId()));
 					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
 					System.out.println("File is created!");
 				} catch(IOException e){
@@ -401,6 +422,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				return ResponseEntity.ok(imageWrappers);
 		}
 
+		@GetMapping(value="/task/{taskId}/images",  produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByTask(@PathVariable int taskId){
+			List<Immagine> images = immagineService.getImagesByTask(taskId);
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> ImageUtil.decompressImage(image.getImageData()))
+				.collect(Collectors.toList());
+
+				List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}
+				return ResponseEntity.ok(imageWrappers);
+		}
+		
 		@GetMapping(value = "/credenziali/{credenzialeId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<List<ImageWrapper>> getImagesByCredenziale(@PathVariable int credenzialeId){
 			List<Immagine> images = immagineService.getImagesByCredenziale(credenzialeId);

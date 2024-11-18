@@ -12,6 +12,7 @@ import com.example.demo.entity.Movimenti;
 import com.example.demo.entity.RestituzioneMerce;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
+import com.example.demo.entity.Task;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.CartellaRepository;
@@ -23,6 +24,7 @@ import com.example.demo.repository.MovimentiRepository;
 import com.example.demo.repository.RestituzioneMerceRepository;
 import com.example.demo.repository.SopralluogoRepository;
 import com.example.demo.repository.SpesaVeicoloRepository;
+import com.example.demo.repository.TaskRepository;
 import com.example.demo.repository.VeicoloRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,9 @@ public class ImmagineService {
     @Autowired
     private SpesaVeicoloRepository spesaRepository; 
 
+    @Autowired
+    private TaskRepository taskRepository; 
+    
     @Autowired 
     private CredenzialiClienteRepository credenzialiRepository;
 
@@ -150,6 +155,18 @@ public class ImmagineService {
         return "Immagine Restituzione caricata correttamente:" + file.getOriginalFilename();
     }
 
+    public String uploadImageTask (MultipartFile file, int taskId) throws IOException{
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .task(optionalTask.get())
+                .build()
+        );
+        return "Immagine Task caricata correttamente:" + file.getOriginalFilename();
+    }
+    
     public String uploadImageCredenziali(MultipartFile file, int credenzialId) throws IOException{
         Optional<CredenzialiCliente> optionalCredenziale = credenzialiRepository.findById(credenzialId);
         immagineRepository.save(Immagine.builder()
@@ -300,6 +317,17 @@ public class ImmagineService {
         Optional<RestituzioneMerce> optionalRestituzione = restituzioneRepository.findById(restituzioneId);
         if(optionalRestituzione.isPresent()){
             return immagineRepository.findByRestituzione(optionalRestituzione.get());
+        } else {
+
+        }
+        return null;
+    }
+    
+    @Transactional
+    public List<Immagine> getImagesByTask(int taskId){
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if(optionalTask.isPresent()){
+            return immagineRepository.findByTask(optionalTask.get());
         } else {
 
         }

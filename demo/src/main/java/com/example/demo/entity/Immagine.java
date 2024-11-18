@@ -73,6 +73,10 @@ public class Immagine {
     private RestituzioneMerce restituzione;
 
     @ManyToOne(optional = true)
+    @JoinColumn(name = "idtask")
+    private Task task;
+    
+    @ManyToOne(optional = true)
     @JoinColumn(name = "idrelazione_credenziali_clienti")
     private CredenzialiCliente credenziali;
 }

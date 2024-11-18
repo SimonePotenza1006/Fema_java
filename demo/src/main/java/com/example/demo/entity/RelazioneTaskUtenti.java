@@ -32,7 +32,7 @@ public class RelazioneTaskUtenti {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "idtask")
-    private Task task;
+    private TaskOld task;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "iduser")
