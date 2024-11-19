@@ -54,6 +54,10 @@ public class Task {
     @JoinColumn(referencedColumnName = "iduser", nullable = true)
     private Utente utente;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id_tipologia", nullable = true)
+    private TipoTask tipologia;
+
     @Column(name = "titolo", nullable = true)
     private String titolo;
 
@@ -62,10 +66,6 @@ public class Task {
 
     @Column(name = "concluso", nullable = true, columnDefinition = "boolean default false")
     private boolean concluso;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipologia", nullable = true)
-    private TipologiaTask tipologia;
 
     @Column(name = "condiviso", nullable = true, columnDefinition = "boolean default false")
     private boolean condiviso;
