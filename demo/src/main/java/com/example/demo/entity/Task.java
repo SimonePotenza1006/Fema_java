@@ -75,4 +75,7 @@ public class Task {
 
     @Column(name = "data_conclusione", nullable = true)
     private Date data_conclusione;
+
+    @Column(name = "data_accettazione", nullable = true)
+    private Date data_accettazione;
 }
