@@ -13,6 +13,7 @@ import com.example.demo.entity.RestituzioneMerce;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Task;
+import com.example.demo.entity.Ticket;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.CartellaRepository;
@@ -25,6 +26,7 @@ import com.example.demo.repository.RestituzioneMerceRepository;
 import com.example.demo.repository.SopralluogoRepository;
 import com.example.demo.repository.SpesaVeicoloRepository;
 import com.example.demo.repository.TaskRepository;
+import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.VeicoloRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,9 @@ public class ImmagineService {
 
     @Autowired
     private TaskRepository taskRepository; 
+
+    @Autowired
+    private TicketRepository ticketRepository;
     
     @Autowired 
     private CredenzialiClienteRepository credenzialiRepository;
@@ -104,6 +109,18 @@ public class ImmagineService {
                 .build());
             
         return "Image uploaded successfully: " + file.getOriginalFilename();
+    }
+
+    public String uploadImageTicket(MultipartFile file, int ticketId) throws IOException{
+        Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes()))
+                .ticket(optionalTicket.get())
+                .build());
+
+        return "Image uploaded successfully: " + file.getOriginalFilename();      
     }
 
     public String uploadImageSopralluogo(MultipartFile file, int sopralluogoId) throws IOException {
@@ -273,6 +290,17 @@ public class ImmagineService {
         Optional<Sopralluogo> optionalSopralluogo = sopralluogoRepository.findById(sopralluogoId);
         if(optionalSopralluogo.isPresent()) {
             return immagineRepository.findBySopralluogo(optionalSopralluogo.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<Immagine> getImagesByTicket(int ticketId){
+        Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
+        if(optionalTicket.isPresent()){
+            return immagineRepository.findByTicket(optionalTicket.get());
         } else {
 
         }

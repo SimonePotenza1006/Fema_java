@@ -79,4 +79,8 @@ public class Immagine {
     @ManyToOne(optional = true)
     @JoinColumn(name = "idrelazione_credenziali_clienti")
     private CredenzialiCliente credenziali;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idticket")
+    private Ticket ticket;
 }

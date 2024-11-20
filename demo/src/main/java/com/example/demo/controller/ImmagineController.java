@@ -37,6 +37,7 @@ import com.example.demo.entity.RestituzioneMerce;
 import com.example.demo.entity.Sopralluogo;
 import com.example.demo.entity.SpesaVeicolo;
 import com.example.demo.entity.Task;
+import com.example.demo.entity.Ticket;
 import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.CartellaRepository;
@@ -49,6 +50,7 @@ import com.example.demo.repository.RestituzioneMerceRepository;
 import com.example.demo.repository.SopralluogoRepository;
 import com.example.demo.repository.SpesaVeicoloRepository;
 import com.example.demo.repository.TaskRepository;
+import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.VeicoloRepository;
 import com.example.demo.service.ImmagineService;
 import com.example.demo.service.InterventoService;
@@ -109,6 +111,9 @@ public class ImmagineController {
 	@Autowired
 	public TaskRepository taskRepository;
 
+	@Autowired
+	public TicketRepository ticketRepository;
+
 	@PostMapping("sopralluogo/{id}")
 public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") MultipartFile file,
                                                  @PathVariable("id") int sopralluogoId) throws IOException {
@@ -167,6 +172,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				System.out.print(response);
 				return ResponseEntity.status(HttpStatus.OK).body(response);
 			}
+
+	@PostMapping("/ticket/{ticketId}")
+	public ResponseEntity<?> uploadImageTicket(@RequestParam("ticket") MultipartFile file,
+			@PathVariable("ticketId") int ticketId) throws IOException{
+				Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
+				String response = immagineService.uploadImageTicket(file, ticketId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Ticket\\Rma_"+optionalTicket.get().getDescrizione().replace(" ", "")));
+					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}		
 
 	@PostMapping("/restituzione/{restituzioneId}")
 	public ResponseEntity<?> uploadImageRestituzione(@RequestParam("restituzione") MultipartFile file,
@@ -376,6 +397,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 		public ResponseEntity<List<ImageWrapper>> getImagesByMerce(@PathVariable int merceId) {
 			List<Immagine> images = immagineService.getImagesByMerce(merceId);
 
+				List<byte[]> imageBytes = images.stream()
+					.map(image -> ImageUtil.decompressImage(image.getImageData()))
+					.collect(Collectors.toList());
+
+					List<ImageWrapper> imageWrappers = new ArrayList<>();
+					for(byte[] imageData : imageBytes){
+						ImageWrapper wrapper = new ImageWrapper();
+						wrapper.setImageData(imageData);
+						imageWrappers.add(wrapper);
+					}
+					return ResponseEntity.ok(imageWrappers);
+		}
+
+		@GetMapping(value = "/ticket/{ticketId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByTicket(@PathVariable int ticketId) {
+			List<Immagine> images = immagineService.getImagesByTicket(ticketId);
 				List<byte[]> imageBytes = images.stream()
 					.map(image -> ImageUtil.decompressImage(image.getImageData()))
 					.collect(Collectors.toList());
