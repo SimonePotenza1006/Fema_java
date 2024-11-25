@@ -32,7 +32,7 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public List<Ticket> getAllTicket(){
-        List<Ticket> tickets = ticketRepository.findAllByConvertitoFalseOrderByIdDesc();
+        List<Ticket> tickets = ticketRepository.findAllByOrderByIdDesc();
         return tickets;
     }
 
