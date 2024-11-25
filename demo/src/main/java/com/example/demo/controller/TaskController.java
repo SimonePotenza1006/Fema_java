@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Task;
+import com.example.demo.entity.TipoTask;
 import com.example.demo.entity.TipologiaTask;
 import com.example.demo.entity.Utente;
+import com.example.demo.service.TipoTaskService;
 import com.example.demo.service.UtenteService;
 import com.example.demo.service.impl.TaskServiceImpl;
 
@@ -33,6 +35,9 @@ public class TaskController {
 
     @Autowired
     private UtenteService utenteService;
+    
+    @Autowired
+    private TipoTaskService tipoService;
 
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task){
@@ -59,9 +64,10 @@ public class TaskController {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-    @GetMapping("/tipologia/{tipologia}")
-    public ResponseEntity<List<Task>> getAllTasksByTipologia(@PathVariable("tipologia") TipologiaTask tipologia){
-        List<Task> tasks = taskService.getAllTasksByTipologia(tipologia);
+    @GetMapping("/tipologia/{tipologiaId}")
+    public ResponseEntity<List<Task>> getAllTasksByTipologia(@PathVariable("tipologiaId") int tipologiaId){
+        Optional<TipoTask> tipo = tipoService.getTipoById(tipologiaId);
+        List<Task> tasks = taskService.getAllTasksByTipologia(tipo);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
@@ -71,16 +77,18 @@ public class TaskController {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-    @GetMapping("/utente/{utenteId}/tipologia/{tipologia}")
-    public ResponseEntity<List<Task>> getAllTasksByUtenteAndTipologia(@PathVariable("utenteId") int utenteId, @PathVariable("tipologia") TipologiaTask tipologia){
+    @GetMapping("/utente/{utenteId}/tipologia/{tipologiaId}")
+    public ResponseEntity<List<Task>> getAllTasksByUtenteAndTipologia(@PathVariable("utenteId") int utenteId, @PathVariable("tipologiaId") int tipologiaId){
+        Optional<TipoTask> tipo = tipoService.getTipoById(tipologiaId);
         Utente utente = utenteService.getUtenteById(utenteId);
-        List<Task> tasks = taskService.getTasksByUtenteAndTipologia(utente, tipologia);
+        List<Task> tasks = taskService.getTasksByUtenteAndTipologia(utente, tipo);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-    @GetMapping("/tipologia/{tipologia}/concluso/{status}")
-    public ResponseEntity<List<Task>> getAllTasksByTipologiaAndConcluso(@PathVariable("tipologia") TipologiaTask tipologia, @PathVariable("status") boolean concluso){
-        List<Task> tasks = taskService.getTasksByTipologiaAndConcluso(tipologia, concluso);
+    @GetMapping("/tipologia/{tipologiaId}/concluso/{status}")
+    public ResponseEntity<List<Task>> getAllTasksByTipologiaAndConcluso(@PathVariable("tipologiaId") int tipologiaId, @PathVariable("status") boolean concluso){
+        Optional<TipoTask> tipo = tipoService.getTipoById(tipologiaId);
+        List<Task> tasks = taskService.getTasksByTipologiaAndConcluso(tipo, concluso);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 

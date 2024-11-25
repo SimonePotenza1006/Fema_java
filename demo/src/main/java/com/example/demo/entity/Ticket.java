@@ -38,18 +38,18 @@ public class Ticket {
     @CreationTimestamp
     private LocalDateTime data_creazione;
 
-    @Column(name = "data_intervento", nullable = true)
-    private Date data;
+    // @Column(name = "data_intervento", nullable = true)
+    // private Date data;
 
-    @Column(name = "orario_appuntamento", nullable = true)
-    private LocalDateTime orario_appuntamento;
+    // @Column(name = "orario_appuntamento", nullable = true)
+    // private LocalDateTime orario_appuntamento;
 
-    @Column(name = "titolo", nullable = true)
-    private String titolo;
+    // @Column(name = "titolo", nullable = true)
+    // private String titolo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "priorita", nullable = true)
-    private Priorita priorita = Priorita.NULLA;
+    // @Enumerated(EnumType.STRING)
+    // @Column(name = "priorita", nullable = true)
+    // private Priorita priorita = Priorita.NULLA;
 
     @Column(name = "descrizione", nullable = true)
     private String descrizione;
@@ -60,17 +60,17 @@ public class Ticket {
     @Column(name = "convertito", nullable = false, columnDefinition = "boolean default false")
     private boolean convertito;
 
-    @ManyToOne
-    @JoinColumn(name = "FK_idCliente", nullable = true)
-    private Cliente cliente;
+    // @ManyToOne
+    // @JoinColumn(name = "FK_idCliente", nullable = true)
+    // private Cliente cliente;
 
     @ManyToOne 
     @JoinColumn(name = "FK_idTipologia_intervento", nullable = true)
     private TipologiaIntervento tipologia;
 
-    @ManyToOne
-    @JoinColumn(name = "FK_iddestinazione", nullable = true)
-    private Destinazione destinazione;
+    // @ManyToOne
+    // @JoinColumn(name = "FK_iddestinazione", nullable = true)
+    // private Destinazione destinazione;
 
     @ManyToOne
     @JoinColumn(name = "FK_idUser") 

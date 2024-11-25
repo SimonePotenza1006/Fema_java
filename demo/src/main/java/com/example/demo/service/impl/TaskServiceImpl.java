@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Task;
+import com.example.demo.entity.TipoTask;
 import com.example.demo.entity.TipologiaTask;
 import com.example.demo.entity.Utente;
 import com.example.demo.repository.TaskRepository;
@@ -47,17 +48,17 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<Task> getAllTasksByTipologia(TipologiaTask tipologia){
+    public List<Task> getAllTasksByTipologia(Optional<TipoTask> tipologia){
         return taskRepository.findByTipologiaOrderByIdDesc(tipologia);
     }
 
     @Override
-    public List<Task> getTasksByUtenteAndTipologia(Utente utente, TipologiaTask tipologia){
+    public List<Task> getTasksByUtenteAndTipologia(Utente utente, Optional<TipoTask> tipologia){
         return taskRepository.findByUtenteAndTipologiaOrderByIdDesc(utente, tipologia);
     }
 
     @Override
-    public List<Task> getTasksByTipologiaAndConcluso(TipologiaTask tipologia, boolean concluso){
+    public List<Task> getTasksByTipologiaAndConcluso(Optional<TipoTask> tipologia, boolean concluso){
         return taskRepository.findByTipologiaAndConclusoOrderByIdDesc(tipologia, concluso);
     }
 

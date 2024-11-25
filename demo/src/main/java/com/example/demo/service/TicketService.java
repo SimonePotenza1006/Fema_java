@@ -14,7 +14,7 @@ public interface TicketService {
 
     List<Ticket> getAllTicket();
 
-    List<Ticket> getAllTicketByCliente(Cliente cliente);
+    //List<Ticket> getAllTicketByCliente(Cliente cliente);
 
     List<Ticket> getAllTicketByUtente(Utente utente);
 }

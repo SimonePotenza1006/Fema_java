@@ -28,28 +28,21 @@ public class EmailService {
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
-
-
-
             mailSender.send(message);
-
-        }
+    }
+    
 
     public void sendEmail(Veicolo veicolo, String tipoIntervento, int kmPercorsi) {
         String to = "s.potenza@femasistemi.it";//"direzione@devirent.it";
-
         String subject = "Scadenza chilometrica per " + tipoIntervento + " del veicolo " + veicolo.getDescrizione();
-
         String text = "Il veicolo " + veicolo.getDescrizione() +
                       " richiede un " + tipoIntervento +
                       " entro 120 km. Chilometri percorsi dall'ultimo intervento: " + kmPercorsi;
-
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply@femasistemi.it");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-
         mailSender.send(message);
     }
 }

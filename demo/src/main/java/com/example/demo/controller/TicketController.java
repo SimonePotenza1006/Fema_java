@@ -26,8 +26,8 @@ public class TicketController {
     @Autowired
     private UtenteService utenteService;
 
-    @Autowired
-    private ClienteService clienteService;
+    // @Autowired
+    // private ClienteService clienteService;
 
     @Autowired
     private TicketServiceImpl ticketService;
@@ -56,12 +56,12 @@ public class TicketController {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-    @GetMapping("/cliente/{id}")
-    public ResponseEntity<List<Ticket>> getAllTicketsByCliente(@PathVariable("id") int clienteId){
-        Cliente cliente = clienteService.getClienteById(clienteId);
-        List<Ticket> tickets = ticketService.getAllTicketByCliente(cliente);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
+    // @GetMapping("/cliente/{id}")
+    // public ResponseEntity<List<Ticket>> getAllTicketsByCliente(@PathVariable("id") int clienteId){
+    //     Cliente cliente = clienteService.getClienteById(clienteId);
+    //     List<Ticket> tickets = ticketService.getAllTicketByCliente(cliente);
+    //     return new ResponseEntity<>(tickets, HttpStatus.OK);
+    // }
 
     @GetMapping("/utente/{id}")
     public ResponseEntity<List<Ticket>> getAllTicketsByUtente(@PathVariable("id") int utenteId){

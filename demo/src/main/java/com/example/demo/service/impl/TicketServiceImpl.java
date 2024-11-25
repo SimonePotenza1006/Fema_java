@@ -36,11 +36,11 @@ public class TicketServiceImpl implements TicketService{
         return tickets;
     }
 
-    @Override
-    public List<Ticket> getAllTicketByCliente(Cliente cliente){
-        List<Ticket> tickets = ticketRepository.findByCliente(cliente);
-        return tickets;
-    }
+    // @Override
+    // public List<Ticket> getAllTicketByCliente(Cliente cliente){
+    //     List<Ticket> tickets = ticketRepository.findByCliente(cliente);
+    //     return tickets;
+    // }
 
     @Override
     public List<Ticket> getAllTicketByUtente(Utente utente){

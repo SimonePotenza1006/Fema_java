@@ -1,4 +1,5 @@
 package com.example.demo.entity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -80,7 +81,7 @@ public class Immagine {
     @JoinColumn(name = "idrelazione_credenziali_clienti")
     private CredenzialiCliente credenziali;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "idticket")
     private Ticket ticket;
 }
