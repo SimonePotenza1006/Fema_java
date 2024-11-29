@@ -407,4 +407,8 @@ public class ImmagineService {
             // Gestisci l'errore in base alle tue esigenze
         }
     }
+
+    public void deleteByTicketId(int ticketId){
+        immagineRepository.deleteByTicketId(ticketId);
+    }
 }

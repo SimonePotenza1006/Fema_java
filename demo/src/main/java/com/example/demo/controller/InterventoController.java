@@ -9,6 +9,7 @@ import com.example.demo.entity.Cliente;
 import com.example.demo.entity.GruppoInterventi;
 import com.example.demo.service.TipologiaInterventoService;
 import com.example.demo.service.UtenteService;
+import com.example.demo.service.WebSocketService;
 import com.example.demo.service.impl.InterventoServiceImpl;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.GruppoInterventiService;
@@ -53,11 +54,19 @@ public class InterventoController {
     @Autowired
     private TipologiaInterventoService tipologiaInterventoService;
 
+    @Autowired
+    private WebSocketService webSocketService;
+
     @PostMapping
-    public ResponseEntity<Intervento> createIntervento(@RequestBody Intervento intervento){
+    public ResponseEntity<Intervento> createIntervento(@RequestBody Intervento intervento) {
         Intervento savedIntervento = interventoService.createIntervento(intervento);
+
+    // Notifica i client WebSocket
+        webSocketService.sendNewInterventoNotification(intervento);
+
         return new ResponseEntity<>(savedIntervento, HttpStatus.CREATED);
     }
+
 
     @GetMapping("{id}")
     public ResponseEntity<Intervento> getInterventoById(@PathVariable("id") int interventoId) {

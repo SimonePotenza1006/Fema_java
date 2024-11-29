@@ -17,4 +17,6 @@ public interface TicketService {
     //List<Ticket> getAllTicketByCliente(Cliente cliente);
 
     List<Ticket> getAllTicketByUtente(Utente utente);
+
+    void deleteTicket(int ticketId);
 }

@@ -40,4 +40,5 @@ public interface ImmagineRepository extends JpaRepository<Immagine, Integer>{
     List<Immagine> findByCredenziali(CredenzialiCliente credenziali);
     List<Immagine> findByTask(Task task);
     List<Immagine> findByTicket(Ticket ticket);
+    void deleteByTicketId(int ticketId);
 }

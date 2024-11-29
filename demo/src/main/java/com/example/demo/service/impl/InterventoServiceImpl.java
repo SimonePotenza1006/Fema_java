@@ -33,6 +33,8 @@ import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.RelazioneUtentiInterventiRepository;
 import com.example.demo.repository.TipologiaInterventoRepository;
 import com.example.demo.service.InterventoService;
+import com.example.demo.websocket.MyWebSocketHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -63,16 +65,18 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Autowired 
     private RelazioneUtentiInterventiRepository relazioneUtentiInterventiRepository;
+
+    @Autowired
+    private MyWebSocketHandler webSocketHandler;
     
     @Transactional
-    @Scheduled(cron = "0 0 5 * * *") // Ogni giorno a mezzanotte
+    @Scheduled(cron = "0 0 5 * * *") 
     public void creaInterventoCheckSivis() {
-        // Evita la creazione la domenica
+        
         if (LocalDate.now().getDayOfWeek().getValue() == 7) {
-            return; // 7 rappresenta la domenica in java.time.DayOfWeek
+            return; 
         }
-
-        // Recupero delle entità correlate
+        
         Utente utenteApertura = utenteRepository.findById(18)
                 .orElseThrow(() -> new IllegalArgumentException("Utente con ID 18 non trovato"));
         Utente utente = utenteRepository.findById(5)
@@ -86,7 +90,6 @@ public class InterventoServiceImpl implements InterventoService{
         Destinazione destinazione = destinazioneRepository.findById(974)
                 .orElseThrow(() -> new IllegalArgumentException("Destinazione con ID 974 non trovata"));
 
-        // Creazione del nuovo intervento
         Intervento intervento = Intervento.builder()
                 .attivo(true)
                 .visualizzato(false)
@@ -108,10 +111,8 @@ public class InterventoServiceImpl implements InterventoService{
                 .destinazione(destinazione)
                 .build();
 
-        // Salva l'intervento nel database
         Intervento nuovoIntervento = interventoRepository.save(intervento);
 
-        // Creazione della relazione
         Utente utenteRelazione = utenteRepository.findById(9)
                 .orElseThrow(() -> new IllegalArgumentException("Utente con ID 9 non trovato"));
 
@@ -126,8 +127,19 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Override
     public Intervento createIntervento(Intervento intervento) {
-        return interventoRepository.save(intervento);
+    // Salva l'intervento nel database
+    Intervento nuovoIntervento = interventoRepository.save(intervento);
+    // Converti l'intervento in JSON usando Jackson
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        String messaggio = objectMapper.writeValueAsString(nuovoIntervento);
+        webSocketHandler.broadcast(messaggio);
+    } catch (Exception e) {
+        System.out.println("Errore nella serializzazione JSON: " + e.getMessage());
     }
+
+    return nuovoIntervento;
+}
 
     // @Override
     // public Intervento getInterventoById(int interventoId) {

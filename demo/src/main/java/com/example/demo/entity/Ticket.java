@@ -64,9 +64,9 @@ public class Ticket {
     // @JoinColumn(name = "FK_idCliente", nullable = true)
     // private Cliente cliente;
 
-    @ManyToOne 
-    @JoinColumn(name = "FK_idTipologia_intervento", nullable = true)
-    private TipologiaIntervento tipologia;
+    // @ManyToOne 
+    // @JoinColumn(name = "FK_idTipologia_intervento", nullable = true)
+    // private TipologiaIntervento tipologia;
 
     // @ManyToOne
     // @JoinColumn(name = "FK_iddestinazione", nullable = true)

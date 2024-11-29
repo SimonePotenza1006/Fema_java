@@ -47,4 +47,9 @@ public class TicketServiceImpl implements TicketService{
         List<Ticket> tickets = ticketRepository.findByUtente(utente);
         return tickets;
     }
+
+    @Override
+    public void deleteTicket(int ticketId){
+        ticketRepository.deleteById(ticketId);
+    }
 }
