@@ -9,6 +9,7 @@ import com.example.demo.entity.Cliente;
 import com.example.demo.entity.Ticket;
 import com.example.demo.entity.Utente;
 import com.example.demo.service.ClienteService;
+import com.example.demo.service.ImmagineService;
 import com.example.demo.service.UtenteService;
 import com.example.demo.service.impl.TicketServiceImpl;
 
@@ -25,6 +26,9 @@ public class TicketController {
     
     @Autowired
     private UtenteService utenteService;
+
+    @Autowired
+    private ImmagineService immagineService;
 
     // @Autowired
     // private ClienteService clienteService;
@@ -56,17 +60,17 @@ public class TicketController {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-    // @GetMapping("/cliente/{id}")
-    // public ResponseEntity<List<Ticket>> getAllTicketsByCliente(@PathVariable("id") int clienteId){
-    //     Cliente cliente = clienteService.getClienteById(clienteId);
-    //     List<Ticket> tickets = ticketService.getAllTicketByCliente(cliente);
-    //     return new ResponseEntity<>(tickets, HttpStatus.OK);
-    // }
-
     @GetMapping("/utente/{id}")
     public ResponseEntity<List<Ticket>> getAllTicketsByUtente(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);
         List<Ticket> tickets = ticketService.getAllTicketByUtente(utente);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteTicket(@PathVariable("id") int ticketId){
+        immagineService.deleteByTicketId(ticketId);
+        ticketService.deleteTicket(ticketId);
+        return new ResponseEntity<>("Ticket succesfully deleted!", HttpStatus.OK);
     }
 }

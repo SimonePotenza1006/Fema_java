@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer>{
-    List<Ticket> findAllByConvertitoFalseOrderByIdDesc();
+    List<Ticket> findAllByOrderByIdDesc();
     //List<Ticket> findByCliente(Cliente cliente);
     List<Ticket> findByUtente(Utente utente);
 }

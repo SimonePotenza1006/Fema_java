@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -11,20 +12,31 @@ import org.slf4j.LoggerFactory;
 
 import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Intervento;
 import com.example.demo.entity.MerceInRiparazione;
+import com.example.demo.entity.Priorita;
+import com.example.demo.entity.RelazioneUtentiInterventi;
 import com.example.demo.entity.TipologiaIntervento;
 import com.example.demo.entity.Cliente;
+import com.example.demo.entity.Destinazione;
 import com.example.demo.entity.GruppoInterventi;
 import com.example.demo.entity.Utente;
+import com.example.demo.entity.Veicolo;
 import com.example.demo.repository.UtenteRepository;
+import com.example.demo.repository.VeicoloRepository;
 import com.example.demo.repository.ClienteRepository;
+import com.example.demo.repository.DestinazioneRepository;
 import com.example.demo.repository.InterventoRepository;
+import com.example.demo.repository.RelazioneUtentiInterventiRepository;
 import com.example.demo.repository.TipologiaInterventoRepository;
 import com.example.demo.service.InterventoService;
+import com.example.demo.websocket.MyWebSocketHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -35,12 +47,99 @@ public class InterventoServiceImpl implements InterventoService{
     
     @Autowired
     private InterventoRepository interventoRepository;
+
+    @Autowired
+    private UtenteRepository utenteRepository;
+
+    @Autowired
+    private VeicoloRepository veicoloRepository;
+
+    @Autowired
+    private TipologiaInterventoRepository tipologiaInterventoRepository;
+
+    @Autowired 
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private DestinazioneRepository destinazioneRepository;
+
+    @Autowired 
+    private RelazioneUtentiInterventiRepository relazioneUtentiInterventiRepository;
+
+    @Autowired
+    private MyWebSocketHandler webSocketHandler;
     
+    @Transactional
+    @Scheduled(cron = "0 0 5 * * *") 
+    public void creaInterventoCheckSivis() {
+        
+        if (LocalDate.now().getDayOfWeek().getValue() == 7) {
+            return; 
+        }
+        
+        Utente utenteApertura = utenteRepository.findById(18)
+                .orElseThrow(() -> new IllegalArgumentException("Utente con ID 18 non trovato"));
+        Utente utente = utenteRepository.findById(5)
+                .orElseThrow(() -> new IllegalArgumentException("Utente con ID 5 non trovato"));
+        Veicolo veicolo = veicoloRepository.findById(13)
+                .orElseThrow(() -> new IllegalArgumentException("Veicolo con ID 13 non trovato"));
+        TipologiaIntervento tipologia = tipologiaInterventoRepository.findById(1)
+                .orElseThrow(() -> new IllegalArgumentException("Tipologia con ID 1 non trovata"));
+        Cliente cliente = clienteRepository.findById(966)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente con ID 966 non trovato"));
+        Destinazione destinazione = destinazioneRepository.findById(974)
+                .orElseThrow(() -> new IllegalArgumentException("Destinazione con ID 974 non trovata"));
+
+        Intervento intervento = Intervento.builder()
+                .attivo(true)
+                .visualizzato(false)
+                .priorita(Priorita.URGENTE)
+                .titolo("VERIFICHE GIORNALIERE SERVER + MAIL + BACKUP")
+                .data_apertura_intervento(new java.util.Date())
+                .data(new java.util.Date())
+                .descrizione("VERIFICHE GIORNALIERE SERVER + MAIL + BACKUP")
+                .annullato(false)
+                .accettato_da_tecnico(false)
+                .assegnato(true)
+                .conclusione_parziale(false)
+                .saldato(false)
+                .utente_apertura(utenteApertura)
+                .utente(utente)
+                .veicolo(veicolo)
+                .tipologia(tipologia)
+                .cliente(cliente)
+                .destinazione(destinazione)
+                .build();
+
+        Intervento nuovoIntervento = interventoRepository.save(intervento);
+
+        Utente utenteRelazione = utenteRepository.findById(9)
+                .orElseThrow(() -> new IllegalArgumentException("Utente con ID 9 non trovato"));
+
+        RelazioneUtentiInterventi relazione = new RelazioneUtentiInterventi();
+        relazione.setIntervento(nuovoIntervento);
+        relazione.setUtente(utenteRelazione);
+        relazione.setVisualizzato(false);
+
+        // Salva la relazione nel database
+        relazioneUtentiInterventiRepository.save(relazione);
+    }
 
     @Override
     public Intervento createIntervento(Intervento intervento) {
-        return interventoRepository.save(intervento);
+    // Salva l'intervento nel database
+    Intervento nuovoIntervento = interventoRepository.save(intervento);
+    // Converti l'intervento in JSON usando Jackson
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        String messaggio = objectMapper.writeValueAsString(nuovoIntervento);
+        webSocketHandler.broadcast(messaggio);
+    } catch (Exception e) {
+        System.out.println("Errore nella serializzazione JSON: " + e.getMessage());
     }
+
+    return nuovoIntervento;
+}
 
     // @Override
     // public Intervento getInterventoById(int interventoId) {
