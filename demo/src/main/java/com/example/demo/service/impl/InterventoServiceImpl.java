@@ -33,6 +33,7 @@ import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.RelazioneUtentiInterventiRepository;
 import com.example.demo.repository.TipologiaInterventoRepository;
 import com.example.demo.service.InterventoService;
+import com.example.demo.service.WebSocketService;
 import com.example.demo.websocket.MyWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -68,6 +69,9 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Autowired
     private MyWebSocketHandler webSocketHandler;
+
+    @Autowired
+    private WebSocketService webSocketService;
     
     @Transactional
     @Scheduled(cron = "0 0 5 * * *") 
@@ -127,16 +131,10 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Override
     public Intervento createIntervento(Intervento intervento) {
-    // Salva l'intervento nel database
     Intervento nuovoIntervento = interventoRepository.save(intervento);
-    // Converti l'intervento in JSON usando Jackson
-    ObjectMapper objectMapper = new ObjectMapper();
-    try {
-        String messaggio = objectMapper.writeValueAsString(nuovoIntervento);
-        webSocketHandler.broadcast(messaggio);
-    } catch (Exception e) {
-        System.out.println("Errore nella serializzazione JSON: " + e.getMessage());
-    }
+    
+    // Invia una notifica di aggiornamento ai client WebSocket
+    webSocketService.sendMessageToAll("update");
 
     return nuovoIntervento;
 }
