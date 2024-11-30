@@ -11,6 +11,8 @@ import java.util.Base64;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -210,6 +212,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 			@PathVariable("taskId") int taskId) throws IOException{
 				Optional<Task> optionalTask = taskRepository.findById(taskId);
 				String response = immagineService.uploadImageTask(file, taskId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Task\\Task_"+optionalTask.get().getId()));
+					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
+	
+	@PostMapping("/taskaudio/{taskId}")
+	public ResponseEntity<?> uploadAudioTask(@RequestParam("task") MultipartFile file,
+			@PathVariable("taskId") int taskId) throws IOException{
+				Optional<Task> optionalTask = taskRepository.findById(taskId);
+				String response = immagineService.uploadAudioTask(file, taskId);
 				try{
 					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Task\\Task_"+optionalTask.get().getId()));
 					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
@@ -473,6 +491,31 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 					imageWrappers.add(wrapper);
 				}
 				return ResponseEntity.ok(imageWrappers);
+		}
+		
+		@GetMapping(value="/task/{taskId}/audio",  produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<byte[]> getAudioByTask(@PathVariable int taskId){
+			
+			List<Immagine> images = immagineService.getImagesByTask(taskId);
+			byte[] imagea = images.get(0).getImageData();
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> image.getImageData())
+				.collect(Collectors.toList());
+
+			 HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	            headers.setContentLength(imagea.length);
+	            headers.setContentDisposition(ContentDisposition.builder("attachment")
+	                .filename("audio-file")
+	                .build());
+			
+				/*List<ImageWrapper> imageWrappers = new ArrayList<>();
+				for(byte[] imageData : imageBytes){
+					ImageWrapper wrapper = new ImageWrapper();
+					wrapper.setImageData(imageData);
+					imageWrappers.add(wrapper);
+				}*/
+				return new ResponseEntity<>(imagea, headers, HttpStatus.OK);
 		}
 		
 		@GetMapping(value = "/credenziali/{credenzialeId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
