@@ -184,6 +184,19 @@ public class ImmagineService {
         return "Immagine Task caricata correttamente:" + file.getOriginalFilename();
     }
     
+    public String uploadAudioTask (MultipartFile file, int taskId) throws IOException{
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(file.getBytes())
+                .task(optionalTask.get())
+                .build()
+        );
+        return "Immagine Task caricata correttamente:" + file.getOriginalFilename();
+    }
+    
+    
     public String uploadImageCredenziali(MultipartFile file, int credenzialId) throws IOException{
         Optional<CredenzialiCliente> optionalCredenziale = credenzialiRepository.findById(credenzialId);
         immagineRepository.save(Immagine.builder()
