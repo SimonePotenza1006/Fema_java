@@ -193,7 +193,7 @@ public class ImmagineService {
                 .task(optionalTask.get())
                 .build()
         );
-        return "Immagine Task caricata correttamente:" + file.getOriginalFilename();
+        return "Audio Task caricato correttamente:" + file.getOriginalFilename();
     }
     
     
@@ -368,13 +368,25 @@ public class ImmagineService {
     public List<Immagine> getImagesByTask(int taskId){
         Optional<Task> optionalTask = taskRepository.findById(taskId);
         if(optionalTask.isPresent()){
-            return immagineRepository.findByTask(optionalTask.get());
+            return immagineRepository.findByTaskAndTypeStartingWith(optionalTask.get(), "image");
         } else {
 
         }
         return null;
     }
 
+    @Transactional
+    public List<Immagine> getAudioByTask(int taskId){
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if(optionalTask.isPresent()){
+            return immagineRepository.findByTaskAndTypeStartingWith(optionalTask.get(), "audio");
+        } else {
+
+        }
+        return null;
+    }
+
+    
     @Transactional
     public List<Immagine> getImagesByIntervento(int interventoId) { 
         Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId); 

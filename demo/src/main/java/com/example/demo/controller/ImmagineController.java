@@ -493,10 +493,10 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				return ResponseEntity.ok(imageWrappers);
 		}
 		
-		@GetMapping(value="/task/{taskId}/audio",  produces = MediaType.APPLICATION_JSON_VALUE)
+		@GetMapping(value="/task/{taskId}/audio",  produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 		public ResponseEntity<byte[]> getAudioByTask(@PathVariable int taskId){
 			
-			List<Immagine> images = immagineService.getImagesByTask(taskId);
+			List<Immagine> images = immagineService.getAudioByTask(taskId);
 			byte[] imagea = images.get(0).getImageData();
 			List<byte[]> imageBytes = images.stream()
 				.map(image -> image.getImageData())
@@ -506,7 +506,7 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 	            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 	            headers.setContentLength(imagea.length);
 	            headers.setContentDisposition(ContentDisposition.builder("attachment")
-	                .filename("audio-file")
+	                .filename("audio-file.mp3")
 	                .build());
 			
 				/*List<ImageWrapper> imageWrappers = new ArrayList<>();
