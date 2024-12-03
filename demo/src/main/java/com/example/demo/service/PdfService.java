@@ -14,9 +14,11 @@ import com.example.demo.entity.Utente;
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.ImageData;
+import com.example.demo.entity.Intervento;
 import com.example.demo.repository.AziendaRepository;
 import com.example.demo.repository.ClienteRepository;
 import com.example.demo.repository.ImageDataRepository;
+import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.PdfRepository;
 import com.example.demo.repository.UtenteRepository;
 import com.example.demo.util.ImageUtil;
@@ -35,6 +37,9 @@ public class PdfService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private InterventoRepository interventoRepository;
 
 
 
@@ -55,10 +60,8 @@ public class PdfService {
 		} catch (Exception e) {
 			  throw new RuntimeException("dsvdvf: " + e.getMessage());
 		    //System.err.println("Failed to create directory!" + e.getMessage());
-
 		  } 
         
-
     }
 	 
 	@Transactional
@@ -105,6 +108,13 @@ public class PdfService {
 	public List<Pdf> getAllByAzienda(int aziendaId){
 		Optional<Azienda> optionalAzienda = aziendaRepository.findById(aziendaId);
 		List<Pdf> pdfs = pdfRepository.findByAzienda(optionalAzienda.get());
+		return pdfs;
+	}
+
+	@Transactional
+	public List<Pdf> getAllByIntervento(int interventoId){
+		Optional<Intervento> optionalIntervento = interventoRepository.findById(interventoId);
+		List<Pdf> pdfs = pdfRepository.findByIntervento(optionalIntervento.get());
 		return pdfs;
 	}
 
