@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,7 @@ import com.example.demo.repository.InterventoRepository;
 import com.example.demo.repository.RelazioneUtentiInterventiRepository;
 import com.example.demo.repository.TipologiaInterventoRepository;
 import com.example.demo.service.InterventoService;
+import com.example.demo.service.WebSocketService;
 import com.example.demo.websocket.MyWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -68,6 +71,9 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Autowired
     private MyWebSocketHandler webSocketHandler;
+
+    @Autowired
+    private WebSocketService webSocketService;
     
     @Transactional
     @Scheduled(cron = "0 0 5 * * *") 
@@ -127,19 +133,13 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Override
     public Intervento createIntervento(Intervento intervento) {
-    // Salva l'intervento nel database
     Intervento nuovoIntervento = interventoRepository.save(intervento);
-    // Converti l'intervento in JSON usando Jackson
-    ObjectMapper objectMapper = new ObjectMapper();
-    try {
-        String messaggio = objectMapper.writeValueAsString(nuovoIntervento);
-        webSocketHandler.broadcast(messaggio);
-    } catch (Exception e) {
-        System.out.println("Errore nella serializzazione JSON: " + e.getMessage());
-    }
+    
+    // Invia una notifica di aggiornamento ai client WebSocket
+    webSocketService.sendMessageToAll("update");
 
     return nuovoIntervento;
-}
+    }
 
     // @Override
     // public Intervento getInterventoById(int interventoId) {
@@ -151,6 +151,10 @@ public class InterventoServiceImpl implements InterventoService{
     //         throw new NoSuchElementException("Intervento non trovato con ID: " + interventoId);
     //     }
     // }
+
+    public Page<Intervento> getAllInterventiPaged(Pageable pageable) {
+        return interventoRepository.findAll(pageable);
+    }
 
     @Override
     public List<Intervento> getAllInterventiOrderdByDesc(){
