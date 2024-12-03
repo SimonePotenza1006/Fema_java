@@ -24,6 +24,7 @@ import org.hibernate.service.spi.ServiceException;
 //import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -149,62 +150,42 @@ public class PdfController {
                 }
     }
     
-    @GetMapping("/interventi/{id}/{filename:.+}")
-public ResponseEntity<?> getPdfIntervento(
-        @PathVariable("id") String interventoId,
-        @PathVariable("filename") String filename) {
-
+    @GetMapping("intervento/{intervento}/{fileName}")
+public ResponseEntity<Resource> downloadPdfFile(@PathVariable("intervento") String interventoId,
+                                                @PathVariable("fileName") String fileName) {
     // Directory base
-    String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi\\";
-    
-    // Costruisci il percorso completo del file
-    Path completePath = Paths.get(baseDir, interventoId, filename);
-
-    // Log del percorso completo del file
-    System.out.println("Percorso completo del file: " + completePath.toString());
-
-    Resource resource;
+    String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi";
+    Path filePath = Paths.get(baseDir, interventoId, fileName);
 
     // Verifica se il file esiste
-    if (!Files.exists(completePath)) {
-        System.out.println("File non trovato: " + completePath.toString());
-        return ResponseEntity.notFound().build(); // Restituisce 404 se il file non esiste
+    if (!Files.exists(filePath)) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(null);
     }
 
-    try {
-        resource = new UrlResource(completePath.toUri());
-        if (!resource.exists() || !resource.isReadable()) {
-            System.out.println("File non leggibile o inesistente: " + completePath.toString());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Il file esiste ma non è leggibile.");
-        }
-    } catch (MalformedURLException e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Errore nel recupero del file.");
-    }
-
-    // Determina il tipo di contenuto del file
-    String contentType = "application/pdf";
-
+    // Restituisce il file come risorsa
+    Resource resource = new FileSystemResource(filePath.toFile());
     return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType(contentType))
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
-            .body(resource);
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(resource);
 }
 
+
         
-    @GetMapping("intervento")
-public ResponseEntity<?> getPdfFilesByIntervento(@RequestParam("intervento") String interventoId) {
+@GetMapping("intervento/{intervento}")
+public ResponseEntity<?> getPdfFilesByIntervento(@PathVariable("intervento") String interventoId) {
     try {
         // Directory base
         String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi";
 
         // Percorso della sottodirectory per l'intervento
         Path interventionDir = Paths.get(baseDir, interventoId);
+        System.out.println("Percorso directory: " + interventionDir.toAbsolutePath());
 
         // Verifica se la directory esiste
         if (!Files.exists(interventionDir) || !Files.isDirectory(interventionDir)) {
+            System.out.println("Directory non trovata o non valida: " + interventionDir.toAbsolutePath());
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("La directory per l'intervento con ID " + interventoId + " non esiste.");
         }
@@ -212,12 +193,15 @@ public ResponseEntity<?> getPdfFilesByIntervento(@RequestParam("intervento") Str
         // Trova tutti i file nella directory
         List<String> fileNames = Files.list(interventionDir)
             .filter(Files::isRegularFile) // Solo file regolari
-            .map(path -> path.getFileName().toString()) // Ottieni il nome del file
-            .filter(name -> name.endsWith(".pdf")) // Filtra solo i PDF
+            .peek(path -> System.out.println("File trovato: " + path.getFileName())) // Debug
+            .map(path -> path.getFileName().toString()) // Nome del file
+            .filter(name -> name.toLowerCase().endsWith(".pdf")) // Solo PDF, case-insensitive
+            .peek(name -> System.out.println("File PDF trovato: " + name)) // Debug
             .collect(Collectors.toList());
 
         // Se non ci sono file PDF
         if (fileNames.isEmpty()) {
+            System.out.println("Nessun file PDF trovato nella directory.");
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body("Nessun file PDF trovato per l'intervento con ID " + interventoId + ".");
         }
@@ -230,6 +214,9 @@ public ResponseEntity<?> getPdfFilesByIntervento(@RequestParam("intervento") Str
             .body("Errore durante la lettura dei file: " + e.getMessage());
     }
 }
+
+
+
 
 
 
