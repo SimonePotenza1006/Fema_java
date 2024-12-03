@@ -16,6 +16,10 @@ import com.example.demo.service.GruppoInterventiService;
 import com.example.demo.service.MerceInRiparazioneService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -93,6 +97,19 @@ public class InterventoController {
         return new ResponseEntity<>(interventi, HttpStatus.OK);
     }
 
+    @GetMapping("paged")
+    public ResponseEntity<List<Intervento>> getAllInterventiOrderByDesc(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        // Usa il Pageable di Spring per creare una richiesta paginata
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+            
+        // Recupera i dati paginati dal service/repository
+        Page<Intervento> interventiPage = interventoService.getAllInterventiPaged(pageable);
+            
+        // Restituisci la lista e le informazioni sulla paginazione
+        return new ResponseEntity<>(interventiPage.getContent(), HttpStatus.OK);
+    }
 
 
     @GetMapping("ordered")
