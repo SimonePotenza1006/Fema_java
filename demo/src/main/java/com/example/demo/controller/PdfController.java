@@ -113,42 +113,63 @@ public class PdfController {
         }
 
         @PostMapping("intervento")
-            public ResponseEntity<?> uploadPdfIntervento(
-                @RequestParam("pdf") MultipartFile file,
-                @RequestParam("intervento") String interventoId
-            ) {
-                try {
-                    if (file.isEmpty()) {
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Il file PDF è obbligatorio.");
-                    }
-                
-                    // Directory base
-                    String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi";
-                
-                    // Crea il percorso della sottodirectory con nome interventoId
-                    Path interventionDir = Paths.get(baseDir, interventoId);
-                    Files.createDirectories(interventionDir);
-                
-                    // Percorso completo del file
-                    Path targetPath = interventionDir.resolve(file.getOriginalFilename());
-                
-                    // Salva il file nella directory
-                    Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-                
-                    // Messaggio di successo
-                    String response = "File caricato con successo in: " + targetPath.toAbsolutePath();
-                    System.out.println(response);
-                    return ResponseEntity.status(HttpStatus.OK).body(response);
-                } catch (IOException e) {
-                    System.err.println("Errore durante il caricamento del file: " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Errore durante il caricamento del file: " + e.getMessage());
-                } catch (Exception e) {
-                    System.err.println("Errore generico: " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Errore imprevisto durante il caricamento del file.");
-                }
+public ResponseEntity<?> uploadPdfIntervento(
+    @RequestParam("pdf") MultipartFile file,
+    @RequestParam("intervento") String interventoId
+) {
+    try {
+        if (file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Il file PDF è obbligatorio.");
+        }
+
+        // Elabora il nome del file per rimuovere caratteri speciali
+        String originalFileName = file.getOriginalFilename();
+        if (originalFileName == null || originalFileName.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Il nome del file non è valido.");
+        }
+
+        // Estrai l'estensione del file
+        String extension = "";
+        int lastDotIndex = originalFileName.lastIndexOf('.');
+        if (lastDotIndex != -1) {
+            extension = originalFileName.substring(lastDotIndex); // Include il punto (es. ".pdf")
+        }
+
+        // Elimina caratteri speciali solo dalla parte del nome, non dall'estensione
+        String baseFileName = originalFileName.substring(0, lastDotIndex).replaceAll("[^a-zA-Z0-9]", "_");
+
+        // Combina il nome sanitizzato con l'estensione
+        String sanitizedFileName = baseFileName + extension;
+
+        // Directory base
+        String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi";
+
+        // Crea il percorso della sottodirectory con nome interventoId
+        Path interventionDir = Paths.get(baseDir, interventoId);
+        Files.createDirectories(interventionDir);
+
+        // Percorso completo del file
+        Path targetPath = interventionDir.resolve(sanitizedFileName);
+
+        // Salva il file nella directory
+        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+        // Messaggio di successo
+        String response = "File caricato con successo in: " + targetPath.toAbsolutePath();
+        System.out.println(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    } catch (IOException e) {
+        System.err.println("Errore durante il caricamento del file: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Errore durante il caricamento del file: " + e.getMessage());
+    } catch (Exception e) {
+        System.err.println("Errore generico: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Errore imprevisto durante il caricamento del file.");
     }
+}
+
+
     
     @GetMapping("intervento/{intervento}/{fileName}")
 public ResponseEntity<Resource> downloadPdfFile(@PathVariable("intervento") String interventoId,
@@ -365,6 +386,40 @@ public ResponseEntity<?> getPdfFilesByIntervento(@PathVariable("intervento") Str
                 fileList.add(fileMap); // Aggiungi il file o la directory alla lista
             }
         }
+
+        @DeleteMapping("/intervento/{interventoId}/{filename:.+}")
+        public ResponseEntity<?> deletePdfIntervento(
+                @PathVariable("interventoId") String interventoId,
+                @PathVariable("filename") String filename) {
+                
+            // Percorso base della directory degli interventi
+            String fileBasePath = "C:\\APP_FEMA\\Pdf\\Interventi";
+                
+            // Costruzione del percorso completo
+            Path completePath = Paths.get(fileBasePath, interventoId, filename);
+                
+            System.out.println("Percorso completo del file: " + completePath.toString());
+                
+            try {
+                // Verifica se il file esiste
+                if (!Files.exists(completePath)) {
+                    System.out.println("File non trovato: " + completePath.toString());
+                    return ResponseEntity.notFound().build(); // Restituisce 404 se il file non esiste
+                }
+            
+                // Cancella il file
+                Files.delete(completePath);
+            
+                // Log per confermare la cancellazione
+                System.out.println("File cancellato: " + completePath.toString());
+            
+                return ResponseEntity.ok("File cancellato con successo.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la cancellazione del file.");
+            }
+        }
+
 
         @DeleteMapping("/noleggio/{path:.+}/{filename:.+}")
         public ResponseEntity<?> deletePdf(@PathVariable("path") String path, @PathVariable("filename") String filename) {

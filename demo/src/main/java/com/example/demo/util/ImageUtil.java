@@ -151,25 +151,50 @@ public static byte[] compressImageNew(MultipartFile image) throws IOException
     return imageBytes;
 }
 
- public static byte[] compressImage(byte[] data) {
+// public static byte[] compressImage(byte[] data) {
+
+//     Deflater deflater = new Deflater();
+//     deflater.setLevel(Deflater.BEST_COMPRESSION);
+//     deflater.setInput(data);
+//     deflater.finish();
+
+//     ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+//     byte[] tmp = new byte[4*1024];
+//     while (!deflater.finished()) {
+//         int size = deflater.deflate(tmp);
+//         outputStream.write(tmp, 0, size);
+//     }
+//     try {
+//         outputStream.close();
+//     } catch (Exception e) {
+//     }
+//     return outputStream.toByteArray();
+// }
+
+    public static byte[] compressImage(byte[] data) {
+        if (data == null || data.length == 0) {
+            throw new IllegalArgumentException("Input data must not be null or empty.");
+        }
 
         Deflater deflater = new Deflater();
         deflater.setLevel(Deflater.BEST_COMPRESSION);
         deflater.setInput(data);
         deflater.finish();
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] tmp = new byte[4*1024];
-        while (!deflater.finished()) {
-            int size = deflater.deflate(tmp);
-            outputStream.write(tmp, 0, size);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[16 * 1024]; // Aumentato a 16 KB per efficienza
+            while (!deflater.finished()) {
+                int size = deflater.deflate(buffer);
+                outputStream.write(buffer, 0, size);
+            }
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException("Error during compression", e);
+        } finally {
+            deflater.end(); // Rilascia le risorse del Deflater
         }
-        try {
-            outputStream.close();
-        } catch (Exception e) {
-        }
-        return outputStream.toByteArray();
     }
+
 
     public static byte[] decompressImage(byte[] data) {
         Inflater inflater = new Inflater();
