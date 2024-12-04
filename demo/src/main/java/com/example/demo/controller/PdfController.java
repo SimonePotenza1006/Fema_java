@@ -18,11 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.hibernate.service.spi.ServiceException;
 //import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -45,6 +47,7 @@ import com.example.demo.entity.Azienda;
 import com.example.demo.entity.ImageData;
 import com.example.demo.service.AziendaService;
 import com.example.demo.service.ImageDataService;
+import com.example.demo.service.InterventoService;
 import com.example.demo.service.PdfService;
 import com.example.demo.service.UtenteService;
 
@@ -62,6 +65,10 @@ public class PdfController {
 
       @Autowired
       private AziendaService aziendaService;
+
+      @Autowired
+      private InterventoService interventoService;
+
 
 	  @PostMapping("/certificazioni/aziende")
         public ResponseEntity<?> uploadCerificazioneAzienda(
@@ -105,12 +112,120 @@ public class PdfController {
             }
         }
 
+        @PostMapping("intervento")
+            public ResponseEntity<?> uploadPdfIntervento(
+                @RequestParam("pdf") MultipartFile file,
+                @RequestParam("intervento") String interventoId
+            ) {
+                try {
+                    if (file.isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Il file PDF è obbligatorio.");
+                    }
+                
+                    // Directory base
+                    String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi";
+                
+                    // Crea il percorso della sottodirectory con nome interventoId
+                    Path interventionDir = Paths.get(baseDir, interventoId);
+                    Files.createDirectories(interventionDir);
+                
+                    // Percorso completo del file
+                    Path targetPath = interventionDir.resolve(file.getOriginalFilename());
+                
+                    // Salva il file nella directory
+                    Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+                
+                    // Messaggio di successo
+                    String response = "File caricato con successo in: " + targetPath.toAbsolutePath();
+                    System.out.println(response);
+                    return ResponseEntity.status(HttpStatus.OK).body(response);
+                } catch (IOException e) {
+                    System.err.println("Errore durante il caricamento del file: " + e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Errore durante il caricamento del file: " + e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("Errore generico: " + e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Errore imprevisto durante il caricamento del file.");
+                }
+    }
+    
+    @GetMapping("intervento/{intervento}/{fileName}")
+public ResponseEntity<Resource> downloadPdfFile(@PathVariable("intervento") String interventoId,
+                                                @PathVariable("fileName") String fileName) {
+    // Directory base
+    String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi";
+    Path filePath = Paths.get(baseDir, interventoId, fileName);
+
+    // Verifica se il file esiste
+    if (!Files.exists(filePath)) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(null);
+    }
+
+    // Restituisce il file come risorsa
+    Resource resource = new FileSystemResource(filePath.toFile());
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(resource);
+}
+
+
+        
+@GetMapping("intervento/{intervento}")
+public ResponseEntity<?> getPdfFilesByIntervento(@PathVariable("intervento") String interventoId) {
+    try {
+        // Directory base
+        String baseDir = "C:\\APP_FEMA\\Pdf\\Interventi";
+
+        // Percorso della sottodirectory per l'intervento
+        Path interventionDir = Paths.get(baseDir, interventoId);
+        System.out.println("Percorso directory: " + interventionDir.toAbsolutePath());
+
+        // Verifica se la directory esiste
+        if (!Files.exists(interventionDir) || !Files.isDirectory(interventionDir)) {
+            System.out.println("Directory non trovata o non valida: " + interventionDir.toAbsolutePath());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("La directory per l'intervento con ID " + interventoId + " non esiste.");
+        }
+
+        // Trova tutti i file nella directory
+        List<String> fileNames = Files.list(interventionDir)
+            .filter(Files::isRegularFile) // Solo file regolari
+            .peek(path -> System.out.println("File trovato: " + path.getFileName())) // Debug
+            .map(path -> path.getFileName().toString()) // Nome del file
+            .filter(name -> name.toLowerCase().endsWith(".pdf")) // Solo PDF, case-insensitive
+            .peek(name -> System.out.println("File PDF trovato: " + name)) // Debug
+            .collect(Collectors.toList());
+
+        // Se non ci sono file PDF
+        if (fileNames.isEmpty()) {
+            System.out.println("Nessun file PDF trovato nella directory.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body("Nessun file PDF trovato per l'intervento con ID " + interventoId + ".");
+        }
+
+        // Risposta con i nomi dei file
+        return ResponseEntity.status(HttpStatus.OK).body(fileNames);
+    } catch (IOException e) {
+        System.err.println("Errore durante la lettura dei file: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Errore durante la lettura dei file: " + e.getMessage());
+    }
+}
+
+
+
+
+
+
        @PostMapping("/certificazioni/clienti")
-public ResponseEntity<?> uploadCertificazioneCliente(
-        @RequestParam("pdf") MultipartFile file,
-        @RequestParam("cliente") String clienteNome
-) throws org.springframework.web.server.ResponseStatusException {
-    String response = null;
+    public ResponseEntity<?> uploadCertificazioneCliente(
+            @RequestParam("pdf") MultipartFile file,
+            @RequestParam("cliente") String clienteNome
+    ) throws org.springframework.web.server.ResponseStatusException {
+        String response = null;
 
     try {
         // Verifica che il file non sia vuoto
@@ -144,6 +259,7 @@ public ResponseEntity<?> uploadCertificazioneCliente(
     }
 }
 
+        
         @GetMapping("/certificazioni/{path:.+}/{filename:.+}")
         public ResponseEntity<?> getPdf(@PathVariable("path") String path, @PathVariable("filename") String filename) {
             // Sostituisci '_' con '/' per ricostruire il path corretto
@@ -183,6 +299,7 @@ public ResponseEntity<?> uploadCertificazioneCliente(
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
                     .body(resource);
         }
+    
 
     
         @GetMapping("/filesnameCertificazioni")

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Cliente;
+import com.example.demo.entity.Intervento;
 import com.example.demo.entity.Pdf;
 import com.example.demo.entity.Utente;
 
@@ -20,4 +21,5 @@ public interface PdfRepository extends JpaRepository<Pdf, Integer>{
     List<Pdf> findByUtente(Utente utente);
     List<Pdf> findByCliente(Cliente cliente);
     List<Pdf> findByAzienda(Azienda optionalAzienda);
+    List<Pdf> findByIntervento(Intervento intervento);
 }

@@ -52,4 +52,8 @@ public class Pdf {
     @ManyToOne
     @JoinColumn(referencedColumnName = "idclienti", nullable = true)
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "idinterventi", nullable = true)
+    private Intervento intervento;
 }
