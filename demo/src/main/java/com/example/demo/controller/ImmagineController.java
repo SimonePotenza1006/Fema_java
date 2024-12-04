@@ -238,6 +238,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				System.out.print(response);
 				return ResponseEntity.status(HttpStatus.OK).body(response);
 			}
+	
+	@PostMapping("/ticketaudio/{ticketId}")
+	public ResponseEntity<?> uploadAudioTickek(@RequestParam("ticket") MultipartFile file,
+			@PathVariable("ticketId") int ticketId) throws IOException{
+				Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
+				String response = immagineService.uploadAudioTicket(file, ticketId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Ticket\\Ticket_"+optionalTicket.get().getId()));
+					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
 
 	@PostMapping("/cartella/{cartellaId}")
 	public ResponseEntity<?> uploadImageCartella(@RequestParam("cartella") MultipartFile file,

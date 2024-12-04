@@ -196,6 +196,17 @@ public class ImmagineService {
         return "Audio Task caricato correttamente:" + file.getOriginalFilename();
     }
     
+    public String uploadAudioTicket(MultipartFile file, int ticketId) throws IOException{
+        Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(file.getBytes())
+                .ticket(optionalTicket.get())
+                .build()
+        );
+        return "Audio Ticket caricato correttamente:" + file.getOriginalFilename();
+    }
     
     public String uploadImageCredenziali(MultipartFile file, int credenzialId) throws IOException{
         Optional<CredenzialiCliente> optionalCredenziale = credenzialiRepository.findById(credenzialId);
@@ -380,6 +391,17 @@ public class ImmagineService {
         Optional<Task> optionalTask = taskRepository.findById(taskId);
         if(optionalTask.isPresent()){
             return immagineRepository.findByTaskAndTypeStartingWith(optionalTask.get(), "audio");
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<Immagine> getAudioByTicket(int ticketId){
+        Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
+        if(optionalTicket.isPresent()){
+            return immagineRepository.findByTicketAndTypeStartingWith(optionalTicket.get(), "audio");
         } else {
 
         }
