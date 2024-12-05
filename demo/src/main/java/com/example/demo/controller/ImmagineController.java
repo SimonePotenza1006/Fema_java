@@ -245,7 +245,7 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
 				String response = immagineService.uploadAudioTicket(file, ticketId);
 				try{
-					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Ticket\\Ticket_"+optionalTicket.get().getId()));
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Ticket\\Ticket_"+optionalTicket.get().getDescrizione().replace(" ", "")));
 					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
 					System.out.println("File is created!");
 				} catch(IOException e){
