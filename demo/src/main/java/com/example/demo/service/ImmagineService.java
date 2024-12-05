@@ -324,7 +324,18 @@ public class ImmagineService {
     public List<Immagine> getImagesByTicket(int ticketId){
         Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
         if(optionalTicket.isPresent()){
-            return immagineRepository.findByTicket(optionalTicket.get());
+            return immagineRepository.findByTicketAndTypeStartingWith(optionalTicket.get(), "image");
+        } else {
+
+        }
+        return null;
+    }
+    
+    @Transactional
+    public List<Immagine> getImagesByTask(int taskId){
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if(optionalTask.isPresent()){
+            return immagineRepository.findByTaskAndTypeStartingWith(optionalTask.get(), "image");
         } else {
 
         }
@@ -369,17 +380,6 @@ public class ImmagineService {
         Optional<RestituzioneMerce> optionalRestituzione = restituzioneRepository.findById(restituzioneId);
         if(optionalRestituzione.isPresent()){
             return immagineRepository.findByRestituzione(optionalRestituzione.get());
-        } else {
-
-        }
-        return null;
-    }
-    
-    @Transactional
-    public List<Immagine> getImagesByTask(int taskId){
-        Optional<Task> optionalTask = taskRepository.findById(taskId);
-        if(optionalTask.isPresent()){
-            return immagineRepository.findByTaskAndTypeStartingWith(optionalTask.get(), "image");
         } else {
 
         }

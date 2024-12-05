@@ -513,6 +513,9 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 		public ResponseEntity<byte[]> getAudioByTask(@PathVariable int taskId){
 			
 			List<Immagine> images = immagineService.getAudioByTask(taskId);
+			if (images.isEmpty()) {
+		        return ResponseEntity.notFound().build(); // Restituisce un 404 Not Found
+		    }
 			byte[] imagea = images.get(0).getImageData();
 			List<byte[]> imageBytes = images.stream()
 				.map(image -> image.getImageData())
@@ -531,6 +534,28 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 					wrapper.setImageData(imageData);
 					imageWrappers.add(wrapper);
 				}*/
+				return new ResponseEntity<>(imagea, headers, HttpStatus.OK);
+		}
+		
+		@GetMapping(value="/ticket/{ticketId}/audio",  produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+		public ResponseEntity<byte[]> getAudioByTicket(@PathVariable int ticketId){
+			
+			List<Immagine> images = immagineService.getAudioByTicket(ticketId);
+			if (images.isEmpty()) {
+		        return ResponseEntity.notFound().build(); // Restituisce un 404 Not Found
+		    }
+			byte[] imagea = images.get(0).getImageData();
+			List<byte[]> imageBytes = images.stream()
+				.map(image -> image.getImageData())
+				.collect(Collectors.toList());
+
+			 HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	            headers.setContentLength(imagea.length);
+	            headers.setContentDisposition(ContentDisposition.builder("attachment")
+	                .filename("audio-file.mp3")
+	                .build());
+		
 				return new ResponseEntity<>(imagea, headers, HttpStatus.OK);
 		}
 		
