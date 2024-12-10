@@ -60,9 +60,16 @@ public class TaskController {
     @GetMapping("/utente/{id}")
     public ResponseEntity<List<Task>> getAllTaskByUtenteEntity(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);
-        List<Task> tasks = taskService.getAllTasksByUtente(utente);
+        List<Task> tasks = taskService.getAllTasksByUtenteAndUtentecreate(utente);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
+    
+    /*@GetMapping("/utente/{id}")
+    public ResponseEntity<List<Task>> getAllTaskByUtenteEntity(@PathVariable("id") int utenteId){
+        Utente utente = utenteService.getUtenteById(utenteId);
+        List<Task> tasks = taskService.getAllTasksByUtente(utente);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }*/
 
     @GetMapping("/tipologia/{tipologiaId}")
     public ResponseEntity<List<Task>> getAllTasksByTipologia(@PathVariable("tipologiaId") int tipologiaId){

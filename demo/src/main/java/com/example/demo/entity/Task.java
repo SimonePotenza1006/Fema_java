@@ -53,6 +53,10 @@ public class Task {
     @ManyToOne
     @JoinColumn(referencedColumnName = "iduser", nullable = true)
     private Utente utente;
+    
+    @ManyToOne
+    @JoinColumn(name = "FK_idUser") 
+    private Utente utentecreate;
 
     @ManyToOne(cascade = CascadeType.MERGE) // Puoi anche scegliere un'opzione più specifica come CascadeType.REMOVE
     @JoinColumn(referencedColumnName = "id_tipologia", nullable = true)
