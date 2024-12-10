@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +28,9 @@ import org.springframework.http.MediaType;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
+
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.MetadataException;
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Cartella;
 import com.example.demo.entity.CredenzialiCliente;
@@ -207,6 +211,23 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				return ResponseEntity.status(HttpStatus.OK).body(response);
 			}
 	
+	@PostMapping("/taskcomp/{taskId}")
+	public ResponseEntity<?> uploadImageTaskComp(@RequestParam("task") MultipartFile file,
+			@PathVariable("taskId") int taskId) throws IOException, ImageProcessingException, MetadataException{
+				Optional<Task> optionalTask = taskRepository.findById(taskId);
+				String response = immagineService.uploadImageTaskComp(file, taskId);
+				try{
+					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Task\\Task_"+optionalTask.get().getId()));
+					Files.copy(new ByteArrayInputStream(ImageUtil.compressImage0912(file)),//file.getInputStream(), 
+							path.resolve(file.getOriginalFilename()));
+					System.out.println("File is created!");
+				} catch(IOException e){
+					System.err.println("Failed to create directory!" + e.getMessage());
+				}
+				System.out.print(response);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			}
+	
 	@PostMapping("/task/{taskId}")
 	public ResponseEntity<?> uploadImageTask(@RequestParam("task") MultipartFile file,
 			@PathVariable("taskId") int taskId) throws IOException{
@@ -214,7 +235,8 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				String response = immagineService.uploadImageTask(file, taskId);
 				try{
 					Path path = Files.createDirectories(Paths.get("C:\\APP_FEMA\\Task\\Task_"+optionalTask.get().getId()));
-					Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+					Files.copy(file.getInputStream(), 
+							path.resolve(file.getOriginalFilename()));
 					System.out.println("File is created!");
 				} catch(IOException e){
 					System.err.println("Failed to create directory!" + e.getMessage());

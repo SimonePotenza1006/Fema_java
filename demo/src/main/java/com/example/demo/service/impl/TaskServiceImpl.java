@@ -41,6 +41,11 @@ public class TaskServiceImpl implements TaskService{
     public List<Task> getAllTasksByUtente(Utente utente){
         return taskRepository.findByUtenteOrderByIdDesc(utente);
     }
+    
+    @Override
+    public List<Task> getAllTasksByUtenteAndUtentecreate(Utente utente){
+        return taskRepository.findByUtenteOrUtentecreateOrderByIdDesc(utente, utente);
+    }
 
     @Override
     public List<Task> getAllTasksByConcluso(boolean concluso){

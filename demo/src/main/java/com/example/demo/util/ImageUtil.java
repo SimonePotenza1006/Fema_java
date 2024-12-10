@@ -20,6 +20,12 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
+
 public class ImageUtil {
 
 public static byte[] resizeImage(MultipartFile mpFile) throws IOException {
@@ -212,4 +218,104 @@ public static byte[] compressImageNew(MultipartFile image) throws IOException
         return outputStream.toByteArray();
     }
 
+    public static byte[] compressImage0912(MultipartFile image) throws IOException, ImageProcessingException, MetadataException{
+
+        InputStream inputStream = image.getInputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        float imageQuality = 0.3f;
+
+        // Leggi i metadati EXIF
+        int orientation = 0;
+        try {
+            Metadata metadata = ImageMetadataReader.readMetadata(image.getInputStream());
+            ExifIFD0Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+            if (directory != null) {
+                orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+                // Procedi con l'orientamento
+            } else {
+                System.out.println("Nessuna directory EXIF trovata.");
+            }
+        } catch (MetadataException e) {
+            System.err.println("Errore nella lettura dei metadati: " + e.getMessage());
+        }
+
+        
+        // Create the buffered image
+        BufferedImage bufferedImage = ImageIO.read(inputStream);
+
+        // Applica la rotazione in base all'orientamento EXIF
+        bufferedImage = rotateImage(bufferedImage, orientation);
+        
+        // Converti l'immagine in RGB se necessario
+        //bufferedImage = convertToRGB(bufferedImage);
+        
+     // Converti l'immagine in RGB se necessario
+        BufferedImage rgbImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+        rgbImage.getGraphics().drawImage(bufferedImage, 0, 0, null);
+        
+        // Get image writers
+        Iterator<ImageWriter> imageWriters = ImageIO.getImageWritersByFormatName("jpg"); // Input your Format Name here
+
+        if (!imageWriters.hasNext())
+            throw new IllegalStateException("Writers Not Found!!");
+
+        ImageWriter imageWriter = imageWriters.next();
+        ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(outputStream);
+        imageWriter.setOutput(imageOutputStream);
+
+        ImageWriteParam imageWriteParam = imageWriter.getDefaultWriteParam();
+
+        // Set the compress quality metrics
+        imageWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        imageWriteParam.setCompressionQuality(imageQuality);
+
+        // Compress and insert the image into the byte array.
+        imageWriter.write(null, new IIOImage(rgbImage, null, null), imageWriteParam);
+
+        byte[] imageBytes = outputStream.toByteArray();
+
+        // close all streams
+        inputStream.close();
+        outputStream.close();
+        imageOutputStream.close();
+        imageWriter.dispose();
+
+
+        return imageBytes;
+    }
+    
+    private static BufferedImage convertToRGB(BufferedImage img) {
+        // Se l'immagine è già in RGB, restituiscila
+        if (img.getType() == BufferedImage.TYPE_INT_RGB) {
+            return img;
+        }
+
+        // Altrimenti, crea una nuova immagine RGB
+        BufferedImage newImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+        newImage.getGraphics().drawImage(img, 0, 0, null);
+        return newImage;
+    }
+    
+    private static BufferedImage rotateImage(BufferedImage img, int orientation) {
+        switch (orientation) {
+            case 3:
+                return rotate(img, 180);
+            case 6:
+                return rotate(img, 90);
+            case 8:
+                return rotate(img, 270);
+            default:
+                return img; // Nessuna rotazione necessaria
+        }
+    }
+    
+    private static BufferedImage rotate(BufferedImage img, int angle) {
+        // Implementa la logica di rotazione qui
+        // Puoi usare AffineTransform per ruotare l'immagine
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(angle), img.getWidth() / 2, img.getHeight() / 2);
+        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+        return op.filter(img, null);
+    }
+    
 }

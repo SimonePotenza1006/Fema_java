@@ -17,6 +17,8 @@ public interface TaskService {
     List<Task> getAllTasks();
 
     List<Task> getAllTasksByUtente(Utente utente);
+    
+	List<Task> getAllTasksByUtenteAndUtentecreate(Utente utente);
 
     List<Task> getAllTasksByConcluso(boolean concluso);
 
@@ -29,4 +31,5 @@ public interface TaskService {
     List<Task> getTasksByUtenteAndConcluso(Utente utente, boolean concluso);
 
     void deleteTask(int taskId);
+
 }

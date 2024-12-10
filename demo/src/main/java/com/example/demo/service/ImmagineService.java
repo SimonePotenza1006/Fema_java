@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.util.ImageUtil;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.MetadataException;
 import com.example.demo.controller.CredenzialiClienteController;
 import com.example.demo.entity.Azienda;
 import com.example.demo.entity.Cartella;
@@ -178,6 +180,18 @@ public class ImmagineService {
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .imageData(ImageUtil.compressImage(file.getBytes()))
+                .task(optionalTask.get())
+                .build()
+        );
+        return "Immagine Task caricata correttamente:" + file.getOriginalFilename();
+    }
+    
+    public String uploadImageTaskComp (MultipartFile file, int taskId) throws IOException, ImageProcessingException, MetadataException{
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        immagineRepository.save(Immagine.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage0912(file))//ImageUtil.compressImage(file.getBytes()))
                 .task(optionalTask.get())
                 .build()
         );
