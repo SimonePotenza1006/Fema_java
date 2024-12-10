@@ -65,6 +65,9 @@ public class Task {
     @Column(name = "titolo", nullable = true)
     private String titolo;
 
+    @Column(name = "riferimento", nullable = true)
+    private String riferimento;
+
     @Column(name = "descrizione", nullable = true)
     private String descrizione;
 

@@ -64,9 +64,4 @@ public class Utente {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(referencedColumnName = "idtipologia_intervento")
     private TipologiaIntervento tipologia_intervento;
-
-
-    // public String getCognome() {
-    //     return this.cognome;
-    // }
 }
