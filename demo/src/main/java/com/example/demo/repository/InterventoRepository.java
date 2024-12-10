@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ import com.example.demo.entity.Cliente;
 import com.example.demo.entity.GruppoInterventi;
 
 @Repository
-public interface InterventoRepository extends JpaRepository<Intervento, Integer> {
+public interface InterventoRepository extends JpaRepository<Intervento, Integer>, JpaSpecificationExecutor<Intervento>{
     
     // Find all ordered by id in descending order where attivo = true
     List<Intervento> findAllByAttivoTrueOrderByIdDesc();
@@ -41,7 +42,7 @@ public interface InterventoRepository extends JpaRepository<Intervento, Integer>
     List<Intervento> findByMerceAndAttivoTrue(MerceInRiparazione merce);
 
     // Find distinct records where merce is not null and attivo = true
-    List<Intervento> findDistinctByMerceIsNotNullAndAttivoTrue();
+    List<Intervento> findDistinctByMerceIsNotNullAndAttivoTrueOrderByIdDesc();
 
     // Find records where merce is not null, utente matches, concluso is false, and attivo = true
     List<Intervento> findByMerceNotNullAndUtenteAndConclusoFalseAndAttivoTrue(Utente utente);

@@ -65,17 +65,17 @@ public class Intervento {
     @Column(name = "data_intervento", nullable = true)
     private Date data;
 
-    @Column(name = "orario_appuntamento", nullable = true)
-    private LocalDateTime orario_appuntamento;
+    @Column(name = "orario_appuntamento",  nullable = true)
+    private Date orario_appuntamento;
 
     @Column(name = "posizione_gps", nullable = true)
     private String posizione_gps;
 
     @Column(name = "orario_inizio", nullable = true)
-    private LocalDateTime orario_inizio;
+    private Date orario_inizio;
 
     @Column(name = "orario_fine", nullable = true)
-    private LocalDateTime orario_fine;
+    private Date orario_fine;
 
     @Column(name = "descrizione", nullable = true)
     private String descrizione;

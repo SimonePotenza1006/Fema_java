@@ -322,8 +322,6 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 	}
 
 
-
-
     @PostMapping("/{id}") // Definisci l'ID come parametro di percorso
 	public ResponseEntity<?> uploadImageIntervento(@RequestParam("intervento") MultipartFile file, 
                                      @PathVariable("id") int interventoId) throws IOException {

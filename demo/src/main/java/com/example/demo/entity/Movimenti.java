@@ -70,6 +70,10 @@ public class Movimenti {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idclienti", nullable = true)
     private Cliente cliente;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idfornitori", nullable = true)
+    private Fornitore fornitore;
 }
 
 

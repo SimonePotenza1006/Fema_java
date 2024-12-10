@@ -14,6 +14,7 @@ import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -153,7 +154,12 @@ public class InterventoServiceImpl implements InterventoService{
     // }
 
     public Page<Intervento> getAllInterventiPaged(Pageable pageable) {
-        return interventoRepository.findAll(pageable);
+    // Crea una Specification per filtrare per attivo == true
+    Specification<Intervento> specification = (root, query, criteriaBuilder) -> 
+        criteriaBuilder.equal(root.get("attivo"), true);
+
+    // Usa findAll con la specification
+    return interventoRepository.findAll(specification, pageable);
     }
 
     @Override
@@ -186,7 +192,7 @@ public class InterventoServiceImpl implements InterventoService{
 
     @Override
     public List<Intervento> getAllInterventiWithMerce(){
-        return interventoRepository.findDistinctByMerceIsNotNullAndAttivoTrue();
+        return interventoRepository.findDistinctByMerceIsNotNullAndAttivoTrueOrderByIdDesc();
     }
 
     @Override
