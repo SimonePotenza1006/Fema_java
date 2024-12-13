@@ -56,11 +56,30 @@ public class TaskController {
         List<Task> tasks = taskService.getAllTasks();
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
+    
+    @GetMapping("/allattivi")
+    public ResponseEntity<List<Task>> getAllTasksAttivi(){
+        List<Task> tasks = taskService.getAllTasksAttivo(true);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+    
+    @GetMapping("/alldisattivi")
+    public ResponseEntity<List<Task>> getAllTasksDisattivi(){
+        List<Task> tasks = taskService.getAllTasksAttivo(false);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
 
     @GetMapping("/utente/{id}")
     public ResponseEntity<List<Task>> getAllTaskByUtenteEntity(@PathVariable("id") int utenteId){
         Utente utente = utenteService.getUtenteById(utenteId);
-        List<Task> tasks = taskService.getAllTasksByUtenteAndUtentecreate(utente);
+        List<Task> tasks = taskService.getAllTasksByUtenteAndUtentecreateAndAttivo(utente, true);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+    
+    @GetMapping("/utentearchivio/{id}")
+    public ResponseEntity<List<Task>> getAllTaskByUtenteArchivioEntity(@PathVariable("id") int utenteId){
+        Utente utente = utenteService.getUtenteById(utenteId);
+        List<Task> tasks = taskService.getAllTasksByUtenteAndUtentecreateAndAttivo(utente, false);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
     

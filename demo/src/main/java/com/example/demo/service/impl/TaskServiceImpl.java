@@ -36,6 +36,11 @@ public class TaskServiceImpl implements TaskService{
     public List<Task> getAllTasks(){
         return taskRepository.findAllByOrderByIdDesc();
     }
+    
+    @Override
+    public List<Task> getAllTasksAttivo(boolean attivo){
+        return taskRepository.findByAttivoOrderByIdDesc(attivo);
+    }
 
     @Override
     public List<Task> getAllTasksByUtente(Utente utente){
@@ -45,6 +50,11 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public List<Task> getAllTasksByUtenteAndUtentecreate(Utente utente){
         return taskRepository.findByUtenteOrUtentecreateOrderByIdDesc(utente, utente);
+    }
+    
+    @Override
+    public List<Task> getAllTasksByUtenteAndUtentecreateAndAttivo(Utente utente, boolean attivo){
+        return taskRepository.findByUtenteOrUtentecreateAndAttivoOrderByIdDesc(utente, utente, attivo);
     }
 
     @Override

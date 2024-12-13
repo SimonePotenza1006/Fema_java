@@ -15,10 +15,14 @@ public interface TaskService {
     Optional<Task> getTaskById(int taskId);
 
     List<Task> getAllTasks();
+    
+    List<Task> getAllTasksAttivo(boolean attivo);
 
     List<Task> getAllTasksByUtente(Utente utente);
     
 	List<Task> getAllTasksByUtenteAndUtentecreate(Utente utente);
+	
+	List<Task> getAllTasksByUtenteAndUtentecreateAndAttivo(Utente utente, boolean attivo);
 
     List<Task> getAllTasksByConcluso(boolean concluso);
 

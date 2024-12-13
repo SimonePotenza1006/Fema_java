@@ -85,4 +85,7 @@ public class Task {
 
     @Column(name = "data_accettazione", nullable = true)
     private Date data_accettazione;
+    
+    @Column(name = "attivo", columnDefinition = "boolean default true")
+    private boolean attivo;
 }

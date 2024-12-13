@@ -16,12 +16,18 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     // Trova tutti i task e ordina per id in ordine decrescente
     List<Task> findAllByOrderByIdDesc();
+    
+    // Trova tutti i task e ordina per id in ordine decrescente
+    List<Task> findByAttivoOrderByIdDesc(boolean attivo);
 
     // Trova tutti i task associati a un utente specifico, ordinati per id desc
     List<Task> findByUtenteOrderByIdDesc(Utente utente);
     
     // Trova tutti i task associati a un utente specifico, ordinati per id desc (anche utentecreate)
     List<Task> findByUtenteOrUtentecreateOrderByIdDesc(Utente utente, Utente utentecreate);
+    
+    // Trova tutti i task associati a un utente specifico, ordinati per id desc (anche utentecreate)
+    List<Task> findByUtenteOrUtentecreateAndAttivoOrderByIdDesc(Utente utente, Utente utentecreate, boolean attivo);
 
     // Trova tutti i task con una specifica tipologia, ordinati per id desc
     List<Task> findByTipologiaOrderByIdDesc(Optional<TipoTask> tipologia);
