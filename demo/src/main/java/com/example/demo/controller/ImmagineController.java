@@ -447,6 +447,22 @@ public ResponseEntity<?> uploadImageSopralluogo(@RequestParam("sopralluogo") Mul
 				return ResponseEntity.ok(imageWrappers);
 		}
 
+		@GetMapping(value = "/movimenti/{movimentoId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ImageWrapper>> getImagesByMovimento(@PathVariable int movimentoId){
+			List<Immagine> images = immagineService.getImagesByMovimento(movimentoId);
+			List<byte[]> imageBytes = images.stream()
+					.map(image -> ImageUtil.decompressImage(image.getImageData()))
+					.collect(Collectors.toList());
+
+					List<ImageWrapper> imageWrappers = new ArrayList<>();
+					for(byte[] imageData : imageBytes){
+						ImageWrapper wrapper = new ImageWrapper();
+						wrapper.setImageData(imageData);
+						imageWrappers.add(wrapper);
+					}
+					return ResponseEntity.ok(imageWrappers);
+ 		}
+
 		@GetMapping(value = "/merce/{merceId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<List<ImageWrapper>> getImagesByMerce(@PathVariable int merceId) {
 			List<Immagine> images = immagineService.getImagesByMerce(merceId);

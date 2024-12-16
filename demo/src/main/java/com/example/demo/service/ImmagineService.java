@@ -324,6 +324,17 @@ public class ImmagineService {
     }
 
     @Transactional
+    public List<Immagine> getImagesByMovimento(int movimentoId){
+        Optional<Movimenti> optionalMovimento = movimentiRepository.findById(movimentoId);
+        if(optionalMovimento.isPresent()){
+            return immagineRepository.findByMovimento(optionalMovimento.get());
+        } else {
+
+        }
+        return null;
+    }
+
+    @Transactional
     public List<Immagine> getImagesBySopralluogo(int sopralluogoId){
         Optional<Sopralluogo> optionalSopralluogo = sopralluogoRepository.findById(sopralluogoId);
         if(optionalSopralluogo.isPresent()) {
